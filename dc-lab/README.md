@@ -1,4 +1,4 @@
-# IDNOG 10 DC Lab
+# SGNOG12 DC Lab
 
 !!! info "Disclaimer"
     This lab is based on [srl-sros-telemetry-lab](https://github.com/srl-labs/srl-sros-telemetry-lab). (Kudos to Marlon Paz, Roman Dodin and Kevin Todts). 
@@ -55,7 +55,7 @@ docker exec -it client1 bash
 
 The DC fabric used in this lab consists of three leaf nodes and two spine nodes interconnected with each other as shown in the diagram.
 
-![pic1](../idnog10-workshop-topology.png)
+![pic1](../sgnog12-workshop-topology.png)
 
 Leaf and spine nodes use Nokia SR Linux IXR-D2L and IXR-D3L chassis respectively. Each network element of this topology is equipped with a [fabric startup configuration file](configs/fabric) that is applied at the node's startup.
 
