@@ -1,0 +1,14 @@
+name: basic-${GROUP_ID}
+
+topology:
+  nodes:
+    srl:
+      kind: nokia_srlinux
+      image: ghcr.io/nokia/srlinux:25.3.3
+
+    ceos:
+      kind: arista_ceos
+      image: ceos:4.33.1F
+
+  links:
+    - endpoints: [srl:e1-1, ceos:eth1]

@@ -1,0 +1,162 @@
+# Copyright 2025 Nokia
+# Licensed under the BSD 3-Clause License.
+# SPDX-License-Identifier: BSD-3-Clause
+
+name: dc-${GROUP_ID}
+
+mgmt:
+  network: dc-${GROUP_ID}
+  ipv4-subnet: 172.80.${GROUP_ID}0.0/24
+  ipv6-subnet: 3fff:172:80:${GROUP_ID}0::/64
+
+topology:
+  defaults:
+    kind: nokia_srlinux
+
+  kinds:
+    nokia_srlinux:
+      image: ghcr.io/nokia/srlinux:25.3.3
+      type: ixrd2l
+    linux:
+      image: ghcr.io/hellt/network-multitool
+
+  nodes:
+    ### SPINES ###
+    spine1:
+      type: ixrd3l
+      group: spine
+      startup-config: configs/fabric-final/spine1.cfg
+      mgmt-ipv4: 172.80.${GROUP_ID}0.21
+      mgmt-ipv6: 3fff:172:80:${GROUP_ID}0::21
+
+    spine2:
+      type: ixrd3l
+      group: spine
+      startup-config: configs/fabric-final/spine2.cfg
+      mgmt-ipv4: 172.80.${GROUP_ID}0.22
+      mgmt-ipv6: 3fff:172:80:${GROUP_ID}0::22  
+ 
+    ### LEAFS ###
+    leaf1:
+      startup-config: configs/fabric-final/leaf1.cfg
+      mgmt-ipv4: 172.80.${GROUP_ID}0.11
+      mgmt-ipv6: 3fff:172:80:${GROUP_ID}0::11
+      group: leaf
+
+    leaf2:
+      startup-config: configs/fabric-final/leaf2.cfg
+      mgmt-ipv4: 172.80.${GROUP_ID}0.12
+      mgmt-ipv6: 3fff:172:80:${GROUP_ID}0::12
+      group: leaf
+
+    leaf3:
+      startup-config: configs/fabric-final/leaf3.cfg
+      mgmt-ipv4: 172.80.${GROUP_ID}0.13
+      mgmt-ipv6: 3fff:172:80:${GROUP_ID}0::13
+      group: leaf
+
+    ### CLIENTS ###
+    client1:
+      kind: linux
+      mgmt-ipv4: 172.80.${GROUP_ID}0.31
+      mgmt-ipv6: 3fff:172:80:${GROUP_ID}0::31
+      exec:
+        - ip address add 172.17.0.1/24 dev eth1
+        - ip -6 address add 2002::172:17:0:1/96 dev eth1
+        - iperf3 -s -p 5201 -D > iperf3_1.log
+      group: server
+    client2:
+      kind: linux
+      mgmt-ipv4: 172.80.${GROUP_ID}0.32
+      mgmt-ipv6: 3fff:172:80:${GROUP_ID}0::32
+      binds:
+        - configs/client2:/config
+      exec:
+        - ip link add bond0 type bond
+        - ip link set bond0 down
+        - ip link set bond0 type bond miimon 100 mode 4
+        - ip link set eth1 down
+        - ip link set eth2 down
+        - ip link set eth1 master bond0
+        - ip link set eth2 master bond0
+        - ip address add 172.17.0.2/24 dev bond0
+        - ip -6 address add 2002::172:17:0:2/96 dev bond0
+        - ip link set bond0  type bond xmit_hash_policy layer3+4 
+        - ip link set bond0 up
+      group: server
+    client3:
+      kind: linux
+      mgmt-ipv4: 172.80.${GROUP_ID}0.33
+      mgmt-ipv6: 3fff:172:80:${GROUP_ID}0::33
+      binds:
+        - configs/client3:/config    
+      exec:
+        - ip address add 172.17.0.3/24 dev eth1
+        - ip -6 address add 2002::172:17:0:3/96 dev eth1
+        - iperf3 -s -p 5214 -D > iperf6_4.log
+        - iperf3 -s -p 5215 -D > iperf6_5.log
+      group: server
+    client4:
+      kind: linux
+      mgmt-ipv4: 172.80.${GROUP_ID}0.34
+      mgmt-ipv6: 3fff:172:80:${GROUP_ID}0::34   
+      exec:
+        - ip address add 172.17.0.4/24 dev eth1
+        - ip -6 address add 2002::172:17:0:4/96 dev eth1
+        - iperf3 -s -p 5202 -D > iperf3_1.log
+      group: server
+
+    ### TELEMETRY STACK ###
+    gnmic:
+      kind: linux
+      mgmt-ipv4: 172.80.${GROUP_ID}0.41
+      mgmt-ipv6: 3fff:172:80:${GROUP_ID}0::41
+      image: ghcr.io/openconfig/gnmic:0.41.0
+      binds:
+        - gnmic-config.yml:/gnmic-config.yml:ro
+      cmd: --config /gnmic-config.yml --log subscribe
+      group: "10" # group 10 is assigned to the nodes of a telemetry stack
+
+    prometheus:
+      kind: linux
+      mgmt-ipv4: 172.80.${GROUP_ID}0.42
+      mgmt-ipv6: 3fff:172:80:${GROUP_ID}0::42
+      image: prom/prometheus:v2.53.4
+      binds:
+        - configs/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      cmd: --config.file=/etc/prometheus/prometheus.yml
+      ports:
+        - 909${GROUP_ID}:9090
+      group: "10"
+
+    grafana:
+      kind: linux
+      mgmt-ipv4: 172.80.${GROUP_ID}0.43
+      mgmt-ipv6: 3fff:172:80:${GROUP_ID}0::43
+      image: grafana/grafana:9.5.2
+      binds:
+        - configs/grafana/datasource.yml:/etc/grafana/provisioning/datasources/datasource.yaml:ro
+        - configs/grafana/dashboards.yml:/etc/grafana/provisioning/dashboards/dashboards.yaml:ro
+        - configs/grafana/dashboards:/var/lib/grafana/dashboards
+      dns:
+        servers:
+          - 8.8.8.8
+          - 8.8.4.4
+      ports:
+        - 300${GROUP_ID}:3000
+      env:
+        GF_INSTALL_PLUGINS: https://algenty.github.io/flowcharting-repository/archives/agenty-flowcharting-panel-1.0.0d.220606199-SNAPSHOT.zip;agenty-flowcharting-panel
+      group: "10"
+
+  links:
+    - endpoints: ["spine1:e1-1", "leaf1:e1-49"]
+    - endpoints: ["spine1:e1-2", "leaf2:e1-49"]
+    - endpoints: ["spine1:e1-3", "leaf3:e1-49"]
+    - endpoints: ["spine2:e1-1", "leaf1:e1-50"]
+    - endpoints: ["spine2:e1-2", "leaf2:e1-50"]
+    - endpoints: ["spine2:e1-3", "leaf3:e1-50"]
+    - endpoints: ["leaf1:e1-1", "client1:eth1"]
+    - endpoints: ["leaf1:e1-2", "client2:eth1"]
+    - endpoints: ["leaf2:e1-1", "client2:eth2"]
+    - endpoints: ["leaf2:e1-2", "client3:eth1"]
+    - endpoints: ["leaf3:e1-1", "client4:eth1"]
