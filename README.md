@@ -71,6 +71,7 @@ The lab comes with a README of its own, please click the link below for more inf
 | Link to pre-provided labs | NOS | Difficulty |
 | --- | --- | --- |
 | [DC lab](./dc-lab) | SR Linux | Intermediate |
+| [EDA lab](./eda-lab) | EDA | Intermediate |
 
 #### Topology
 
