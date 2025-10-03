@@ -1,8 +1,8 @@
-# 🔄 Part 2: Service Overlays
+# 🔄 Part 2: Service Overlays - L2 EVPN Service
 
-> **Building EVPN-VXLAN Services on Your EDA Fabric**
+> **Building Layer 2 EVPN-VXLAN Services on Your EDA Fabric**
 
-Now that your underlay fabric is operational, this guide walks you through creating **service overlays** using EVPN-VXLAN to enable Layer 2 and Layer 3 connectivity across your datacenter fabric.
+Now that your underlay fabric is operational, this guide walks you through creating **Layer 2 EVPN overlay services** using Bridge Domains and Bridge Interfaces to provide Layer 2 connectivity between workloads regardless of their physical location.
 
 ---
 
@@ -10,33 +10,39 @@ Now that your underlay fabric is operational, this guide walks you through creat
 
 1. [Overview](#-overview)
 2. [Prerequisites](#-prerequisites)
-3. [EVPN-VXLAN Concepts](#-evpn-vxlan-concepts)
-4. [Step-by-Step Guide](#-step-by-step-guide)
-   - [Step 1: Create MAC-VRF (Layer 2 Service)](#step-1-create-mac-vrf-layer-2-service)
-   - [Step 2: Configure Bridge Domains](#step-2-configure-bridge-domains)
-   - [Step 3: Create IP-VRF (Layer 3 Service)](#step-3-create-ip-vrf-layer-3-service)
-   - [Step 4: Configure IRB Interfaces](#step-4-configure-irb-interfaces)
-   - [Step 5: Verify EVPN Routes](#step-5-verify-evpn-routes)
-   - [Step 6: End-to-End Service Verification](#step-6-end-to-end-service-verification)
-5. [Multi-Tenancy](#-multi-tenancy)
-6. [Troubleshooting & Tips](#-troubleshooting--tips)
-7. [What's Next?](#-whats-next)
+3. [L2 EVPN Concepts](#-l2-evpn-concepts)
+4. [Exercise 5.2: Create L2 EVPN Instance](#-exercise-52-create-l2-evpn-instance)
+   - [Step 1: Create Bridge Domain](#step-1-create-bridge-domain)
+   - [Step 2: Create Bridge Interfaces](#step-2-create-bridge-interfaces)
+5. [Exercise 5.3: Verify L2 EVPN Service](#-exercise-53-verify-l2-evpn-service)
+   - [Step 1: View Bridge Domain Summary](#step-1-view-bridge-domain-summary)
+   - [Step 2: Test End-to-End Connectivity](#step-2-test-end-to-end-connectivity)
+   - [Step 3: Verify Device Configuration](#step-3-verify-device-configuration)
+   - [Step 4: Check MAC Learning](#step-4-check-mac-learning)
+6. [Alternative Method: Virtual Networks](#-alternative-method-virtual-networks)
+7. [Troubleshooting & Tips](#-troubleshooting--tips)
+8. [What's Next?](#-whats-next)
 
 ---
 
 ## 🎯 Overview
 
-In this lab, you will:
+In this lab, you will create a Layer 2 EVPN overlay service to connect two clients (c1 and c2) across different leaf switches using Bridge Domains and Bridge Interfaces.
 
-- ✅ Understand EVPN-VXLAN overlay architecture
-- ✅ Create Layer 2 services using MAC-VRF
-- ✅ Configure bridge domains and VXLAN tunnels
-- ✅ Create Layer 3 services using IP-VRF
-- ✅ Implement inter-subnet routing with IRB
-- ✅ Verify EVPN route advertisements
-- ✅ Test end-to-end connectivity
+**Lab Scenario:**
+- Client c1 connected to leaf1 on interface ethernet-1/53
+- Client c2 connected to leaf2 on interface ethernet-1/53
+- Both clients use VLAN 10
+- Layer 2 connectivity via EVPN-VXLAN overlay
 
-**Estimated time:** 60 minutes
+**What you'll learn:**
+- ✅ Create Bridge Domains for L2 EVPN services
+- ✅ Configure Bridge Interfaces to attach workloads
+- ✅ Allocate VNI, EVI, and Tunnel Index from pools
+- ✅ Verify EVPN-VXLAN operation and MAC learning
+- ✅ Test end-to-end Layer 2 connectivity
+
+**Estimated time:** 45 minutes
 
 ---
 
@@ -47,357 +53,772 @@ Before starting Part 2, ensure you have:
 - ✔️ **Completed** [Part 1: Fabric Intent Creation](part1-fabric-intent.md)
 - ✔️ Working underlay fabric with eBGP EVPN overlay
 - ✔️ All BGP sessions in **Established** state
-- ✔️ Pre-created allocation pools for:
-  - VLAN IDs
-  - VNI (VXLAN Network Identifiers)
-  - Subnet pools for overlay services
-- ✔️ Access to EDA GUI and CLI
+- ✔️ Pre-created **allocation pools** for:
+  - VNI (VXLAN Network Identifiers) - e.g., `vni-pool`
+  - EVI (EVPN Instance) - e.g., `evi-pool`
+  - Tunnel Index - e.g., `tunnel-index-pool`
+- ✔️ **Client connections**:
+  - c1 connected to leaf1 ethernet-1/53 with VLAN 10 (IP: 172.29.10.11/24)
+  - c2 connected to leaf2 ethernet-1/53 with VLAN 10 (IP: 172.29.10.12/24)
+- ✔️ Access to EDA GUI
 
 ---
 
-## 📚 EVPN-VXLAN Concepts
+## 📚 L2 EVPN Concepts
 
-### What is EVPN-VXLAN?
+### What is L2 EVPN?
 
-**EVPN** (Ethernet VPN) is a BGP-based control plane that advertises MAC addresses and IP routes across the fabric.
-
-**VXLAN** (Virtual Extensible LAN) is a data plane encapsulation protocol that tunnels Layer 2 frames over Layer 3 networks.
+**Layer 2 EVPN** creates a virtual bridge domain that spans multiple physical switches, allowing workloads on different leafs to communicate as if they were on the same physical Layer 2 network.
 
 ### Key Components
 
 | Component | Description |
 |-----------|-------------|
-| **MAC-VRF** | Layer 2 virtual routing and forwarding instance |
-| **IP-VRF** | Layer 3 virtual routing and forwarding instance |
-| **Bridge Domain** | Layer 2 broadcast domain within a MAC-VRF |
-| **VNI** | VXLAN Network Identifier - like a VLAN ID for overlays |
-| **IRB** | Integrated Routing and Bridging - enables L2/L3 gateway |
-| **RT/RD** | Route Target/Route Distinguisher for BGP route isolation |
+| **Bridge Domain** | A Layer 2 broadcast domain within a MAC-VRF network instance |
+| **Bridge Interface** | Attachment point for workloads (subinterfaces with VLAN tagging) |
+| **MAC-VRF** | Type of network instance for Layer 2 virtual routing and forwarding |
+| **VNI** | VXLAN Network Identifier - identifies the Layer 2 segment in the overlay |
+| **EVI** | EVPN Instance - identifies the EVPN service instance |
+| **Tunnel Index** | Internal index for VXLAN tunnel interfaces |
+| **VXLAN Interface** | Virtual tunnel endpoint for encapsulating Layer 2 frames |
 
-### EVPN Route Types
+### Service Architecture
 
-- **Type 2:** MAC/IP Advertisement
-- **Type 3:** Inclusive Multicast Ethernet Tag (IMET)
-- **Type 5:** IP Prefix Route
-
----
-
-## 📖 Step-by-Step Guide
-
-### Step 1: Create MAC-VRF (Layer 2 Service)
-
-Navigate to **Network Instances → Create** in the EDA GUI.
-
-#### Configuration Parameters
-
-| Parameter | Value | Description |
-|-----------|-------|-------------|
-| **Name** | `customer-a-l2` | MAC-VRF instance name |
-| **Type** | `mac-vrf` | Layer 2 instance type |
-| **VXLAN Interface** | `vxlan0` | VXLAN tunnel interface |
-| **EVI** | `100` | EVPN Instance identifier |
-| **Node Selector** | `eda.nokia.com/role=leaf` | Apply to all leaf switches |
-
-#### Using Intent-Based Configuration
-
-```yaml
-# Example: MAC-VRF Intent (pseudocode)
-apiVersion: eda.nokia.com/v1
-kind: MacVrf
-metadata:
-  name: customer-a-l2
-spec:
-  evi: 100
-  nodeSelector:
-    matchLabels:
-      eda.nokia.com/role: leaf
-  vxlanInterface: vxlan0
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    Spine Layer (EVPN)                       │
+│              ┌─────────┐    ┌─────────┐                     │
+│              │ spine1  │────│ spine2  │                     │
+│              └────┬────┘    └────┬────┘                     │
+└───────────────────┼──────────────┼──────────────────────────┘
+                    │              │
+       ┌────────────┼──────────────┼────────────┐
+       │            │              │            │
+  ┌────┴────┐  ┌───┴──────┐  ┌───┴──────┐  ┌──┴──────┐
+  │  leaf1  │  │  leaf2   │  │  leaf3   │  │  leaf4  │
+  └────┬────┘  └────┬─────┘  └──────────┘  └─────────┘
+       │            │
+    ┌──┴──┐      ┌──┴──┐
+    │ c1  │      │ c2  │       ← Bridge Domain "l2vnet"
+    │VLAN │      │VLAN │       ← VNI 20, EVI 100
+    │ 10  │      │ 10  │       ← VXLAN tunnel between leafs
+    └─────┘      └─────┘
 ```
 
-> **💡 Tip:** Use EDA's allocation pools to automatically assign VNIs and avoid conflicts.
+### Two Methods for L2 EVPN Service Creation
+
+EDA provides two approaches:
+
+#### **Method 1: Individual Components** (This Lab)
+- Create Bridge Domain separately
+- Create Bridge Interfaces separately
+- More granular control
+- Covered in this exercise
+
+#### **Method 2: Virtual Networks** (Alternative)
+- Create both Bridge Domains and Bridge Interfaces in one resource
+- Simpler, conglomerate method
+- Will be introduced in L3 EVPN service setup
 
 ---
 
-### Step 2: Configure Bridge Domains
+## 🔧 Exercise 5.2: Create L2 EVPN Instance
 
-Bridge domains define Layer 2 broadcast domains within your MAC-VRF.
+In this exercise, we'll create a Layer 2 EVPN overlay service for clients c1 and c2 using individual Bridge Domain and Bridge Interface components.
 
-#### Create Bridge Domain
+### Lab Topology
 
-| Parameter | Value |
-|-----------|-------|
-| **Bridge Domain ID** | `10` |
-| **VLAN** | `100` |
-| **VNI** | `10100` |
-| **Associated Interfaces** | `ethernet-1/10` |
+```
+                      ┌─────────┐  ┌─────────┐
+                      │ spine1  │  │ spine2  │
+                      └────┬────┘  └────┬────┘
+                           │            │
+            ┌──────────────┼────────────┼──────────────┐
+            │              │            │              │
+       ┌────┴────┐    ┌────┴────┐  ┌───┴─────┐   ┌────┴────┐
+       │  leaf1  │    │  leaf2  │  │  leaf3  │   │  leaf4  │
+       └────┬────┘    └────┬────┘  └─────────┘   └─────────┘
+            │              │
+   ethernet-1/53.10   ethernet-1/53.10
+       VLAN 10           VLAN 10
+            │              │
+        ┌───┴───┐      ┌───┴───┐
+        │  c1   │      │  c2   │
+        │.10.11 │      │.10.12 │
+        └───────┘      └───────┘
+          
+    Bridge Domain: l2vnet
+    VNI: 20 (from vni-pool)
+    EVI: 100 (from evi-pool)
+    Tunnel Index: 50 (from tunnel-index-pool)
+```
 
-#### Transaction Steps
+---
 
-1. ➕ Add bridge domain configuration to transaction
-2. ✍️ Add commit message: "Add customer-a VLAN 100"
-3. 🔍 Run **Dry-run** to preview
-4. ✅ **Commit** the transaction
+### Step 1: Create Bridge Domain
 
-#### Verification on SR Linux
+1. **Navigate to Bridge Domains**
+   - In the EDA GUI, scroll down to **Virtual Networks** section in the left sidebar
+   - Select **Bridge Domains**
+   - Click the blue **Create** button
+
+2. **Configure Bridge Domain Metadata**
+
+   | Parameter | Value |
+   |-----------|-------|
+   | **Name** | `l2vnet` |
+   | **Namespace** | `dc1` (or your datacenter namespace) |
+
+3. **Configure Bridge Domain Specification**
+
+   | Parameter | Value | Description |
+   |-----------|-------|-------------|
+   | **Type** | `EVPNVXLAN` | Enables EVPN-VXLAN for this bridge domain |
+   | **VNI Allocation Pool** | `vni-pool` | Reference to VNI pool for allocations |
+   | **EVI Allocation Pool** | `evi-pool` | Reference to EVI pool for allocations |
+   | **Tunnel Index Allocation Pool** | `tunnel-index-pool` | Reference to tunnel index pool |
+
+   > **Note on Allocation Pools:** EDA supports both automatic pool-based allocation (preferred for automation) and manual index specification. Using pools ensures no conflicts and simplifies management.
+
+4. **Review Additional Settings**
+
+   The Bridge Domain specification includes advanced settings:
+   - **Export Target / Import Target:** Auto-generated as `target:1:<evi>`
+   - **MAC Limit:** Maximum number of MAC entries (optional)
+   - **MAC Aging:** Configurable aging time (default: 300 seconds)
+   - **MAC Duplication Detection:** Can be enabled with configurable actions
+
+5. **Add to Transaction**
+   - Click **Create** or **Add to Transaction**
+   - Do NOT commit yet - we'll add Bridge Interfaces first
+
+---
+
+### Step 2: Create Bridge Interfaces
+
+We need to create two Bridge Interfaces to connect clients c1 and c2 to the Bridge Domain.
+
+#### Bridge Interface for Client c1
+
+1. **Navigate to Bridge Interfaces**
+   - Under **Virtual Networks** resources, select **Bridge Interfaces**
+   - Click **Create**
+
+2. **Configure c1 Bridge Interface Metadata**
+
+   | Parameter | Value |
+   |-----------|-------|
+   | **Name** | `c1-vlan10` |
+   | **Namespace** | `dc1` |
+
+3. **Configure c1 Bridge Interface Specification**
+
+   | Parameter | Value | Description |
+   |-----------|-------|-------------|
+   | **Bridge Domain** | `l2vnet` | Reference to the Bridge Domain created above |
+   | **VLAN ID** | `10` | VLAN tag for this subinterface |
+   | **Interface** | `leaf1-ethernet-1-53` | Physical interface reference |
+
+   > **Interface Naming:** Use the exact interface resource name from your topology. Format is typically `<node>-<interface>`.
+
+4. **Optional Settings**
+   - **Description:** `interface to c1`
+   - **L2 MTU:** Leave default or specify if needed
+   - **MAC Duplication Detection Action:** Override BD settings if needed
+
+5. **Add to Transaction**
+   - Click **Create** or **Add to Transaction**
+
+#### Bridge Interface for Client c2
+
+1. **Create Second Bridge Interface**
+   - Click **Create** again in Bridge Interfaces view
+
+2. **Configure c2 Bridge Interface Metadata**
+
+   | Parameter | Value |
+   |-----------|-------|
+   | **Name** | `c2-vlan10` |
+   | **Namespace** | `dc1` |
+
+3. **Configure c2 Bridge Interface Specification**
+
+   | Parameter | Value |
+   |-----------|-------|
+   | **Bridge Domain** | `l2vnet` |
+   | **VLAN ID** | `10` |
+   | **Interface** | `leaf2-ethernet-1-53` |
+
+4. **Add to Transaction**
+   - Click **Create** or **Add to Transaction**
+
+---
+
+### Step 3: Review and Commit
+
+1. **Open Transaction Basket**
+   - Navigate to your active transaction
+   - You should see 3 resources ready to commit:
+     - 1 Bridge Domain (`l2vnet`)
+     - 2 Bridge Interfaces (`c1-vlan10`, `c2-vlan10`)
+
+2. **Add Commit Message**
+   ```
+   Create L2 EVPN service for clients c1 and c2 on VLAN 10
+   ```
+
+3. **Run Dry-Run (Optional but Recommended)**
+   - Click **Dry-run** to preview changes
+   - Review the configuration that will be generated on leaf1 and leaf2
+   - Expected changes:
+     - Network-instance `l2vnet` of type `mac-vrf`
+     - Subinterface `ethernet-1/53.10` with VLAN 10
+     - VXLAN interface with allocated VNI
+     - BGP EVPN configuration with allocated EVI
+
+4. **Commit the Transaction**
+   - Click **Commit**
+   - Wait for successful completion
+   - EDA will automatically:
+     - Validate the design
+     - Generate configuration for leaf1 and leaf2
+     - Push config to the network devices
+
+---
+
+## ✅ Exercise 5.3: Verify L2 EVPN Service
+
+Now let's verify that the L2 EVPN service is operational.
+
+---
+
+### Step 1: View Bridge Domain Summary
+
+1. **Navigate to Bridge Domains Summary**
+   - In EDA GUI, go to **Virtual Networks → Bridge Domains**
+   - Click on the **Summary** tab
+
+2. **Check Bridge Domain Status**
+
+   You should see:
+   - **Bridge Domain Deployment Distribution:**
+     - Number of Bridge Domains deployed
+     - Status: `L2vnet is 'up'`
+   - **Bridge Table Entries:** Initially empty until traffic flows
+   - **Operational State:** Active
+
+3. **Drill Down to l2vnet Details**
+   - Click on `l2vnet` to view details
+   - Verify:
+     - Deployed nodes: leaf1, leaf2
+     - VNI allocation from pool
+     - EVI allocation from pool
+     - Associated bridge interfaces
+
+---
+
+### Step 2: Test End-to-End Connectivity
+
+1. **Access Client c2**
+   ```bash
+   # SSH or console to client c2
+   ssh admin@c2
+   ```
+
+2. **Verify Interface Configuration**
+   ```bash
+   c2:~# ifconfig eth1.10
+   ```
+
+   **Expected Output:**
+   ```
+   eth1.10   Link encap:Ethernet  HWaddr AA:C1:AB:6F:41:45
+             inet addr:172.29.10.12  Bcast:0.0.0.0  Mask:255.255.255.0
+             inet6 addr: fe80::a8c1:abff:fe6f:4145/64 Scope:Link
+             UP BROADCAST RUNNING MULTICAST  MTU:9500  Metric:1
+             RX packets:1 errors:0 dropped:0 overruns:0 frame:0
+             TX packets:111 errors:0 dropped:0 overruns:0 carrier:0
+             collisions:0 txqueuelen:1000
+             RX bytes:56 (56.0 B)  TX bytes:8026 (7.8 KiB)
+   ```
+
+   ✅ Client c2 has IP 172.29.10.12/24 on VLAN 10
+
+3. **Ping Client c1**
+   ```bash
+   c2:~# ping 172.29.10.11
+   ```
+
+   **Expected Output:**
+   ```
+   PING 172.29.10.11 (172.29.10.11): 56 data bytes
+   64 bytes from 172.29.10.11: seq=0 ttl=64 time=2.102 ms
+   64 bytes from 172.29.10.11: seq=1 ttl=64 time=0.915 ms
+   64 bytes from 172.29.10.11: seq=2 ttl=64 time=1.030 ms
+   64 bytes from 172.29.10.11: seq=3 ttl=64 time=0.824 ms
+   64 bytes from 172.29.10.11: seq=4 ttl=64 time=0.953 ms
+   ^C
+   --- 172.29.10.11 ping statistics ---
+   5 packets transmitted, 5 packets received, 0% packet loss
+   round-trip min/avg/max = 0.824/1.164/2.102 ms
+   ```
+
+   ✅ **Success!** Layer 2 connectivity is working across the EVPN-VXLAN overlay.
+
+---
+
+### Step 3: Verify Device Configuration
+
+SSH to leaf1 to examine the EDA-generated configuration.
+
+#### Check Network Instance Configuration
 
 ```bash
-# View MAC-VRF configuration
-info network-instance customer-a-l2
+ssh admin@leaf1
 
-# Check bridge table
-show network-instance customer-a-l2 bridge-table mac-table all
-
-# Verify VXLAN tunnel endpoints (VTEPs)
-show tunnel-interface vxlan0 vxlan-interface * detail
+--{ running }--[ ]--
+A:admin@l1# info network-instance l2vnet
 ```
 
-**Expected output:**
-- Bridge domain with VLAN 100 mapped to VNI 10100
-- VXLAN tunnels to other leaf switches
-- EVPN Type-3 (IMET) routes advertising the VNI
+**Expected Configuration:**
+```
+network-instance l2vnet {
+    !!! EDA Source CRs: services.eda.nokia.com/v1alpha1/BridgeInterface/c1-vlan10
+    type mac-vrf
+    admin-state enable
+    description l2vnet
+    interface ethernet-1/53.10 {
+        !!! EDA Source CRs: services.eda.nokia.com/v1alpha1/BridgeInterface/c1-vlan10
+    }
+    vxlan-interface vxlan0.50 {
+    }
+    protocols {
+        bgp-evpn {
+            bgp-instance 1 {
+                vxlan-interface vxlan0.50
+                evi 100
+                ecmp 8
+            }
+        }
+        bgp-vpn {
+            bgp-instance 1 {
+                route-target {
+                    export-rt target:1:100
+                    import-rt target:1:100
+                }
+            }
+        }
+    }
+    bridge-table {
+        mac-learning {
+            admin-state enable
+            aging {
+                admin-state enable
+                age-time 300
+            }
+        }
+        mac-duplication {
+            admin-state disable
+            monitoring-window 3
+            num-moves 5
+            hold-down-time 9
+            action stop-learning
+        }
+    }
+}
+```
+
+**Key Elements:**
+- ✅ Network instance type: `mac-vrf`
+- ✅ Local bridge interface: `ethernet-1/53.10` connected to c1
+- ✅ VXLAN interface: `vxlan0.50` for overlay connectivity
+- ✅ EVI: `100` (allocated from pool)
+- ✅ Route targets: `target:1:100` for import/export
+- ✅ MAC learning enabled with 300s aging
+
+#### Check VXLAN Tunnel Configuration
+
+```bash
+--{ running }--[ ]--
+A:admin@l1# info tunnel-interface vxlan0 vxlan-interface 50
+```
+
+**Expected Configuration:**
+```
+tunnel-interface vxlan0 {
+    vxlan-interface 50 {
+        type bridged
+        ingress {
+            vni 20
+        }
+        egress {
+            source-ip use-system-ipv4-address
+        }
+    }
+}
+```
+
+**Key Elements:**
+- ✅ VNI: `20` (allocated from vni-pool)
+- ✅ Type: `bridged` (Layer 2 service)
+- ✅ Source IP: Uses system IPv4 address (loopback) as VTEP
 
 ---
 
-### Step 3: Create IP-VRF (Layer 3 Service)
+### Step 4: Check MAC Learning
 
-For inter-subnet routing, create an IP-VRF instance.
+Verify that MAC addresses are being learned across the EVPN overlay.
 
-#### Configuration Parameters
+```bash
+--{ running }--[ ]--
+A:admin@l1# show network-instance l2vnet bridge-table mac-table all
+```
 
-| Parameter | Value | Description |
-|-----------|-------|-------------|
-| **Name** | `customer-a-l3` | IP-VRF instance name |
-| **Type** | `ip-vrf` | Layer 3 instance type |
-| **Route Distinguisher** | `auto` | Auto-generated RD |
-| **Route Target** | `target:65000:1000` | BGP route target |
-| **Node Selector** | `eda.nokia.com/role=leaf` | Apply to all leaf switches |
+**Expected Output:**
+```
+---------------------------------------------------------------------------------------------------------------------
+Mac-table of network instance l2vnet
+---------------------------------------------------------------------------------------------------------------------
++--------------------+-----------------------------------------+------------+--------+--------+-------+-------------+
+| Address            | Destination                             | Dest Index | Type   | Active | Aging | Last Update |
++====================+=========================================+============+========+========+=======+=============+
+| AA:C1:AB:6F:41:45  | vxlan-interface:vxlan0.50 vtep:10.0.0.3 | 9655164    | evpn   | true   | N/A   | ...         |
+|                    | vni:20                                  |            |        |        |       |             |
+| AA:C1:AB:93:85:EE  | ethernet-1/53.10                        | 5          | learnt | true   | 300   | ...         |
++--------------------+-----------------------------------------+------------+--------+--------+-------+-------------+
+Total Irb Macs              :  0 Total  0 Active
+Total Static Macs           :  0 Total  0 Active
+Total Duplicate Macs        :  0 Total  0 Active
+Total Learnt Macs           :  1 Total  1 Active
+Total Evpn Macs             :  1 Total  1 Active
+Total Evpn static Macs      :  0 Total  0 Active
+Total Irb anycast Macs      :  0 Total  0 Active
+Total Proxy Antispoof Macs  :  0 Total  0 Active
+Total Reserved Macs         :  0 Total  0 Active
+Total Eth-cfm Macs          :  0 Total  0 Active
+Total Irb Vrrps             :  0 Total  0 Active
+--{ running }--[ ]--
+```
+
+**MAC Table Analysis:**
+
+| MAC Address | Destination | Type | Meaning |
+|-------------|-------------|------|---------|
+| `AA:C1:AB:6F:41:45` | `vxlan-interface:vxlan0.50 vtep:10.0.0.3 vni:20` | `evpn` | Remote MAC (c2) learned via EVPN from leaf2 (10.0.0.3) |
+| `AA:C1:AB:93:85:EE` | `ethernet-1/53.10` | `learnt` | Local MAC (c1) learned on local interface |
+
+✅ **VXLAN Tunnel Established:** Notice the VXLAN tunnel with VNI 20 to leaf2 (VTEP 10.0.0.3) to reach c2.
 
 ---
 
-### Step 4: Configure IRB Interfaces
+## 🎯 Alternative Method: Virtual Networks
 
-IRB (Integrated Routing and Bridging) provides the Layer 3 gateway for your Layer 2 segments.
+While this lab used the **individual components method** (separate Bridge Domain and Bridge Interface creation), EDA also offers a **conglomerate method** using the **Virtual Networks** resource.
 
-#### Create IRB Interface
+### Virtual Networks Approach
 
-| Parameter | Value |
-|-----------|-------|
-| **Interface** | `irb0.100` |
-| **IPv4 Address** | `10.1.1.1/24` (from allocation pool) |
-| **Associated MAC-VRF** | `customer-a-l2` |
-| **Bridge Domain** | `10` |
-| **IP-VRF** | `customer-a-l3` |
+The Virtual Networks resource allows you to:
+- Define both Bridge Domains and Bridge Interfaces in a single configuration
+- Simplify service deployment with less granular control
+- Useful for standardized service templates
 
-#### Anycast Gateway
+### When to Use Each Method
 
-For active-active gateways across multiple leafs:
+| Method | Use Case |
+|--------|----------|
+| **Individual Components** | Fine-grained control, complex multi-tenant scenarios, custom configurations |
+| **Virtual Networks** | Rapid deployment, standardized services, simpler topologies |
 
-- Use the **same IP** on all leaf switches
-- Use a **virtual MAC address** (auto-generated or specified)
-
-```bash
-# Example anycast gateway config
-/interface irb0
-  subinterface 100
-    ipv4 address 10.1.1.1/24
-    anycast-gw
-      virtual-router-id 1
-```
-
----
-
-### Step 5: Verify EVPN Routes
-
-Check that EVPN routes are being advertised correctly across the fabric.
-
-#### View EVPN Route Types
-
-```bash
-# Type 2: MAC/IP routes
-show network-instance default protocols bgp routes evpn route-type 2 detail
-
-# Type 3: IMET routes (multicast)
-show network-instance default protocols bgp routes evpn route-type 3
-
-# Type 5: IP Prefix routes
-show network-instance default protocols bgp routes evpn route-type 5
-```
-
-#### Expected EVPN Advertisements
-
-| Route Type | What to Verify |
-|------------|----------------|
-| **Type 2** | MAC addresses learned in bridge domains |
-| **Type 3** | All leaf VTEPs advertising the VNI |
-| **Type 5** | IP prefixes from IP-VRF (if symmetric IRB) |
-
----
-
-### Step 6: End-to-End Service Verification
-
-#### Connectivity Tests
-
-From a host connected to `leaf1` VLAN 100:
-
-```bash
-# Test Layer 2 connectivity to host on leaf2 VLAN 100
-ping <host-on-leaf2>
-
-# Test Layer 3 connectivity through IRB gateway
-ping 10.1.1.1  # IRB interface
-
-# Test cross-subnet routing
-ping 10.1.2.100  # Host in different subnet
-```
-
-#### MAC Learning Verification
-
-```bash
-# On leaf1: Check if MACs from leaf2 are learned via EVPN
-show network-instance customer-a-l2 bridge-table mac-table all
-
-# Look for 'evpn' in the Type column
-```
-
-#### VXLAN Tunnel Statistics
-
-```bash
-# Check VXLAN encap/decap counters
-show tunnel-interface vxlan0 vxlan-interface * statistics
-```
-
----
-
-## 🏢 Multi-Tenancy
-
-### Isolation Strategies
-
-EDA supports multiple tenancy models:
-
-#### 1. **VRF-based Isolation**
-
-Each tenant gets dedicated MAC-VRF and IP-VRF instances:
-
-```
-Tenant A: customer-a-l2 (MAC-VRF) + customer-a-l3 (IP-VRF)
-Tenant B: customer-b-l2 (MAC-VRF) + customer-b-l3 (IP-VRF)
-```
-
-#### 2. **VLAN-based Isolation**
-
-Multiple bridge domains within shared VRF:
-
-```
-Shared MAC-VRF:
-  - Bridge Domain 10 (VLAN 100, VNI 10100) → Tenant A
-  - Bridge Domain 20 (VLAN 200, VNI 10200) → Tenant B
-```
-
-#### 3. **Route Target Isolation**
-
-Use BGP route targets to control route import/export:
-
-```yaml
-Tenant A RT: target:65000:1000
-Tenant B RT: target:65000:2000
-```
-
-### Using EDA for Multi-Tenancy
-
-Create tenant-specific intents with selectors:
-
-```yaml
-# Tenant A selector
-nodeSelector:
-  matchLabels:
-    eda.nokia.com/tenant: customer-a
-    eda.nokia.com/role: leaf
-```
+> **Note:** The Virtual Networks method will be introduced in the L3 EVPN service setup (future lab extension).
 
 ---
 
 ## 🛠️ Troubleshooting & Tips
 
 <details>
-<summary><b>❓ EVPN routes not being advertised</b></summary>
+<summary><b>Bridge Domain not appearing in EDA GUI</b></summary>
 
 **Possible causes:**
-- BGP EVPN session not established
-- Route target misconfiguration
-- VNI not configured on both ends
+- Transaction not committed
+- Namespace mismatch
+- Validation errors during commit
 
 **Solution:**
-1. Verify BGP EVPN session: `show network-instance default protocols bgp neighbor`
-2. Check route target config in IP-VRF
-3. Verify VNI consistency across all leafs
+1. Check transaction status - ensure commit was successful
+2. Verify namespace matches across Bridge Domain and Bridge Interfaces
+3. Review transaction logs for any validation failures
+4. Refresh the GUI view
 
 </details>
 
 <details>
-<summary><b>❓ MAC addresses not learning across fabric</b></summary>
+<summary><b>Bridge Interface creation fails</b></summary>
 
 **Possible causes:**
+- Bridge Domain doesn't exist yet
+- Invalid interface reference
+- VLAN ID already in use
+
+**Solution:**
+1. Ensure Bridge Domain is committed before creating Bridge Interfaces
+2. Verify interface name matches topology exactly (e.g., `leaf1-ethernet-1-53`)
+3. Check for VLAN ID conflicts with existing services
+4. Review interface availability on the target node
+
+</details>
+
+<details>
+<summary><b>Clients cannot ping each other</b></summary>
+
+**Possible causes:**
+- VLAN mismatch on clients
+- Bridge Interface not attached to correct physical interface
 - VXLAN tunnel not established
-- Bridge domain misconfiguration
-- Type-3 routes not being exchanged
+- Underlay BGP sessions down
 
 **Solution:**
-1. Check VXLAN interface: `show tunnel-interface vxlan0`
-2. Verify Type-3 routes: `show network-instance default protocols bgp routes evpn route-type 3`
-3. Review bridge domain config
+1. Verify both clients are using VLAN 10: `ifconfig eth1.10`
+2. Check Bridge Interface configuration on both leafs
+3. Verify VXLAN tunnel: `show tunnel-interface vxlan0 vxlan-interface * detail`
+4. Confirm underlay BGP: `show network-instance default protocols bgp neighbor`
+5. Check EVPN routes: `show network-instance default protocols bgp routes evpn route-type 3`
 
 </details>
 
 <details>
-<summary><b>❓ Inter-subnet routing not working</b></summary>
+<summary><b>MAC addresses not learning</b></summary>
 
 **Possible causes:**
-- IRB interface not configured in IP-VRF
-- Missing Type-5 route advertisements
-- Route target import/export issues
+- MAC learning disabled
+- Bridge table full (MAC limit reached)
+- EVPN Type-2 routes not being advertised
+- Client not sending traffic
 
 **Solution:**
-1. Verify IRB in IP-VRF: `info network-instance customer-a-l3`
-2. Check Type-5 routes: `show network-instance default protocols bgp routes evpn route-type 5`
-3. Review route target configuration
+1. Verify MAC learning is enabled in bridge-table config
+2. Check MAC table: `show network-instance l2vnet bridge-table mac-table all`
+3. Generate traffic from clients (ping or arp)
+4. Verify EVPN Type-2 routes: `show network-instance default protocols bgp routes evpn route-type 2`
+5. Check for MAC duplication detection blocking learning
 
 </details>
 
 <details>
-<summary><b>❓ High VXLAN encapsulation errors</b></summary>
+<summary><b>VNI/EVI allocation failures</b></summary>
 
 **Possible causes:**
-- MTU misconfiguration
-- Underlay routing issues
-- Fragmentation
+- Allocation pool exhausted
+- Pool not accessible from namespace
+- Pool allocation range conflicts
 
 **Solution:**
-1. Verify MTU on underlay interfaces (recommend 9100+ for VXLAN overhead)
-2. Check underlay routing: `show network-instance default route-table`
-3. Review interface statistics for errors
+1. Check pool utilization: Navigate to allocation pools in EDA GUI
+2. Verify pool has available resources
+3. Ensure pool is in correct namespace or globally accessible
+4. Review pool range definitions for overlaps
+5. Consider expanding pool range if exhausted
 
 </details>
+
+<details>
+<summary><b>Configuration not pushed to devices</b></summary>
+
+**Possible causes:**
+- Transaction dry-run only (not committed)
+- Node connectivity issues
+- Device authentication failure
+- Commit transaction timed out
+
+**Solution:**
+1. Verify transaction was **committed**, not just dry-run
+2. Check device reachability from EDA
+3. Verify device credentials in EDA
+4. Review transaction logs for push failures
+5. Check device connectivity: `ping <leaf-mgmt-ip>`
+
+</details>
+
+<details>
+<summary><b>EVPN routes not being exchanged</b></summary>
+
+**Possible causes:**
+- BGP EVPN address-family not configured
+- Route target mismatch
+- BGP session not established
+- EVPN not enabled in overlay protocol
+
+**Solution:**
+1. Verify overlay protocol is EBGP in fabric intent
+2. Check BGP EVPN sessions: `show network-instance default protocols bgp neighbor | grep evpn`
+3. Verify route targets match: should be `target:1:<evi>`
+4. Check EVPN configuration in network-instance: `info network-instance l2vnet protocols bgp-evpn`
+
+</details>
+
+### 💡 Best Practices
+
+1. **Always use allocation pools** for VNI, EVI, and Tunnel Index to avoid manual conflicts
+2. **Use descriptive names** for Bridge Domains and Interfaces (e.g., `customer-a-vlan10`)
+3. **Document VLAN assignments** to track which VLANs are used for which services
+4. **Test with dry-run first** before committing changes to production
+5. **Verify end-to-end connectivity** after each service deployment
+6. **Monitor MAC table growth** to detect potential MAC address exhaustion
+7. **Use consistent namespaces** across related resources (Bridge Domain, Bridge Interfaces)
+8. **Label your resources** for easier filtering and management in large deployments
 
 ---
 
-## 🎓 What's Next?
+## 📝 Key Takeaways
 
-Excellent work! You've successfully deployed EVPN-VXLAN overlay services on your EDA fabric.
+### What You've Accomplished
 
-**Next steps:**
+✅ **Created a Bridge Domain** (`l2vnet`) with EVPN-VXLAN type  
+✅ **Configured Bridge Interfaces** for two clients on different leaf switches  
+✅ **Utilized allocation pools** for automatic VNI, EVI, and Tunnel Index assignment  
+✅ **Verified EVPN operation** through MAC learning and VXLAN tunnel establishment  
+✅ **Tested end-to-end connectivity** between clients across the overlay  
 
-- 🔍 **[Part 3: Deviations & EQL](part3-deviations-eql.md)** - Monitor configuration drift and query network state
-- 🔙 **[Back to Part 1](part1-fabric-intent.md)** - Review fabric underlay concepts
-- 🏠 **[Main Lab Guide](README.md)** - Overview of all lab parts
+### Understanding the EDA-Generated Configuration
+
+EDA automatically created:
+
+1. **Network Instance (MAC-VRF)**
+   - Type: `mac-vrf` for Layer 2 bridging
+   - Bridge interfaces for local client attachment
+   - VXLAN interfaces for overlay connectivity
+
+2. **EVPN Configuration**
+   - BGP EVPN instance with allocated EVI
+   - Route targets for route distribution control
+   - Type-2 (MAC/IP) and Type-3 (IMET) route advertisements
+
+3. **VXLAN Tunnels**
+   - Ingress VNI mapping for traffic identification
+   - Source IP from system loopback (VTEP address)
+   - Automatic tunnel establishment to remote VTEPs
+
+4. **Bridge Table**
+   - MAC learning configuration
+   - Aging timers
+   - MAC duplication detection (optional)
+
+### Service Flow Summary
+
+```
+Client c1 (VLAN 10)
+    ↓
+ethernet-1/53.10 on leaf1
+    ↓
+Bridge Domain "l2vnet"
+    ↓
+VXLAN tunnel (VNI 20)
+    ↓
+EVPN control plane (EVI 100, RT target:1:100)
+    ↓
+Spine layer (Route Reflector)
+    ↓
+VXLAN tunnel (VNI 20)
+    ↓
+Bridge Domain "l2vnet" on leaf2
+    ↓
+ethernet-1/53.10 on leaf2
+    ↓
+Client c2 (VLAN 10)
+```
+
+---
+
+## 🎯 What's Next?
+
+Congratulations! You've successfully deployed a Layer 2 EVPN overlay service using EDA.
+
+### Next Steps in Your Learning Journey
+
+1. **Expand the Service**
+   - Add more clients to the same Bridge Domain
+   - Create additional Bridge Domains for different VLANs
+   - Implement multi-tenancy with separate Bridge Domains
+
+2. **Layer 3 Services** (Future Lab)
+   - Create IP-VRF instances for inter-subnet routing
+   - Configure IRB (Integrated Routing and Bridging) interfaces
+   - Implement EVPN Type-5 routes for IP prefix advertisement
+   - Use the Virtual Networks conglomerate method
+
+3. **Advanced Features** (Future Lab)
+   - EVPN Multi-homing (LAG across multiple leafs)
+   - EVPN Route Filtering and Policy
+   - MAC Mobility and Mass Withdrawal
+   - Silent Host Detection
+
+4. **Continue to Part 3**
+   - 🔍 **[Part 3: Deviations & EQL](part3-deviations-eql.md)** - Monitor configuration drift and query network state
 
 ---
 
 ## 📚 Additional Resources
 
-- [EVPN-VXLAN Architecture Guide](https://learn.srlinux.dev/)
-- [SR Linux Network Instance Configuration](https://documentation.nokia.com/srlinux/)
-- [Nokia EDA Service Intent Reference](https://network.developer.nokia.com/)
+### Documentation
+- [Nokia EDA Bridge Domain Reference](https://network.developer.nokia.com/)
+- [SR Linux EVPN-VXLAN Guide](https://documentation.nokia.com/srlinux/)
+- [EVPN Architecture Overview](https://learn.srlinux.dev/)
+
+### Related Exercises
+- **Exercise 5.1:** Fabric Intent Creation (Part 1)
+- **Exercise 5.2:** Create L2 EVPN Instance (This Lab)
+- **Exercise 5.3:** Verify L2 EVPN Service (This Lab)
+- **Exercise 5.4:** Create L3 EVPN Instance (Future)
+
+### Command Reference
+
+**EDA GUI Navigation:**
+```
+Virtual Networks → Bridge Domains → Create
+Virtual Networks → Bridge Interfaces → Create
+```
+
+**SR Linux Verification Commands:**
+```bash
+# Network instance configuration
+info network-instance <name>
+
+# Bridge table
+show network-instance <name> bridge-table mac-table all
+
+# VXLAN tunnels
+show tunnel-interface vxlan0 vxlan-interface * detail
+
+# EVPN routes
+show network-instance default protocols bgp routes evpn route-type 2
+show network-instance default protocols bgp routes evpn route-type 3
+
+# Interface status
+show interface ethernet-1/53.10
+```
 
 ---
 
-**Ready for Part 3?** 🎯 Continue to [Deviations & EQL](part3-deviations-eql.md)
+## 🏁 Lab Completion Summary
+
+**This concludes Exercise 5.2 and 5.3 of the SGNOG12 EDA Lab!**
+
+You have successfully:
+- Created individual Bridge Domain and Bridge Interface components
+- Deployed an L2 EVPN service across a multi-leaf fabric
+- Verified EVPN-VXLAN operation and connectivity
+- Understood EDA's automatic configuration generation
+- Learned verification techniques for overlay services
+
+**Total Time:** ~45 minutes
+
+---
+
+**Navigation:**
+
+- [Back to Part 1: Fabric Intent Creation](part1-fabric-intent.md)
+- [Continue to Part 3: Deviations & EQL](part3-deviations-eql.md)
+- [Return to Main Lab Guide](README.md)
+
+---
+
+**Ready for advanced monitoring and querying?** Continue to [Part 3: Deviations & EQL](part3-deviations-eql.md)
