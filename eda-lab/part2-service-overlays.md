@@ -42,7 +42,7 @@ In this lab, you will create a Layer 2 EVPN overlay service to connect two clien
 - ✅ Verify EVPN-VXLAN operation and MAC learning
 - ✅ Test end-to-end Layer 2 connectivity
 
-**Estimated time:** 45 minutes
+**Estimated time:** 30 minutes
 
 ---
 
@@ -58,8 +58,8 @@ Before starting Part 2, ensure you have:
   - EVI (EVPN Instance) - e.g., `evi-pool`
   - Tunnel Index - e.g., `tunnel-index-pool`
 - ✔️ **Client connections**:
-  - c1 connected to leaf1 ethernet-1/53 with VLAN 10 (IP: 172.29.10.11/24)
-  - c2 connected to leaf2 ethernet-1/53 with VLAN 10 (IP: 172.29.10.12/24)
+  - c1 connected to leaf1 ethernet-1/1 with VLAN 'null' (untagged) (IP: 172.29.10.11/24)
+  - c2 connected to leaf2 ethernet-1/1 with VLAN 'null' (untagged) (IP: 172.29.10.12/24)
 - ✔️ Access to EDA GUI
 
 ---
@@ -86,17 +86,17 @@ Before starting Part 2, ensure you have:
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                    Spine Layer (EVPN)                       │
+│                      Spine Layer                            │
 │              ┌─────────┐    ┌─────────┐                     │
 │              │ spine1  │────│ spine2  │                     │
 │              └────┬────┘    └────┬────┘                     │
 └───────────────────┼──────────────┼──────────────────────────┘
                     │              │
-       ┌────────────┼──────────────┼────────────┐
-       │            │              │            │
-  ┌────┴────┐  ┌───┴──────┐  ┌───┴──────┐  ┌──┴──────┐
-  │  leaf1  │  │  leaf2   │  │  leaf3   │  │  leaf4  │
-  └────┬────┘  └────┬─────┘  └──────────┘  └─────────┘
+       ┌────────────┼──────────────┼
+       │            │              │    
+  ┌────┴────┐  ┌──-─┴─────┐  ┌─--──┴────┐ 
+  │  leaf1  │  │  leaf2   │  │  leaf3   │ 
+  └────┬────┘  └────┬─────┘  └──────────┘ 
        │            │
     ┌──┴──┐      ┌──┴──┐
     │ c1  │      │ c2  │       ← Bridge Domain "l2vnet"
@@ -129,23 +129,23 @@ In this exercise, we'll create a Layer 2 EVPN overlay service for clients c1 and
 ### Lab Topology
 
 ```
-                      ┌─────────┐  ┌─────────┐
-                      │ spine1  │  │ spine2  │
-                      └────┬────┘  └────┬────┘
-                           │            │
-            ┌──────────────┼────────────┼──────────────┐
-            │              │            │              │
-       ┌────┴────┐    ┌────┴────┐  ┌───┴─────┐   ┌────┴────┐
-       │  leaf1  │    │  leaf2  │  │  leaf3  │   │  leaf4  │
-       └────┬────┘    └────┬────┘  └─────────┘   └─────────┘
-            │              │
-   ethernet-1/53.10   ethernet-1/53.10
-       VLAN 10           VLAN 10
-            │              │
-        ┌───┴───┐      ┌───┴───┐
-        │  c1   │      │  c2   │
-        │.10.11 │      │.10.12 │
-        └───────┘      └───────┘
+              ┌─────────┐  ┌─────────┐
+              │ spine1  │  │ spine2  |  
+              └────┬────┘  └────┬────┘
+                   │            │
+            ┌──────┼─────-─┐────┼───────┐
+            │              │            │  
+       ┌────┴────┐    ┌────┴────┐  ┌───-┴────┐ 
+       │  leaf1  │    │  leaf2  │  │  leaf3  │ 
+       └────┬────┘    └────┬────┘  └────┬────┘ 
+            │              │            │
+   ethernet-1/1.0   ethernet-1/1.0 ethernet-1/1.0
+        untagged       untagged      untagged
+            │              │            │
+        ┌───┴───┐      ┌───┴───┐    ┌───┴───┐
+        │  c1   │      │  c2   │    │  c3   │
+        │.10.11 │      │.10.12 │    │.10.13 │
+        └───────┘      └───────┘    └───────┘
           
     Bridge Domain: l2vnet
     VNI: 20 (from vni-pool)
@@ -167,7 +167,7 @@ In this exercise, we'll create a Layer 2 EVPN overlay service for clients c1 and
    | Parameter | Value |
    |-----------|-------|
    | **Name** | `l2vnet` |
-   | **Namespace** | `dc1` (or your datacenter namespace) |
+   | **Namespace** | `dc1` (your datacenter namespace) |
 
 3. **Configure Bridge Domain Specification**
 
@@ -208,7 +208,7 @@ We need to create two Bridge Interfaces to connect clients c1 and c2 to the Brid
 
    | Parameter | Value |
    |-----------|-------|
-   | **Name** | `c1-vlan10` |
+   | **Name** | `client1` |
    | **Namespace** | `dc1` |
 
 3. **Configure c1 Bridge Interface Specification**
@@ -216,8 +216,8 @@ We need to create two Bridge Interfaces to connect clients c1 and c2 to the Brid
    | Parameter | Value | Description |
    |-----------|-------|-------------|
    | **Bridge Domain** | `l2vnet` | Reference to the Bridge Domain created above |
-   | **VLAN ID** | `10` | VLAN tag for this subinterface |
-   | **Interface** | `leaf1-ethernet-1-53` | Physical interface reference |
+   | **VLAN ID** | `null` | VLAN tag for this subinterface |
+   | **Interface** | `leaf1-ethernet-1-1` | Physical interface reference |
 
    > **Interface Naming:** Use the exact interface resource name from your topology. Format is typically `<node>-<interface>`.
 
@@ -238,7 +238,7 @@ We need to create two Bridge Interfaces to connect clients c1 and c2 to the Brid
 
    | Parameter | Value |
    |-----------|-------|
-   | **Name** | `c2-vlan10` |
+   | **Name** | `client2` |
    | **Namespace** | `dc1` |
 
 3. **Configure c2 Bridge Interface Specification**
@@ -246,8 +246,8 @@ We need to create two Bridge Interfaces to connect clients c1 and c2 to the Brid
    | Parameter | Value |
    |-----------|-------|
    | **Bridge Domain** | `l2vnet` |
-   | **VLAN ID** | `10` |
-   | **Interface** | `leaf2-ethernet-1-53` |
+   | **VLAN ID** | `null` |
+   | **Interface** | `leaf2-ethernet-1-1` |
 
 4. **Add to Transaction**
    - Click **Create** or **Add to Transaction**
@@ -260,7 +260,7 @@ We need to create two Bridge Interfaces to connect clients c1 and c2 to the Brid
    - Navigate to your active transaction
    - You should see 3 resources ready to commit:
      - 1 Bridge Domain (`l2vnet`)
-     - 2 Bridge Interfaces (`c1-vlan10`, `c2-vlan10`)
+     - 2 Bridge Interfaces (`client1`, `client2`, `client3`)
 
 2. **Add Commit Message**
    ```
@@ -269,10 +269,10 @@ We need to create two Bridge Interfaces to connect clients c1 and c2 to the Brid
 
 3. **Run Dry-Run (Optional but Recommended)**
    - Click **Dry-run** to preview changes
-   - Review the configuration that will be generated on leaf1 and leaf2
+   - Review the configuration that will be generated on leaf1, leaf2 and leaf3
    - Expected changes:
      - Network-instance `l2vnet` of type `mac-vrf`
-     - Subinterface `ethernet-1/53.10` with VLAN 10
+     - Subinterface `ethernet-1/1.0` with VLAN untagged
      - VXLAN interface with allocated VNI
      - BGP EVPN configuration with allocated EVI
 
