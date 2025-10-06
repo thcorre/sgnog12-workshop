@@ -103,6 +103,9 @@ After creating the fabric intent:
 2. ✍️ Add a **commit message**
 3. 🔍 Click **Dry-run**
 
+Expected output:
+![Fabric Intent Dry-run success](./docs/fabric-intent_dry-run_success.png)
+
 #### What is Dry-Run?
 
 EDA executes the intent **without changing any node**, allowing you to validate everything safely. The summary displays:
