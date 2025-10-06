@@ -123,6 +123,8 @@ EDA executes the intent **without changing any node**, allowing you to validate 
 | **Intents Run** | Which intents were executed |
 | **Nodes with changes** | Affected devices |
 
+![Fabric Intent Transaction CRs](./docs/fabric-intent_transaction_crs.png)
+
 #### View Configuration Diffs
 
 Use the **Diff view** to compare per-node configuration before/after:
