@@ -13,7 +13,7 @@ This lab is divided into three progressive parts:
 
 ### 🏗️ [Part 1: Fabric Intent Creation & Verification](part1-fabric-intent.md)
 
-Learn how to create and verify an IP leaf-spine underlay fabric using EDA intents.
+Learn how to create and verify an CLOS leaf-spine underlay IP fabric using EDA intents.
 
 **What you'll learn:**
 - Creating fabric intents with proper selectors and allocation pools
@@ -31,8 +31,7 @@ Build on your fabric foundation by implementing service overlays.
 
 **What you'll learn:**
 - Configuring EVPN-VXLAN overlays
-- Creating Layer 2 and Layer 3 services
-- Multi-tenancy and network slicing
+- Creating Layer 2 service
 - Service verification and troubleshooting
 
 **Duration:** ~60 minutes
@@ -46,7 +45,6 @@ Master advanced EDA capabilities for monitoring and querying your network state.
 **What you'll learn:**
 - Understanding and managing configuration deviations
 - Writing EQL queries to extract network insights
-- Building custom dashboards and reports
 - Automating compliance checks
 
 **Duration:** ~45 minutes
@@ -90,17 +88,17 @@ Before starting this lab, ensure you have:
 ## 📖 Lab Topology
 
 ```
-                    ┌─────────┐  ┌─────────┐
-                    │ spine1  │  │ spine2  │
-                    │ (65000) │  │ (65000) │
-                    └────┬────┘  └────┬────┘
-                         │            │
-          ┌──────────────┼────────────┼──────────────┐
-          │              │            │              │
-     ┌────┴────┐    ┌────┴────┐  ┌───┴─────┐   ┌────┴────┐
-     │  leaf1  │    │  leaf2  │  │  leaf3  │   │  leaf4  │
-     │ (65001) │    │ (65002) │  │ (65003) │   │ (65004) │
-     └─────────┘    └─────────┘  └─────────┘   └─────────┘
+             ┌─────────┐  ┌─────────┐
+             │ spine1  │  │ spine2  │
+             │ (65000) │  │ (65000) │
+             └────┬────┘  └────┬────┘
+                  │            │
+          ┌───────┻────┐───────┻────┐
+          │            │            │     
+     ┌────┴────┐  ┌────┴────┐  ┌────┴────┐   
+     │  leaf1  │  │  leaf2  │  │  leaf3  │ 
+     │ (65001) │  │ (65002) │  │ (65003) │   
+     └─────────┘  └─────────┘  └─────────┘  
 ```
 
 - **Underlay:** eBGP with unique ASNs per leaf
@@ -112,13 +110,8 @@ Before starting this lab, ensure you have:
 ## 🛠️ Additional Resources
 
 ### Documentation
-- [Nokia EDA Documentation](https://network.developer.nokia.com/)
+- [Nokia EDA Documentation](https://docs.eda.dev/)
 - [SR Linux Documentation](https://documentation.nokia.com/srlinux/)
-- [EVPN-VXLAN Guide](https://learn.srlinux.dev/)
-
-### Tools
-- [EDA REST API Reference](https://network.developer.nokia.com/api)
-- [SR Linux CLI Reference](https://documentation.nokia.com/srlinux/latest/cli-reference/)
 
 ---
 
