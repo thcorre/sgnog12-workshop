@@ -2,7 +2,8 @@
 
 > **Hands-on Nokia EDA Workshop**
 
-Welcome to the SGNOG12 EDA Lab! This workshop provides **three comprehensive guides** to help you master Nokia's Event-Driven Automation (EDA) platform through practical, hands-on exercises.
+Welcome to the SGNOG12 EDA Lab! 
+This workshop provides **three comprehensive guides** to help you master Nokia's Event-Driven Automation (EDA) platform through practical, hands-on exercises.
 
 ---
 
