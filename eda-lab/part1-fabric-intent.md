@@ -168,6 +168,8 @@ Switch to the **Summary view** to see:
   - Default BGP peers
 - 📊 Trend of learned routes across the fabric
 
+![Fabric State summary](./docs/fabric-intent_state_summary.png)
+
 ---
 
 ### Step 5: Drill Down - Leafs, Spines, Routers
