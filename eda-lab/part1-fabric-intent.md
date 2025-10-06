@@ -2,7 +2,7 @@
 
 > **EDA Fabric: Intent Creation & Status Verification**
 
-This guide provides a **step-by-step workflow** to create a fabric intent for an IP leaf–spine underlay in **Nokia EDA** and verify the resulting fabric status and node configuration.
+This guide provides a **step-by-step workflow** to create a fabric intent for an CLOS leaf–spine IP underlay in **Nokia EDA** and verify the resulting fabric status and node configuration.
 
 ---
 
@@ -78,10 +78,11 @@ Navigate to **Fabrics → Create** in the EDA GUI and configure the following pa
 | Parameter | Value |
 |-----------|-------|
 | **Name** | `myfabric` |
-| **IPv4 Pool – System IP** | `ipv4-system-addresses` |
+| **Namespace** | `clab-dc-${GROUP_ID}-eda` |
+| **IPv4 Pool – System IP** | `systemipv4-pool` |
 | **Leaf Node Selector** | `eda.nokia.com/role=leaf` |
 | **Spine Node Selector** | `eda.nokia.com/role=spine` |
-| **InterSwitchLinks IPv4 Pool – Interswitch Link IP** | `ipv4-interswitch-interfaces` |
+| **InterSwitchLinks Unnumbered** | `IPV6` |
 | **Link Selector** | `eda.nokia.com/role=interSwitch` |
 | **Underlay Protocol** | `EBGP` |
 | **Underlay Protocol – Autonomous System Pool** | `asn-pool` |
