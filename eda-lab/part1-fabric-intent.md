@@ -89,7 +89,7 @@ Navigate to **Fabrics → Create** in the EDA GUI and configure the following pa
 | **Overlay Protocol** | `EBGP` |
 
 See the below screenshot for reference:
-[Fabric Intent creation](/eda-lab/docs/fabric-intent_creation.png)
+[Fabric Intent creation](eda-lab/docs/fabric-intent_creation.png)
 
 > **What happens next?** When committed, EDA evaluates each topology node against the selectors (leaf/spine), allocates IPs and ASNs from the configured pools, and generates node configurations automatically.
 
