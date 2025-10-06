@@ -103,6 +103,9 @@ After creating the fabric intent:
 2. ✍️ Add a **commit message**
 3. 🔍 Click **Dry-run**
 
+Expected output:  
+![Fabric Intent Dry-run success](./docs/fabric-intent_dry-run_success.png)
+
 #### What is Dry-Run?
 
 EDA executes the intent **without changing any node**, allowing you to validate everything safely. The summary displays:
@@ -119,6 +122,8 @@ EDA executes the intent **without changing any node**, allowing you to validate 
 | **Changed CRs** | EDA building blocks: interfaces, routers, BGP groups/peers, policies |
 | **Intents Run** | Which intents were executed |
 | **Nodes with changes** | Affected devices |
+
+![Fabric Intent Transaction CRs](./docs/fabric-intent_transaction_crs.png)
 
 #### View Configuration Diffs
 
