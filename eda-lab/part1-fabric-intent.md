@@ -88,6 +88,9 @@ Navigate to **Fabrics → Create** in the EDA GUI and configure the following pa
 | **Underlay Protocol – Autonomous System Pool** | `asn-pool` |
 | **Overlay Protocol** | `EBGP` |
 
+See the below screenshot for reference:
+[Fabric Intent creation](/docs/fabric-intent_creation.png)
+
 > **What happens next?** When committed, EDA evaluates each topology node against the selectors (leaf/spine), allocates IPs and ASNs from the configured pools, and generates node configurations automatically.
 
 ---
