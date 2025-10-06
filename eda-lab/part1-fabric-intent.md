@@ -103,7 +103,7 @@ After creating the fabric intent:
 2. ✍️ Add a **commit message**
 3. 🔍 Click **Dry-run**
 
-Expected output:
+Expected output:  
 ![Fabric Intent Dry-run success](./docs/fabric-intent_dry-run_success.png)
 
 #### What is Dry-Run?
