@@ -15,22 +15,22 @@ topology:
 
   kinds:
     nokia_srlinux:
-      image: ghcr.io/nokia/srlinux:25.3.3
-      type: ixrd2l
+      image: ghcr.io/nokia/srlinux:25.7.1
+      type: ixr-d2l
     linux:
       image: ghcr.io/hellt/network-multitool
 
   nodes:
     ### SPINES ###
     spine1:
-      type: ixrd3l
+      type: ixr-d3l
       group: spine
       startup-config: configs/fabric-init-1/spine1.cfg
       mgmt-ipv4: 172.80.${GROUP_ID}0.21
       mgmt-ipv6: 3fff:172:80:${GROUP_ID}0::21
 
     spine2:
-      type: ixrd3l
+      type: ixr-d3l
       group: spine
       startup-config: configs/fabric-init-1/spine2.cfg
       mgmt-ipv4: 172.80.${GROUP_ID}0.22
