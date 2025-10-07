@@ -11,7 +11,7 @@ This guide provides a **step-by-step workflow** to create a fabric intent for an
 1. [Overview](#-overview)
 2. [Prerequisites](#-prerequisites)
 3. [Quick Summary](#-quick-summary)
-4. [Exercise 1: Build the Fabric](#-Exercise-1-build-the-fabric)
+4. [Exercise 1: Build the Fabric](#-Exercise-1-build-the-Fabric)
    - [Step 1: Create the Fabric Intent](#step-1-create-the-fabric-intent)
    - [Step 2: Transaction Dry-Run & Review](#step-2-transaction-dry-run--review)
    - [Step 3: Commit the Intent](#step-3-commit-the-intent)
