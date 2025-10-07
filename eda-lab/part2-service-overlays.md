@@ -85,24 +85,24 @@ Before starting Part 2, ensure you have:
 ### Service Architecture
 
 ```
-┌─────────────────────────────────────────────────────────────┐
-│                      Spine Layer                            │
-│              ┌─────────┐    ┌─────────┐                     │
-│              │ spine1  │────│ spine2  │                     │
-│              └────┬────┘    └────┬────┘                     │
-└───────────────────┼──────────────┼──────────────────────────┘
-                    │              │
-       ┌────────────┼──────────────┼
+┌───────────────────────────────────────────────┐
+│              Spine Layer                      │
+│       ┌─────────┐    ┌─────────┐              │
+│       │ spine1  │────│ spine2  │              │
+│       └────┬────┘    └────┬────┘              │
+└────────────┼──────────────┼───────────────────┘
+             │              │
+       ┌─────┴──────┬───────┴──────┐
        │            │              │    
-  ┌────┴────┐  ┌──-─┴─────┐  ┌─--──┴────┐ 
+  ┌────┴────┐  ┌────┴─────┐  ┌─────┴────┐ 
   │  leaf1  │  │  leaf2   │  │  leaf3   │ 
-  └────┬────┘  └────┬─────┘  └──────────┘ 
-       │            │
-    ┌──┴──┐      ┌──┴──┐
-    │ c1  │      │ c2  │       ← Bridge Domain "l2vnet"
-    │VLAN │      │VLAN │       ← VNI 20, EVI 100
-    │ 10  │      │ 10  │       ← VXLAN tunnel between leafs
-    └─────┘      └─────┘
+  └────┬────┘  └────┬─────┘  └─────┬────┘ 
+       │            │              │
+    ┌──┴──┐      ┌──┴──┐        ┌──┴──┐
+    │ c1  │      │ c2  │        │ c3  │       ← Bridge Domain "l2vnet"
+    │     │      │     │        │     │       ← VNI 20, EVI 100
+    │null │      │null │        │null │       ← VXLAN tunnel between leafs
+    └─────┘      └─────┘        └─────┘
 ```
 
 ### Two Methods for L2 EVPN Service Creation
@@ -118,7 +118,7 @@ EDA provides two approaches:
 #### **Method 2: Virtual Networks** (Alternative)
 - Create both Bridge Domains and Bridge Interfaces in one resource
 - Simpler, conglomerate method
-- Will be introduced in L3 EVPN service setup
+- Will be demonstrated in L3 EVPN service setup
 
 ---
 
@@ -133,13 +133,13 @@ In this exercise, we'll create a Layer 2 EVPN overlay service for clients c1 and
               │ spine1  │  │ spine2  |  
               └────┬────┘  └────┬────┘
                    │            │
-            ┌──────┼─────-─┐────┼───────┐
+            ┌──────┴───────┐────┴───────┐
             │              │            │  
        ┌────┴────┐    ┌────┴────┐  ┌───-┴────┐ 
        │  leaf1  │    │  leaf2  │  │  leaf3  │ 
        └────┬────┘    └────┬────┘  └────┬────┘ 
             │              │            │
-   ethernet-1/1.0   ethernet-1/1.0 ethernet-1/1.0
+     ethernet-1/1.0 ethernet-1/1.0 ethernet-1/1.0
         untagged       untagged      untagged
             │              │            │
         ┌───┴───┐      ┌───┴───┐    ┌───┴───┐
@@ -198,20 +198,20 @@ In this exercise, we'll create a Layer 2 EVPN overlay service for clients c1 and
 
 We need to create two Bridge Interfaces to connect clients c1 and c2 to the Bridge Domain.
 
-#### Bridge Interface for Client c1
+#### Bridge Interface for Client1
 
 1. **Navigate to Bridge Interfaces**
    - Under **Virtual Networks** resources, select **Bridge Interfaces**
    - Click **Create**
 
-2. **Configure c1 Bridge Interface Metadata**
+2. **Configure client1 Bridge Interface Metadata**
 
    | Parameter | Value |
    |-----------|-------|
    | **Name** | `client1` |
    | **Namespace** | `dc1` |
 
-3. **Configure c1 Bridge Interface Specification**
+3. **Configure client1 Bridge Interface Specification**
 
    | Parameter | Value | Description |
    |-----------|-------|-------------|
@@ -229,7 +229,7 @@ We need to create two Bridge Interfaces to connect clients c1 and c2 to the Brid
 5. **Add to Transaction**
    - Click **Create** or **Add to Transaction**
 
-#### Bridge Interface for Client c2
+#### Bridge Interface for Client2
 
 1. **Create Second Bridge Interface**
    - Click **Create** again in Bridge Interfaces view
@@ -264,7 +264,7 @@ We need to create two Bridge Interfaces to connect clients c1 and c2 to the Brid
 
 2. **Add Commit Message**
    ```
-   Create L2 EVPN service for clients c1 and c2 on VLAN 10
+   Create L2 EVPN service for client1, client2 and client3
    ```
 
 3. **Run Dry-Run (Optional but Recommended)**
@@ -310,7 +310,7 @@ Now let's verify that the L2 EVPN service is operational.
 3. **Drill Down to l2vnet Details**
    - Click on `l2vnet` to view details
    - Verify:
-     - Deployed nodes: leaf1, leaf2
+     - Deployed nodes: leaf1, leaf2, leaf3
      - VNI allocation from pool
      - EVI allocation from pool
      - Associated bridge interfaces
@@ -319,7 +319,7 @@ Now let's verify that the L2 EVPN service is operational.
 
 ### Step 2: Test End-to-End Connectivity
 
-1. **Access Client c2**
+1. **Access Client2**
    ```bash
    # SSH or console to client c2
    ssh admin@c2
@@ -342,7 +342,7 @@ Now let's verify that the L2 EVPN service is operational.
              RX bytes:56 (56.0 B)  TX bytes:8026 (7.8 KiB)
    ```
 
-   ✅ Client c2 has IP 172.29.10.12/24 on VLAN 10
+   ✅ Client c2 has IP 172.29.10.12/24
 
 3. **Ping Client c1**
    ```bash
@@ -658,7 +658,7 @@ The Virtual Networks resource allows you to:
 ### 💡 Best Practices
 
 1. **Always use allocation pools** for VNI, EVI, and Tunnel Index to avoid manual conflicts
-2. **Use descriptive names** for Bridge Domains and Interfaces (e.g., `customer-a-vlan10`)
+2. **Use descriptive names** for Bridge Domains and Interfaces (e.g., `customer-a-untagged`)
 3. **Document VLAN assignments** to track which VLANs are used for which services
 4. **Test with dry-run first** before committing changes to production
 5. **Verify end-to-end connectivity** after each service deployment
@@ -759,9 +759,8 @@ Congratulations! You've successfully deployed a Layer 2 EVPN overlay service usi
 ## 📚 Additional Resources
 
 ### Documentation
-- [Nokia EDA Bridge Domain Reference](https://network.developer.nokia.com/)
-- [SR Linux EVPN-VXLAN Guide](https://documentation.nokia.com/srlinux/)
-- [EVPN Architecture Overview](https://learn.srlinux.dev/)
+- [Nokia EDA Documentation](https://docs.eda.dev/)
+- [SR Linux Documentation](https://documentation.nokia.com/srlinux/)
 
 ### Related Exercises
 - **Exercise 5.1:** Fabric Intent Creation (Part 1)
@@ -800,7 +799,7 @@ show interface ethernet-1/53.10
 
 ## 🏁 Lab Completion Summary
 
-**This concludes Exercise 5.2 and 5.3 of the SGNOG12 EDA Lab!**
+**This concludes Exercises 5.2 and 5.3 of the SGNOG12 EDA Lab!**
 
 You have successfully:
 - Created individual Bridge Domain and Bridge Interface components
