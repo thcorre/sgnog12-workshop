@@ -190,15 +190,17 @@ SSH to a spine (e.g., `spine1`) and verify the configuration.
 
 #### 🔌 Interfaces
 
-Check interfaces and `/31` addresses on routed subinterfaces:
+Check interfaces and addresses on routed subinterfaces:
 
 ```bash
 show interface
 ```
 
 **Expected output:**
-- Routed subinterfaces: `ethernet-1/1.0`, `ethernet-1/2.0`, `ethernet-1/3.0`
-- `/31` addresses from the inter-switch pool
+- Routed subinterfaces:
+  - On leaf: `ethernet-1/49.0`, `ethernet-1/50.0`
+  - On spine: `ethernet-1/1.0`, `ethernet-1/2.0`
+- `/64` link-layer IPv6 addresses
 - `system0.0` loopback with the system IP
 
 ---
@@ -228,8 +230,7 @@ show network-instance default route-table
 
 **Expected routes:**
 - `/32` system routes for leaf/spine nodes
-- `/31` connected interfaces
-- Next-hops over the inter-switch links
+- Next-hops over the IPv6 link-layer IPv6 addresses
 
 ---
 
@@ -242,8 +243,8 @@ show network-instance default protocols bgp neighbor
 ```
 
 **Expected neighbors:**
-- eBGP neighbors to leafs
-- Both `ipv4-unicast` (underlay) and `evpn` (overlay) AFI/SAFI
+- eBGP neighbors to leafs from spines and eBGP neighbors to spines from leafs
+- AFI/SAFI: `ipv4-unicast`, `ipv6-unicast` (underlay) and `evpn` (overlay) 
 - Status: **Established**
 - Matches the fabric intent (EBGP for both underlay and overlay)
 
@@ -312,7 +313,7 @@ Congratulations! You've successfully created and verified your fabric underlay u
 
 ## 📚 Additional Resources
 
-- [Nokia EDA Documentation](https://network.developer.nokia.com/)
+- [Nokia EDA Documentation](https://docs.eda.dev/)
 - [SR Linux Documentation](https://documentation.nokia.com/srlinux/)
 - [Back to Main Lab Guide](README.md)
 
