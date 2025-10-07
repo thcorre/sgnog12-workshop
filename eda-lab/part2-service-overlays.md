@@ -11,10 +11,10 @@ Now that your underlay fabric is operational, this guide walks you through creat
 1. [Overview](#-overview)
 2. [Prerequisites](#-prerequisites)
 3. [L2 EVPN Concepts](#-l2-evpn-concepts)
-4. [Exercise 5.2: Create L2 EVPN Instance](#-exercise-52-create-l2-evpn-instance)
+4. [Exercise 1: Create L2 EVPN Instance](#-exercise-1-create-l2-evpn-instance)
    - [Step 1: Create Bridge Domain](#step-1-create-bridge-domain)
    - [Step 2: Create Bridge Interfaces](#step-2-create-bridge-interfaces)
-5. [Exercise 5.3: Verify L2 EVPN Service](#-exercise-53-verify-l2-evpn-service)
+5. [Exercise 2: Verify L2 EVPN Service](#-exercise-2-verify-l2-evpn-service)
    - [Step 1: View Bridge Domain Summary](#step-1-view-bridge-domain-summary)
    - [Step 2: Test End-to-End Connectivity](#step-2-test-end-to-end-connectivity)
    - [Step 3: Verify Device Configuration](#step-3-verify-device-configuration)
@@ -30,9 +30,10 @@ Now that your underlay fabric is operational, this guide walks you through creat
 In this lab, you will create a Layer 2 EVPN overlay service to connect two clients (c1 and c2) across different leaf switches using Bridge Domains and Bridge Interfaces.
 
 **Lab Scenario:**
-- Client c1 connected to leaf1 on interface ethernet-1/53
-- Client c2 connected to leaf2 on interface ethernet-1/53
-- Both clients use VLAN 10
+- Client1 connected to leaf1 on interface ethernet-1/1
+- Client2 connected to leaf2 on interface ethernet-1/1
+- Client3 connected to leaf3 on interface ethernet-1/1
+- All clients are untagged
 - Layer 2 connectivity via EVPN-VXLAN overlay
 
 **What you'll learn:**
@@ -58,8 +59,9 @@ Before starting Part 2, ensure you have:
   - EVI (EVPN Instance) - e.g., `evi-pool`
   - Tunnel Index - e.g., `tunnel-index-pool`
 - ✔️ **Client connections**:
-  - c1 connected to leaf1 ethernet-1/1 with VLAN 'null' (untagged) (IP: 172.29.10.11/24)
-  - c2 connected to leaf2 ethernet-1/1 with VLAN 'null' (untagged) (IP: 172.29.10.12/24)
+  - client1 connected to leaf1 ethernet-1/1 with VLAN 'null' (untagged) (IP: 172.17.0.1/24)
+  - client2 connected to leaf2 ethernet-1/1 with VLAN 'null' (untagged) (IP: 172.17.0.2/24)
+  - client3 connected to leaf3 ethernet-1/1 with VLAN 'null' (untagged) (IP: 172.17.0.3/24)
 - ✔️ Access to EDA GUI
 
 ---
@@ -75,7 +77,7 @@ Before starting Part 2, ensure you have:
 | Component | Description |
 |-----------|-------------|
 | **Bridge Domain** | A Layer 2 broadcast domain within a MAC-VRF network instance |
-| **Bridge Interface** | Attachment point for workloads (subinterfaces with VLAN tagging) |
+| **Bridge Interface** | Attachment point for workloads (subinterfaces with/without VLAN tagging) |
 | **MAC-VRF** | Type of network instance for Layer 2 virtual routing and forwarding |
 | **VNI** | VXLAN Network Identifier - identifies the Layer 2 segment in the overlay |
 | **EVI** | EVPN Instance - identifies the EVPN service instance |
@@ -100,7 +102,7 @@ Before starting Part 2, ensure you have:
        │            │              │
     ┌──┴──┐      ┌──┴──┐        ┌──┴──┐
     │ c1  │      │ c2  │        │ c3  │       ← Bridge Domain "l2vnet"
-    │     │      │     │        │     │       ← VNI 20, EVI 100
+    │     │      │     │        │     │       ← VNI 200 (from vni-pool), EVI 100 (from evi-pool)
     │null │      │null │        │null │       ← VXLAN tunnel between leafs
     └─────┘      └─────┘        └─────┘
 ```
@@ -122,9 +124,9 @@ EDA provides two approaches:
 
 ---
 
-## 🔧 Exercise 5.2: Create L2 EVPN Instance
+## 🔧 Exercise 1: Create L2 EVPN Instance
 
-In this exercise, we'll create a Layer 2 EVPN overlay service for clients c1 and c2 using individual Bridge Domain and Bridge Interface components.
+In this exercise, we'll create a Layer 2 EVPN overlay service for client1, client2 and client3 using individual Bridge Domain and Bridge Interface components.
 
 ### Lab Topology
 
@@ -143,14 +145,14 @@ In this exercise, we'll create a Layer 2 EVPN overlay service for clients c1 and
         untagged       untagged      untagged
             │              │            │
         ┌───┴───┐      ┌───┴───┐    ┌───┴───┐
-        │  c1   │      │  c2   │    │  c3   │
-        │.10.11 │      │.10.12 │    │.10.13 │
+        │client1│      │client2│    │client3│
+        │ .0.1  │      │  0.2  │    │  0.3  │
         └───────┘      └───────┘    └───────┘
           
     Bridge Domain: l2vnet
-    VNI: 20 (from vni-pool)
+    VNI: 200 (from vni-pool)
     EVI: 100 (from evi-pool)
-    Tunnel Index: 50 (from tunnel-index-pool)
+    Tunnel Index: 500 (from tunnel-index-pool)
 ```
 
 ---
@@ -167,7 +169,7 @@ In this exercise, we'll create a Layer 2 EVPN overlay service for clients c1 and
    | Parameter | Value |
    |-----------|-------|
    | **Name** | `l2vnet` |
-   | **Namespace** | `dc1` (your datacenter namespace) |
+   | **Namespace** | `clab-dc-{GROUP_ID}-eda` (your datacenter namespace) |
 
 3. **Configure Bridge Domain Specification**
 
@@ -196,7 +198,7 @@ In this exercise, we'll create a Layer 2 EVPN overlay service for clients c1 and
 
 ### Step 2: Create Bridge Interfaces
 
-We need to create two Bridge Interfaces to connect clients c1 and c2 to the Bridge Domain.
+We need to create two Bridge Interfaces to connect client1, client2 and client3 to the Bridge Domain.
 
 #### Bridge Interface for Client1
 
@@ -209,7 +211,7 @@ We need to create two Bridge Interfaces to connect clients c1 and c2 to the Brid
    | Parameter | Value |
    |-----------|-------|
    | **Name** | `client1` |
-   | **Namespace** | `dc1` |
+   | **Namespace** | `clab-dc-{GROUP_ID}-eda` |
 
 3. **Configure client1 Bridge Interface Specification**
 
@@ -234,14 +236,14 @@ We need to create two Bridge Interfaces to connect clients c1 and c2 to the Brid
 1. **Create Second Bridge Interface**
    - Click **Create** again in Bridge Interfaces view
 
-2. **Configure c2 Bridge Interface Metadata**
+2. **Configure client2 Bridge Interface Metadata**
 
    | Parameter | Value |
    |-----------|-------|
    | **Name** | `client2` |
-   | **Namespace** | `dc1` |
+   | **Namespace** | `clab-dc-{GROUP_ID}-eda` |
 
-3. **Configure c2 Bridge Interface Specification**
+3. **Configure client2 Bridge Interface Specification**
 
    | Parameter | Value |
    |-----------|-------|
@@ -252,6 +254,29 @@ We need to create two Bridge Interfaces to connect clients c1 and c2 to the Brid
 4. **Add to Transaction**
    - Click **Create** or **Add to Transaction**
 
+#### Bridge Interface for Client3
+
+1. **Create Second Bridge Interface**
+   - Click **Create** again in Bridge Interfaces view
+
+2. **Configure client3 Bridge Interface Metadata**
+
+   | Parameter | Value |
+   |-----------|-------|
+   | **Name** | `client3` |
+   | **Namespace** | `clab-dc-{GROUP_ID}-eda` |
+
+3. **Configure client3 Bridge Interface Specification**
+
+   | Parameter | Value |
+   |-----------|-------|
+   | **Bridge Domain** | `l2vnet` |
+   | **VLAN ID** | `null` |
+   | **Interface** | `leaf3-ethernet-1-1` |
+
+4. **Add to Transaction**
+   - Click **Create** or **Add to Transaction**
+  
 ---
 
 ### Step 3: Review and Commit
@@ -281,12 +306,12 @@ We need to create two Bridge Interfaces to connect clients c1 and c2 to the Brid
    - Wait for successful completion
    - EDA will automatically:
      - Validate the design
-     - Generate configuration for leaf1 and leaf2
+     - Generate configuration for leaf1, leaf2 and leaf3
      - Push config to the network devices
 
 ---
 
-## ✅ Exercise 5.3: Verify L2 EVPN Service
+## ✅ Exercise 2: Verify L2 EVPN Service
 
 Now let's verify that the L2 EVPN service is operational.
 
@@ -305,35 +330,36 @@ Now let's verify that the L2 EVPN service is operational.
      - Number of Bridge Domains deployed
      - Status: `L2vnet is 'up'`
    - **Bridge Table Entries:** Initially empty until traffic flows
-   - **Operational State:** Active
+   - **Operational State:** up
 
 3. **Drill Down to l2vnet Details**
-   - Click on `l2vnet` to view details
+   - Click on `l2vnet` then information or view to view details
    - Verify:
      - Deployed nodes: leaf1, leaf2, leaf3
      - VNI allocation from pool
      - EVI allocation from pool
+     - Tunnel Index from pool
      - Associated bridge interfaces
 
 ---
 
 ### Step 2: Test End-to-End Connectivity
 
-1. **Access Client2**
+1. **Access client2**
    ```bash
-   # SSH or console to client c2
-   ssh admin@c2
+   # SSH or console to client2
+   sudo docker exec -it clab-dc-{GROUP_ID}-eda-client2 sh
    ```
 
 2. **Verify Interface Configuration**
    ```bash
-   c2:~# ifconfig eth1.10
+   client2:~# ifconfig eth1
    ```
 
    **Expected Output:**
    ```
-   eth1.10   Link encap:Ethernet  HWaddr AA:C1:AB:6F:41:45
-             inet addr:172.29.10.12  Bcast:0.0.0.0  Mask:255.255.255.0
+   eth1      Link encap:Ethernet  HWaddr AA:C1:AB:6F:41:45
+             inet addr:172.17.0.2  Bcast:0.0.0.0  Mask:255.255.255.0
              inet6 addr: fe80::a8c1:abff:fe6f:4145/64 Scope:Link
              UP BROADCAST RUNNING MULTICAST  MTU:9500  Metric:1
              RX packets:1 errors:0 dropped:0 overruns:0 frame:0
@@ -342,23 +368,23 @@ Now let's verify that the L2 EVPN service is operational.
              RX bytes:56 (56.0 B)  TX bytes:8026 (7.8 KiB)
    ```
 
-   ✅ Client c2 has IP 172.29.10.12/24
+   ✅ Client2 has IP 172.17.0.2/24
 
-3. **Ping Client c1**
+3. **Ping Client1**
    ```bash
-   c2:~# ping 172.29.10.11
+   client2:~# ping 172.17.0.1
    ```
 
    **Expected Output:**
    ```
-   PING 172.29.10.11 (172.29.10.11): 56 data bytes
-   64 bytes from 172.29.10.11: seq=0 ttl=64 time=2.102 ms
-   64 bytes from 172.29.10.11: seq=1 ttl=64 time=0.915 ms
-   64 bytes from 172.29.10.11: seq=2 ttl=64 time=1.030 ms
-   64 bytes from 172.29.10.11: seq=3 ttl=64 time=0.824 ms
-   64 bytes from 172.29.10.11: seq=4 ttl=64 time=0.953 ms
+   PING 172.17.0.1 (172.17.0.1): 56(84) bytes of data.
+   64 bytes from 172.17.0.1: icmp_seq=1 ttl=64 time=9.72 ms
+   64 bytes from 172.17.0.1: icmp_seq=2 ttl=64 time=1.39 ms
+   64 bytes from 172.17.0.1: icmp_seq=3 ttl=64 time=0.740 ms
+   64 bytes from 172.17.0.1: icmp_seq=4 ttl=64 time=0.784 ms
+   64 bytes from 172.17.0.1: icmp_seq=5 ttl=64 time=0.631 ms
    ^C
-   --- 172.29.10.11 ping statistics ---
+   --- 172.17.0.1 ping statistics ---
    5 packets transmitted, 5 packets received, 0% packet loss
    round-trip min/avg/max = 0.824/1.164/2.102 ms
    ```
@@ -377,25 +403,25 @@ SSH to leaf1 to examine the EDA-generated configuration.
 ssh admin@leaf1
 
 --{ running }--[ ]--
-A:admin@l1# info network-instance l2vnet
+A:admin@leaf1# info network-instance l2vnet
 ```
 
 **Expected Configuration:**
 ```
 network-instance l2vnet {
-    !!! EDA Source CRs: services.eda.nokia.com/v1alpha1/BridgeInterface/c1-vlan10
+    !!! EDA Source CRs: services.eda.nokia.com/v1/BridgeInterface/client1
     type mac-vrf
     admin-state enable
     description l2vnet
-    interface ethernet-1/53.10 {
-        !!! EDA Source CRs: services.eda.nokia.com/v1alpha1/BridgeInterface/c1-vlan10
+    interface ethernet-1/1.4097 {
+        !!! EDA Source CRs: services.eda.nokia.com/v1/BridgeInterface/client1
     }
-    vxlan-interface vxlan0.50 {
+    vxlan-interface vxlan0.500 {
     }
     protocols {
         bgp-evpn {
             bgp-instance 1 {
-                vxlan-interface vxlan0.50
+                vxlan-interface vxlan0.500
                 evi 100
                 ecmp 8
             }
@@ -417,21 +443,14 @@ network-instance l2vnet {
                 age-time 300
             }
         }
-        mac-duplication {
-            admin-state disable
-            monitoring-window 3
-            num-moves 5
-            hold-down-time 9
-            action stop-learning
-        }
     }
 }
 ```
 
 **Key Elements:**
 - ✅ Network instance type: `mac-vrf`
-- ✅ Local bridge interface: `ethernet-1/53.10` connected to c1
-- ✅ VXLAN interface: `vxlan0.50` for overlay connectivity
+- ✅ Local bridge interface: `ethernet-1/1.4097` connected to client1
+- ✅ VXLAN interface: `vxlan0.500` for overlay connectivity
 - ✅ EVI: `100` (allocated from pool)
 - ✅ Route targets: `target:1:100` for import/export
 - ✅ MAC learning enabled with 300s aging
@@ -440,26 +459,22 @@ network-instance l2vnet {
 
 ```bash
 --{ running }--[ ]--
-A:admin@l1# info tunnel-interface vxlan0 vxlan-interface 50
+A:admin@leaf1# info tunnel-interface vxlan0 vxlan-interface 500
 ```
 
 **Expected Configuration:**
 ```
-tunnel-interface vxlan0 {
-    vxlan-interface 50 {
         type bridged
         ingress {
-            vni 20
+            vni 200
         }
         egress {
             source-ip use-system-ipv4-address
         }
-    }
-}
 ```
 
 **Key Elements:**
-- ✅ VNI: `20` (allocated from vni-pool)
+- ✅ VNI: `200` (allocated from vni-pool)
 - ✅ Type: `bridged` (Layer 2 service)
 - ✅ Source IP: Uses system IPv4 address (loopback) as VTEP
 
@@ -471,43 +486,43 @@ Verify that MAC addresses are being learned across the EVPN overlay.
 
 ```bash
 --{ running }--[ ]--
-A:admin@l1# show network-instance l2vnet bridge-table mac-table all
+A:admin@leaf1# show network-instance l2vnet bridge-table mac-table all
 ```
 
 **Expected Output:**
 ```
----------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------
 Mac-table of network instance l2vnet
----------------------------------------------------------------------------------------------------------------------
-+--------------------+-----------------------------------------+------------+--------+--------+-------+-------------+
-| Address            | Destination                             | Dest Index | Type   | Active | Aging | Last Update |
-+====================+=========================================+============+========+========+=======+=============+
-| AA:C1:AB:6F:41:45  | vxlan-interface:vxlan0.50 vtep:10.0.0.3 | 9655164    | evpn   | true   | N/A   | ...         |
-|                    | vni:20                                  |            |        |        |       |             |
-| AA:C1:AB:93:85:EE  | ethernet-1/53.10                        | 5          | learnt | true   | 300   | ...         |
-+--------------------+-----------------------------------------+------------+--------+--------+-------+-------------+
-Total Irb Macs              :  0 Total  0 Active
-Total Static Macs           :  0 Total  0 Active
-Total Duplicate Macs        :  0 Total  0 Active
-Total Learnt Macs           :  1 Total  1 Active
-Total Evpn Macs             :  1 Total  1 Active
-Total Evpn static Macs      :  0 Total  0 Active
-Total Irb anycast Macs      :  0 Total  0 Active
-Total Proxy Antispoof Macs  :  0 Total  0 Active
-Total Reserved Macs         :  0 Total  0 Active
-Total Eth-cfm Macs          :  0 Total  0 Active
-Total Irb Vrrps             :  0 Total  0 Active
---{ running }--[ ]--
+--------------------------------------------------------------------------------------------------------------------------------------
++-------------------+---------------------------------+-----------+----------+--------+-------+---------------------------------+
+|      Address      |           Destination           |   Dest    |   Type   | Active | Aging |           Last Update           |
+|                   |                                 |   Index   |          |        |       |                                 |
++===================+=================================+===========+==========+========+=======+=================================+
+| AA:C1:AB:64:CD:5B | ethernet-1/1.4097               | 9         | learnt   | true   | 300   | 2025-10-07T14:33:11.000Z        |
+| AA:C1:AB:DA:1E:53 | vxlan-interface:vxlan0.500      | 834435197 | evpn     | true   | N/A   | 2025-10-07T14:33:10.000Z        |
+|                   | vtep:11.0.0.2 vni:200           | 0         |          |        |       |                                 |
++-------------------+---------------------------------+-----------+----------+--------+-------+---------------------------------+
+Total Irb Macs                 :    0 Total    0 Active
+Total Static Macs              :    0 Total    0 Active
+Total Duplicate Macs           :    0 Total    0 Active
+Total Learnt Macs              :    1 Total    1 Active
+Total Evpn Macs                :    1 Total    1 Active
+Total Evpn static Macs         :    0 Total    0 Active
+Total Irb anycast Macs         :    0 Total    0 Active
+Total Proxy Antispoof Macs     :    0 Total    0 Active
+Total Reserved Macs            :    0 Total    0 Active
+Total Eth-cfm Macs             :    0 Total    0 Active
+Total Irb Vrrps                :    0 Total    0 Active
 ```
 
 **MAC Table Analysis:**
 
 | MAC Address | Destination | Type | Meaning |
 |-------------|-------------|------|---------|
-| `AA:C1:AB:6F:41:45` | `vxlan-interface:vxlan0.50 vtep:10.0.0.3 vni:20` | `evpn` | Remote MAC (c2) learned via EVPN from leaf2 (10.0.0.3) |
-| `AA:C1:AB:93:85:EE` | `ethernet-1/53.10` | `learnt` | Local MAC (c1) learned on local interface |
+| `AA:C1:AB:DA:1E:53` | `vxlan-interface:vxlan0.500 vtep:11.0.0.2 vni:200` | `evpn` | Remote MAC (client2) learned via EVPN from leaf2 (11.0.0.2) |
+| `AA:C1:AB:64:CD:5B` | `ethernet-1/1.4097` | `learnt` | Local MAC (client1) learned on local interface |
 
-✅ **VXLAN Tunnel Established:** Notice the VXLAN tunnel with VNI 20 to leaf2 (VTEP 10.0.0.3) to reach c2.
+✅ **VXLAN Tunnel Established:** Notice the VXLAN tunnel with VNI 200 to leaf2 (VTEP 11.0.0.2) to reach client2.
 
 ---
 
@@ -561,7 +576,7 @@ The Virtual Networks resource allows you to:
 
 **Solution:**
 1. Ensure Bridge Domain is committed before creating Bridge Interfaces
-2. Verify interface name matches topology exactly (e.g., `leaf1-ethernet-1-53`)
+2. Verify interface name matches topology exactly (e.g., `leaf1-ethernet-1-1`)
 3. Check for VLAN ID conflicts with existing services
 4. Review interface availability on the target node
 
@@ -577,7 +592,7 @@ The Virtual Networks resource allows you to:
 - Underlay BGP sessions down
 
 **Solution:**
-1. Verify both clients are using VLAN 10: `ifconfig eth1.10`
+1. Verify both clients are untagged: `ifconfig eth1`
 2. Check Bridge Interface configuration on both leafs
 3. Verify VXLAN tunnel: `show tunnel-interface vxlan0 vxlan-interface * detail`
 4. Confirm underlay BGP: `show network-instance default protocols bgp neighbor`
@@ -705,25 +720,25 @@ EDA automatically created:
 ### Service Flow Summary
 
 ```
-Client c1 (VLAN 10)
+Client1 (VLAN null / untagged)
     ↓
-ethernet-1/53.10 on leaf1
+ethernet-1/1.4097 on leaf1
     ↓
 Bridge Domain "l2vnet"
     ↓
-VXLAN tunnel (VNI 20)
+VXLAN tunnel (VNI 200)
     ↓
 EVPN control plane (EVI 100, RT target:1:100)
     ↓
 Spine layer (Route Reflector)
     ↓
-VXLAN tunnel (VNI 20)
+VXLAN tunnel (VNI 200)
     ↓
 Bridge Domain "l2vnet" on leaf2
     ↓
-ethernet-1/53.10 on leaf2
+ethernet-1/1.4097 on leaf2
     ↓
-Client c2 (VLAN 10)
+Client2 (VLAN null / untagged)
 ```
 
 ---
@@ -763,10 +778,10 @@ Congratulations! You've successfully deployed a Layer 2 EVPN overlay service usi
 - [SR Linux Documentation](https://documentation.nokia.com/srlinux/)
 
 ### Related Exercises
-- **Exercise 5.1:** Fabric Intent Creation (Part 1)
-- **Exercise 5.2:** Create L2 EVPN Instance (This Lab)
-- **Exercise 5.3:** Verify L2 EVPN Service (This Lab)
-- **Exercise 5.4:** Create L3 EVPN Instance (Future)
+- **Exercise 1:** Fabric Intent Creation (Part 1)
+- **Exercise 2:** Create L2 EVPN Instance (This Lab)
+- **Exercise 3:** Verify L2 EVPN Service (This Lab)
+- **Exercise 4:** Create L3 EVPN Instance (Future)
 
 ### Command Reference
 
@@ -792,14 +807,14 @@ show network-instance default protocols bgp routes evpn route-type 2
 show network-instance default protocols bgp routes evpn route-type 3
 
 # Interface status
-show interface ethernet-1/53.10
+show interface ethernet-1/1.4097
 ```
 
 ---
 
 ## 🏁 Lab Completion Summary
 
-**This concludes Exercises 5.2 and 5.3 of the SGNOG12 EDA Lab!**
+**This concludes Exercises 2 and 3 of the SGNOG12 EDA Lab!**
 
 You have successfully:
 - Created individual Bridge Domain and Bridge Interface components
