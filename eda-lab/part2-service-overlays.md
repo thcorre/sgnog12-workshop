@@ -11,10 +11,10 @@ Now that your underlay fabric is operational, this guide walks you through creat
 1. [Overview](#-overview)
 2. [Prerequisites](#-prerequisites)
 3. [L2 EVPN Concepts](#-l2-evpn-concepts)
-4. [Exercise 1: Create L2 EVPN Instance](#-exercise-1-create-l2-evpn-instance)
+4. [Exercise 2: Create L2 EVPN Instance](#-exercise-2-create-l2-evpn-instance)
    - [Step 1: Create Bridge Domain](#step-1-create-bridge-domain)
    - [Step 2: Create Bridge Interfaces](#step-2-create-bridge-interfaces)
-5. [Exercise 2: Verify L2 EVPN Service](#-exercise-2-verify-l2-evpn-service)
+5. [Exercise 3: Verify L2 EVPN Service](#-exercise-3-verify-l2-evpn-service)
    - [Step 1: View Bridge Domain Summary](#step-1-view-bridge-domain-summary)
    - [Step 2: Test End-to-End Connectivity](#step-2-test-end-to-end-connectivity)
    - [Step 3: Verify Device Configuration](#step-3-verify-device-configuration)
@@ -124,7 +124,7 @@ EDA provides two approaches:
 
 ---
 
-## 🔧 Exercise 1: Create L2 EVPN Instance
+## 🔧 Exercise 2: Create L2 EVPN Instance
 
 In this exercise, we'll create a Layer 2 EVPN overlay service for client1, client2 and client3 using individual Bridge Domain and Bridge Interface components.
 
@@ -311,7 +311,7 @@ We need to create two Bridge Interfaces to connect client1, client2 and client3 
 
 ---
 
-## ✅ Exercise 2: Verify L2 EVPN Service
+## ✅ Exercise 3: Verify L2 EVPN Service
 
 Now let's verify that the L2 EVPN service is operational.
 
