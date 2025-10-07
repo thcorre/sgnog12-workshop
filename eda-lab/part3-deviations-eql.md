@@ -11,7 +11,7 @@ This guide explores EDA's powerful capabilities for **detecting configuration de
 1. [Overview](#-overview)
 2. [Prerequisites](#-prerequisites)
 3. [Understanding Deviations](#-understanding-deviations)
-4. [Exercise 7.2: Configuration Deviations](#-exercise-72-configuration-deviations)
+4. [Exercise 5: Configuration Deviations](#-exercise-5-configuration-deviations)
    - [Step 1: Create a Test Deviation](#step-1-create-a-test-deviation)
    - [Step 2: View Deviation in EDA GUI](#step-2-view-deviation-in-eda-gui)
    - [Step 3: Analyze Deviation Details](#step-3-analyze-deviation-details)
@@ -19,7 +19,7 @@ This guide explores EDA's powerful capabilities for **detecting configuration de
    - [Step 5: Clear Accepted Deviation](#step-5-clear-accepted-deviation)
    - [Step 6: Reject a Deviation](#step-6-reject-a-deviation)
    - [Step 7: Verify Remediation](#step-7-verify-remediation)
-5. [Exercise 7.3: EQL Queries](#-exercise-73-eql-queries)
+5. [Exercise 6: EQL Queries](#-exercise-6-eql-queries)
    - [Understanding EQL Syntax](#understanding-eql-syntax)
    - [Example Queries](#example-queries)
 6. [Troubleshooting & Tips](#-troubleshooting--tips)
@@ -49,7 +49,7 @@ Before starting Part 3, ensure you have:
 - ✔️ **Completed** [Part 1: Fabric Intent Creation](part1-fabric-intent.md)
 - ✔️ **Completed** [Part 2: Service Overlays](part2-service-overlays.md)
 - ✔️ Active fabric with committed intents
-- ✔️ L3 EVPN service deployed (with IRB interfaces)
+- ✔️ L2 EVPN service deployed
 - ✔️ Access to EDA GUI
 - ✔️ SSH access to leaf switches
 
@@ -96,13 +96,13 @@ EDA continuously monitors device state and compares it against committed intents
 
 ---
 
-## 🔧 Exercise 7.2: Configuration Deviations
+## 🔧 Exercise 5: Configuration Deviations
 
 In this exercise, we'll intentionally create a deviation to understand how EDA detects and handles configuration drift.
 
 ### Lab Scenario
 
-- We'll disable an IRB interface on leaf1 (l1)
+- We'll disable an interface on leaf1
 - This will cause connectivity issues between clients
 - EDA will detect the deviation and raise alarms
 - We'll explore options to accept or reject the deviation
@@ -111,28 +111,28 @@ In this exercise, we'll intentionally create a deviation to understand how EDA d
 
 ### Step 1: Create a Test Deviation
 
-1. **SSH to leaf1 (l1)**
+1. **SSH to leaf1**
    ```bash
-   ssh admin@l1
+   ssh admin@leaf1
    ```
 
-2. **Disable IRB Subinterface**
+2. **Disable Subinterface**
    ```bash
    --{ + running }--[ ]--
-   A:admin@l1# enter candidate
+   A:admin@leaf1# enter candidate
    
    --{ + candidate shared default }--[ ]--
-   A:admin@l1# interface irb0 subinterface 1
+   A:admin@leaf1# interface ethernet-1/50 subinterface 0
    
-   --{ + candidate shared default }--[ interface irb0 subinterface 1 ]--
-   A:admin@l1# admin-state disable
+   --{ + candidate shared default }--[ interface ethernet-1/50 subinterface 0 ]--
+   A:admin@leaf1# admin-state disable
    
-   --{ +* candidate shared default }--[ interface irb0 subinterface 1 ]--
-   A:admin@l1# commit now
+   --{ +* candidate shared default }--[ ethernet-1/50 subinterface 0 ]--
+   A:admin@leaf1# commit now
    All changes have been committed. Leaving candidate mode.
    ```
 
-   > **What happened?** We manually disabled the IRB interface that EDA created. This is a deviation because EDA expects this interface to be enabled.
+   > **What happened?** We manually disabled an interface that EDA created. This is a deviation because EDA expects this interface to be enabled.
 
 ---
 
@@ -141,49 +141,24 @@ In this exercise, we'll intentionally create a deviation to understand how EDA d
 1. **Check for Alarms**
    - Navigate to **Alarms** in the EDA GUI
    - You should see alarms generated immediately after the commit:
-     - `RouterDegraded` (Major severity)
-     - `IRBInterfaceDown-irb-compute` (Major severity)
+     - `DefaultRouterDegraded` (Critical severity)
+     - `DefaultInterfaceDown` (Critical severity)
 
-   | Severity | Type | Occurrences | Name | Last Changed |
+   | Severity | Type | Occurrences | Resource | Last Changed |
    |----------|------|-------------|------|--------------|
-   | Major | RouterDegraded | 2 | RouterDegraded-router | Wed Jun 18 2025, 14:29:35 EDT |
-   | Major | IRBInterfaceDown | 2 | IRBInterfaceDown-irb-compute | Wed Jun 18 2025, 14:29:35 EDT |
+   | Critical | DefaultRouterDegraded | 1 | router-leaf1 | Wed Jun 18 2025, 14:29:35 EDT |
+   | Critical | DefaultInterfaceDown | 1 | interface-leaf1-ethernet-1-50 | Wed Jun 18 2025, 14:29:35 EDT |
 
-2. **Test Connectivity Impact**
-   - SSH to client c3
-   - Try to ping c1 (should fail due to disabled IRB):
-   
-   ```bash
-   c3/ # ping 172.29.20.11
-   PING 172.29.20.11 (172.29.20.11): 56 data bytes
-   ^C
-   --- 172.29.20.11 ping statistics ---
-   3 packets transmitted, 0 packets received, 100% packet loss
-   ```
-   
-   - Ping c2 (should succeed - different path):
-   
-   ```bash
-   c3/ # ping 172.29.20.12
-   PING 172.29.20.12 (172.29.20.12): 56 data bytes
-   64 bytes from 172.29.20.12: seq=0 ttl=253 time=1.166 ms
-   64 bytes from 172.29.20.12: seq=1 ttl=253 time=0.876 ms
-   64 bytes from 172.29.20.12: seq=2 ttl=253 time=0.831 ms
-   ^C
-   --- 172.29.20.12 ping statistics ---
-   5 packets transmitted, 5 packets received, 0% packet loss
-   ```
-
-3. **View Deviation Entry**
+2. **View Deviation Entry**
    - Navigate to **Deviations** in the EDA GUI
-   - You should see a deviation entry for the IRB interface
+   - You should see a deviation entry for the interface
 
    | Name | Namespace | Labels | Annotations | Target | Operation | Path |
    |------|-----------|--------|-------------|--------|-----------|------|
-   | l1-4c67... | dc1 | +1 | | l1 | Create | .interface[.name=="irb0"].subinterface[.index==1] |
+   | leaf1-550d3... | clab-dc-{GROUP_ID}-eda | +1 | | leaf1 | Create | .interface{.name=="ethernet-1/50"}.subinterface{.index==0} |
 
    **Available Actions:**
-   - **Configuration View** - See detailed comparison
+   - **View** - See detailed comparison
    - **Accept** - Make this the new intended state
    - **Reject** - Revert to original intent
 
@@ -191,21 +166,20 @@ In this exercise, we'll intentionally create a deviation to understand how EDA d
 
 ### Step 3: Analyze Deviation Details
 
-1. **Click on "Configuration View"**
+1. **Click on "View"**
    - This shows the detailed comparison between intended and running values
 
 2. **Review Deviation Information**
 
    **Path:**
    ```
-   .interface[.name=="irb0"].subinterface[.index==1]
+   .interface{.name=="ethernet-1/50"}.subinterface{.index==0}
    ```
 
    **Intended Values:**
    ```json
-   1  {}
+   1  "admin-state": "enable"
    ```
-   *(Empty - means admin-state should be at default, which is 'enable')*
 
    **Running Values:**
    ```json
@@ -228,8 +202,8 @@ If you agree with the manual change and want it to become the new intent:
    ```
    Accept Confirmation
    
-   Are you sure you want to accept deviation on l1 at
-   .interface[.name=="irb0"].subinterface[.index==1]?
+   Are you sure you want to accept deviation on leaf1 at
+   .interface{.name=="ethernet-1/50"}.subinterface{.index==0}?
    
    Select the 'Recurse' checkbox to also accept all deviations 
    below the target node and path.
@@ -261,7 +235,7 @@ If you change your mind after accepting a deviation:
    Clear Accept Confirmation
    
    Are you sure you want to clear the accept flag for deviation on l1 at
-   .interface[.name=="irb0"].subinterface[.index==1]?
+   .interface{.name=="ethernet-1/50"}.subinterface{.index==0}?
    
    Select the 'Recurse' checkbox to also clear the accept flag for all 
    deviations below the target node and path.
@@ -288,7 +262,7 @@ To revert the device to the original intended configuration:
    Reject Confirmation
    
    Are you sure you want to reject deviation on l1 at
-   .interface[.name=="irb0"].subinterface[.index==1]?
+   .interface{.name=="ethernet-1/50"}.subinterface{.index==0}?
    
    Select the 'Recurse' checkbox to also reject all deviations 
    below the target node and path.
@@ -310,16 +284,15 @@ To revert the device to the original intended configuration:
 
 ### Step 7: Verify Remediation
 
-1. **SSH to l1 and Verify Configuration**
+1. **SSH to leaf1 and Verify Configuration**
    ```bash
    --{ running }--[ ]--
-   A:admin@l1# info detail interface irb0
+   A:admin@leaf1# info detail interface ethernet-1/1
    ```
 
    **Expected Output:**
    ```
-   interface irb0 {
-       !!! EDA Source CRs: services.eda.nokia.com/v1alpha1/VirtualNetwork/compute-storage
+       !!! EDA Source CRs: interfaces.eda.nokia.com/v1alpha1/Interface/leaf1-ethernet-1-1
        admin-state enable
        transceiver {
        }
@@ -331,47 +304,35 @@ To revert the device to the original intended configuration:
                down 0
            }
        }
-       subinterface 1 {
-           description irb-compute
-           admin-state enable    ← Back to enabled!
-           ip-mtu 1500
-           ipv4 {
-               admin-state enable
-               allow-directed-broadcast false
-               address 172.29.20.1/24 {
-                   anycast-gw true
-               }
+       subinterface 4097 {
+        !!! EDA Source CRs: services.eda.nokia.com/v1/BridgeInterface/client1
+        type bridged
+        description client1
+        admin-state enable
+        ipv4 {
+            admin-state disable
+            allow-directed-broadcast false
+            unnumbered {
+                admin-state disable
+            }
+            arp {
+                duplicate-address-detection true
+                timeout 14400
+                learn-unsolicited false
+                proxy-arp false
+                host-route {
+                }
+            }
+          }
                ...
-           }
-       }
-   }
    ```
 
-   ✅ The `admin-state` of the IRB subinterface is back to `enable`.
+   ✅ The `admin-state` of the subinterface is back to `enable`.
 
-2. **Test Connectivity Restoration**
-   - SSH to client c1
-   - Ping client c3 (should now succeed):
-
-   ```bash
-   c1/ # ping 172.29.30.11
-   PING 172.29.30.11 (172.29.30.11): 56 data bytes
-   64 bytes from 172.29.30.11: seq=0 ttl=253 time=2.921 ms
-   64 bytes from 172.29.30.11: seq=1 ttl=253 time=0.952 ms
-   64 bytes from 172.29.30.11: seq=2 ttl=253 time=0.891 ms
-   64 bytes from 172.29.30.11: seq=3 ttl=253 time=0.992 ms
-   64 bytes from 172.29.30.11: seq=4 ttl=253 time=1.003 ms
-   ^C
-   --- 172.29.30.11 ping statistics ---
-   5 packets transmitted, 5 packets received, 0% packet loss
-   round-trip min/avg/max = 0.891/1.351/2.921 ms
-   ```
-
-   ✅ Connectivity is restored via the l3vnet virtual network!
 
 ---
 
-## 📊 Exercise 7.3: EQL Queries
+## 📊 Exercise 6: EQL Queries
 
 EQL (EDA Query Language) is a path-based query language for extracting information from the network state. Unlike SQL, EQL uses **dotted path notation** to navigate the data model.
 
@@ -403,7 +364,7 @@ EQL queries use the following structure:
 - **No SELECT keyword** - Use `fields` instead
 - **No FROM keyword** - Start with the path directly
 - **Path-based navigation** - Use dots to traverse the data model
-- **Bracket notation for filters** - `[.name=="irb0"]` to filter arrays
+- **Bracket notation for filters** - `[.name=="ethernet-1/1"]` to filter arrays
 
 ---
 
@@ -422,10 +383,10 @@ EQL queries use the following structure:
 
 | namespace.name | name | type | severity | resource |
 |----------------|------|------|----------|----------|
-| dc1 | FanTrayFailure-l1-FanT... | FanTrayFailure | major | l1-FanTray1 |
-| dc1 | FanTrayFailure-l1-FanT... | FanTrayFailure | major | l1-FanTray2 |
-| dc1 | FanTrayFailure-l1-FanT... | FanTrayFailure | major | l1-FanTray3 |
-| dc1 | CertificateUnavailable... | CertificateUnavailable | major | eda-system/eda-keycl... |
+| clab-dc-{GROUP_ID}-eda | FanTrayFailure-leaf1-FanT... | FanTrayFailure | major | leaf1-FanTray1 |
+| clab-dc-{GROUP_ID}-eda | FanTrayFailure-leaf1-FanT... | FanTrayFailure | major | leaf1-FanTray2 |
+| clab-dc-{GROUP_ID}-eda | FanTrayFailure-leaf1-FanT... | FanTrayFailure | major | leaf1-FanTray3 |
+| clab-dc-{GROUP_ID}-eda | CertificateUnavailable... | CertificateUnavailable | major | eda-system/eda-keycl... |
 
 ---
 
@@ -433,17 +394,16 @@ EQL queries use the following structure:
 
 **Query:**
 ```
-.namespace.node.srl.interface.subinterface.ipv4.address fields [.namespace.node.name] where (ip-prefix = "172.29.20.1/24")
+.namespace.node.srl.interface.subinterface.ipv4.address fields [.namespace.node.name] where (ip-prefix = "11.0.0.1/32")
 ```
 
-**Purpose:** Identify which nodes have the IRB gateway IP configured
+**Purpose:** Identify which nodes have the system IP configured
 
 **Expected Output:**
 
 | namespace.name | node.name | interface.name | subinterface.index | ip-prefix |
 |----------------|-----------|----------------|-------------------|-----------|
-| dc1 | l1 | irb0 | 1 | 172.29.20.1/24 |
-| dc1 | l2 | irb0 | 1 | 172.29.20.1/24 |
+| clab-dc-{GROUP_ID}-eda | leaf3 | system0 | 1 | 11.0.0.1/32 |
 
 ---
 
@@ -451,7 +411,7 @@ EQL queries use the following structure:
 
 **Query:**
 ```
-.namespace.node.srl.network-instance.bridge-table.mac-learning.learnt-entries.mac fields [.namespace.node.srl.network-instance.name] where (address = "AA:C1:AB:97:E7:C4")
+.namespace.node.srl.network-instance.bridge-table.mac-learning.learnt-entries.mac fields [.namespace.node.srl.network-instance.name] where (address = "AA:C1:AB:64:CD:5B")
 ```
 
 **Purpose:** Determine which MAC-VRF learned a specific MAC address
@@ -467,7 +427,7 @@ EQL queries use the following structure:
 
 | namespace.name | node.name | network-instance.name | address |
 |----------------|-----------|----------------------|---------|
-| dc1 | l4 | storage | AA:C1:AB:39:59:62 |
+| clab-dc-{GROUP_ID}-eda | leaf1 | l2vnet | AA:C1:AB:64:CD:5B |
 
 ---
 
@@ -501,9 +461,9 @@ EQL queries use the following structure:
 
 | namespace.name | node.name | control.slot | pid | name | start-time | cpu-utilization | memory-usage | memory-utilization |
 |----------------|-----------|--------------|-----|------|------------|-----------------|--------------|-------------------|
-| dc1 | l1 | A | 2779 | sr_xdp_lc | 2025-05-05T14:53:31.000Z | 0 | 855303584 | 1 |
-| dc1 | l4 | A | 2777 | sr_xdp_lc | 2025-05-05T14:53:31.000Z | 0 | 854387040 | 1 |
-| dc1 | s1 | A | 2741 | sr_xdp_lc | 2025-05-05T14:53:31.000Z | 0 | 855205568 | 1 |
+| clab-dc-{GROUP_ID}-eda | leaf1 | A | 2779 | sr_xdp_lc | 2025-05-05T14:53:31.000Z | 0 | 855303584 | 1 |
+| clab-dc-{GROUP_ID}-eda | leaf2 | A | 2777 | sr_xdp_lc | 2025-05-05T14:53:31.000Z | 0 | 854387040 | 1 |
+| clab-dc-{GROUP_ID}-eda | spine1 | A | 2741 | sr_xdp_lc | 2025-05-05T14:53:31.000Z | 0 | 855205568 | 1 |
 
 ---
 
@@ -511,18 +471,18 @@ EQL queries use the following structure:
 
 **Query:**
 ```
-.namespace.node.srl.interface fields [ admin-state, oper-state, last-change ] where (oper-state = "down" and .namespace.node.name = "l1")
+.namespace.node.srl.interface fields [ admin-state, oper-state, last-change ] where (oper-state = "down" and .namespace.node.name = "leaf1")
 ```
 
 **Purpose:** Troubleshoot connectivity issues on a specific leaf
 
 **Expected Output:**
 
-| namespace.name | node.name | name | admin-state | oper-state | last-change |
-|----------------|-----------|------|-------------|------------|-------------|
-| dc1 | l1 | ethernet-1/3 | disable | down | 2025-05-05T14:58:04.589Z |
-| dc1 | l1 | ethernet-1/4 | disable | down | 2025-05-05T14:58:04.589Z |
-| dc1 | l1 | ethernet-1/5 | disable | down | 2025-05-05T14:58:04.589Z |
+| admin-state | oper-state | last-change |
+|-------------|------------|-------------|
+| disable | down | 2025-05-05T14:58:04.589Z |
+| disable | down | 2025-05-05T14:58:04.589Z |
+| disable | down | 2025-05-05T14:58:04.589Z |
 
 ---
 
@@ -530,7 +490,7 @@ EQL queries use the following structure:
 
 **Query:**
 ```
-.namespace.node.srl.network-instance.route-table.ipv4-unicast.route.fib-programming where (.namespace.node.name = "l4" and .namespace.node.srl.network-instance.name = "router")
+.namespace.node.srl.network-instance.route-table.ipv4-unicast.route.fib-programming where (.namespace.node.name = "leaf1" and .namespace.node.srl.network-instance.name = "default")
 ```
 
 **Purpose:** Inspect routing table entries on a specific node and network instance
@@ -539,42 +499,9 @@ EQL queries use the following structure:
 
 | namespace.name | node.name | network-instance.name | route.id | route.ipv4-prefix | route.origin-network-instance | route.route-owner | route.route-type | suppressed |
 |----------------|-----------|----------------------|----------|-------------------|------------------------------|-------------------|------------------|------------|
-| dc1 | l4 | router | 0 | 172.29.20.0/24 | router | bgp_evpn_mgr | bgp-evpn | ⊗ |
-| dc1 | l4 | router | 0 | 172.29.30.11/32 | router | bgp_evpn_mgr | bgp-evpn | ⊗ |
+| clab-dc-{GROUP_ID}-eda | leaf1 | default | 0 | 11.0.0.1/32 | router | bgp_mgr | bgp | ⊗ |
+| clab-dc-{GROUP_ID}-eda | leaf1 | default | 0 | 11.0.0.2/32 | router | bgp_mgr | bgp | ⊗ |
 
----
-
-#### Query 8: Display NTP Offset
-
-**Query:**
-```
-.namespace.node.srl.system.ntp.server fields [COUNT(*), offset] where (.namespace.node.name = "l1")
-```
-
-**Purpose:** Monitor time synchronization health
-
-**Expected Output:**
-
-| COUNT(*) | offset |
-|----------|--------|
-| 1 | 2029 |
-
----
-
-#### Query 9: Display NTP Server Address
-
-**Query:**
-```
-.namespace.node.srl.system.ntp.server fields [address] where (.namespace.node.name = "l2")
-```
-
-**Purpose:** Verify NTP configuration
-
-**Expected Output:**
-
-| namespace.name | node.name | address |
-|----------------|-----------|---------|
-| dc1 | l2 | 172.18.0.1 |
 
 ---
 
@@ -584,7 +511,7 @@ EQL queries use the following structure:
 
 ```
 # Monitor BGP session states
-.namespace.node.srl.network-instance.protocols.bgp.neighbor fields [peer-address, session-state] where (session-state != "established")
+.namespace.node.srl.network-instance.protocols.bgp.neighbor fields [peer-address, session-state] where (session-state = "established")
 
 # Check interface error rates
 .namespace.node.srl.interface.statistics fields [name, in-errors, out-errors] where (in-errors > 0 or out-errors > 0)
@@ -616,22 +543,6 @@ EQL queries use the following structure:
 ---
 
 ## 🛠️ Troubleshooting & Tips
-
-<details>
-<summary><b>Deviation not showing up in dashboard</b></summary>
-
-**Possible causes:**
-- Deviation detection interval not elapsed
-- Change made to unmanaged resource
-- Monitoring service issue
-
-**Solution:**
-1. Wait for next poll cycle (typically 60 seconds)
-2. Verify the resource is managed by an EDA intent
-3. Check EDA monitoring service status
-4. Refresh the GUI
-
-</details>
 
 <details>
 <summary><b>EQL query returns empty results</b></summary>
@@ -737,46 +648,14 @@ Congratulations! You've completed all three parts of the SGNOG12 EDA Lab.
 ## 📚 Additional Resources
 
 ### Documentation
-- [EDA Query Language Reference](https://network.developer.nokia.com/eql)
-- [Deviation Management Guide](https://network.developer.nokia.com/deviations)
+- [Nokia EDA Documentation](https://docs.eda.dev/)
 - [SR Linux Data Model](https://yang.srlinux.dev/)
-
-### Command Reference
-
-**EDA GUI Navigation:**
-```
-Deviations → View all deviations
-Deviations → [Deviation] → Configuration View
-Deviations → [Deviation] → Accept / Reject / Clear Accept
-Query Builder → EQL Query → Enter query → Query
-```
-
-**EQL Query Patterns:**
-```
-# Basic query
-.namespace.node.srl.<path>
-
-# With field selection
-.namespace.node.srl.<path> fields [field1, field2]
-
-# With filtering
-.namespace.node.srl.<path> where (condition)
-
-# With sorting
-.namespace.node.srl.<path> order by [field ascending|descending]
-
-# With limit
-.namespace.node.srl.<path> limit N
-
-# With real-time sampling
-.namespace.node.srl.<path> sample milliseconds 500
-```
 
 ---
 
 ## 🏁 Lab Completion
 
-**This concludes Exercise 7.2 and 7.3 of the SGNOG12 EDA Lab!**
+**This concludes Exercises 5 and 6 of the SGNOG12 EDA Lab!**
 
 You have successfully:
 - Detected and managed configuration deviations
