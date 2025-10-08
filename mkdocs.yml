@@ -13,6 +13,10 @@ nav:
   - Labs:
     - DC Fabric lab: dc-lab/README.md
     - EDA lab: eda-lab/README.md
+      - Part 1: eda-lab/part1-fabric-intent/
+      - Part 2: eda-lab/part2-service-overlays/
+      - Part 3: eda-lab/part3-deviations-eql/
+
 
 
 
