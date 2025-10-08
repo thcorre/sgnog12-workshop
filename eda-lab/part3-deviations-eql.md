@@ -22,7 +22,7 @@ This guide explores EDA's powerful capabilities for **detecting configuration de
 5. [Exercise 6: EQL Queries](#-exercise-6-eql-queries)
    - [Understanding EQL Syntax](#understanding-eql-syntax)
    - [Example Queries](#example-queries)
-6. [Troubleshooting & Tips](#-troubleshooting--tips)
+6. [Troubleshooting & Tips](#%EF%B8%8F-troubleshooting--tips)
 7. [Lab Summary](#-lab-summary)
 
 ---
