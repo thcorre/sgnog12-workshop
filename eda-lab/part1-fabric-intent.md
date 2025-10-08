@@ -18,7 +18,7 @@ This guide provides a **step-by-step workflow** to create a fabric intent for an
    - [Step 4: Check Fabric Health & Summary](#step-4-check-fabric-health--summary)
    - [Step 5: Drill Down - Leafs, Spines, Routers](#step-5-drill-down---leafs-spines-routers)
    - [Step 6: Verify on Devices (SR Linux)](#step-6-verify-on-devices-sr-linux)
-5. [Troubleshooting & Tips](#-troubleshooting--tips)
+5. [Troubleshooting & Tips](#-troubleshooting-&-tips)
 6. [What's Next?](#-whats-next)
 
 ---
