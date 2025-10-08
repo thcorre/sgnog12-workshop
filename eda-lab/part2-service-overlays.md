@@ -20,7 +20,7 @@ Now that your underlay fabric is operational, this guide walks you through creat
    - [Step 3: Verify Device Configuration](#step-3-verify-device-configuration)
    - [Step 4: Check MAC Learning](#step-4-check-mac-learning)
 6. [Alternative Method: Virtual Networks](#-alternative-method-virtual-networks)
-7. [Troubleshooting & Tips](#-troubleshooting--tips)
+7. [Troubleshooting & Tips](#%EF%B8%8F-troubleshooting--tips)
 8. [What's Next?](#-whats-next)
 
 ---
