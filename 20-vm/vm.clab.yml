@@ -4,10 +4,10 @@ topology:
   nodes:
     sonic:
       kind: sonic-vm
-      image: vrnetlab/sonic-vm:202405
+      image: vrnetlab/sonic-vm:202411
     srl:
       kind: nokia_srlinux
-      image: ghcr.io/nokia/srlinux:24.10.4
+      image: ghcr.io/nokia/srlinux:25.7.1
 
   links:
     - endpoints: [sonic:eth1, srl:e1-1]
