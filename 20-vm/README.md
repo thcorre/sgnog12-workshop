@@ -2,7 +2,7 @@
 
 Unfortunately not every NOS is available in a native containerized format, and many NOSes of today are still VM-based.
 
-However do not fear, as using the [vrnetlab](https://github.com/hellt/vrnetlab) we can package these VM-based NOSes into containers so that they can integrate cleanly into Containerlab.
+However do not fear, as using the [vrnetlab](https://github.com/srl-labs/vrnetlab) we can package these VM-based NOSes into containers so that they can integrate cleanly into Containerlab.
 
 !!! info
     The vrnetlab used in Containerlab is a fork of the original `vrnetlab/vrnetlab` project. The original project will not work in contianerlab, you must use the fork which has added extensions for better integration into Containerlab, as well as more supported NOSes.
@@ -12,7 +12,7 @@ However do not fear, as using the [vrnetlab](https://github.com/hellt/vrnetlab) 
 Start with cloning the project:
 
 ```bash
-cd ~ && git clone https://github.com/hellt/vrnetlab.git && \
+cd ~ && git clone https://github.com/srl-labs/vrnetlab.git && \
 cd ~/vrnetlab
 ```
 
@@ -46,7 +46,7 @@ With the sonic image built, we can proceed with the lab deployment. We will depl
 First, let's switch back to the lab directory:
 
 ```bash
-cd ~/idnog10-workshop/20-vm
+cd ~/sgnog12-workshop/20-vm
 ```
 
 Now lets deploy the lab:
@@ -71,7 +71,7 @@ At the end of the deployment, the following table will be displayed. Wait for th
 To monitor the boot process of SONiC, you can open a new terminal and run the following command:
 
 ```bash
-sudo docker logs -f clab-vm-sonic
+docker logs -f clab-vm-sonic
 ```
 
 > the SONiC boot time is approximately 1 minute.

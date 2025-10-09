@@ -7,10 +7,10 @@ Startup configuration is a way to provide initial configuration to the lab nodes
 To enter the lab directory, run the following command from anywhere in your terminal:
 
 ```bash
-[*]─[rd-13]─[~]
-└──> cd ~/idnog10-workshop/15-startup/
+[*]─[clab]─[~]
+└──> cd ~/sgnog12-workshop/15-startup/
 
-[*]─[rd-13]─[~/idnog10-workshop/15-startup]
+[*]─[clab]─[~/sgnog12-workshop/15-startup]
 └──>
 ```
 

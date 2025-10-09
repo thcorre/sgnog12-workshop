@@ -15,7 +15,7 @@ It is a CNCF graduated project and is a great choice for a private registry.
 
 The registry has been already deployed in the workshop environment, but it is quite easy to deploy yourself in your own organization. It is a single docker compose stack that can be deployed in a few minutes.
 
-The Harbor registry offers a neat Web UI to browse the registry contents, manage users and tune access control. You can log in to the registry UI through the public IP address of the Bare Metal host (porovided during the workshop) using the `admin` user and the password available in your workshop handout.
+The Harbor registry offers a neat web gui to browse the registry contents, manage users and tune access control. You can log in to the registry UI through the public IP address of the Bare Metal host (porovided during the workshop) using the `admin` user and the password available in your workshop handout.
 
 When logged in as `admin` you can created users, repositories, browse the registry contents and many more. Managing the harbor registry is out of the scope of this workshop.
 
@@ -48,7 +48,7 @@ topology:
     srl:
       kind: nokia_srlinux
 -     image: ghcr.io/nokia/srlinux:25.3.3
-+     image: {public_IP}/library/nokia_srlinux:25.3.3
++     image: registry.topologies.dev/library/nokia_srlinux:25.3.3
 
   links:
     - endpoints: ["sonic:eth1", "srl:e1-1"]

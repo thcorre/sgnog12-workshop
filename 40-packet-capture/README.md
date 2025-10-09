@@ -1,6 +1,6 @@
 # Packet capture
 
-Every lab emulation software must provide its users with the packet capturing abilities. Looking at the frames as they traverse the network links is not only educational, but also helps to troubleshoot the issues that might arise during the lab development.
+Every network labbing software must provide its users with the packet capturing abilities. Looking at the frames as they traverse the network links is not only educational, but also helps to troubleshoot the issues that might arise during the lab development.
 
 Containerlab offers a simple way to capture the packets from any interface of any node in the lab since every interface is exposed to the underlying Linux OS. This article will explain how to do that.
 
@@ -32,6 +32,20 @@ ssh root@{public_IP} \
 /Applications/Wireshark.app/Contents/MacOS/Wireshark  -k -i -
 ```
 
+## Visual Studio Code
+
+`tcpdump` is great, but what we really want to see is that Wireshark window we know and love.
+
+Thanks to the VS Code extension, you can capture as many packets as you wish without even changing applications.
+
+Open the extension pane and expand the tree view on the left hand side to drill down to the interface level.
+
+Upon hovering on an interface, you should see shark icon. Click the shark icon and watch as the magic happens and wireshark opens right inside of VS Code.
+
+![](https://gitlab.com/rdodin/pics/-/wikis/uploads/752c161fe4e66750a35e0031e7e7d2f7/vscode_wireshark_vnc.gif)
+
+Under the hood this relies on the Edgeshark integration, which is discussed next.
+
 ## Edgeshark
 
 [Edgeshark](https://edgeshark.siemens.io/#/) is a set of tools that offer (among many things) a Web UI that displays every interface of every container and can start a wireshark as easy as clicking a button.
@@ -55,13 +69,13 @@ Now, you have to install the client plugin based on the OS of your PC.
 
 Windows users get to enjoy a simple installer-based workflow that installs the URL handler and the Wireshark plugin in one go.
 
-Download the installer file - <https://github.com/siemens/cshargextcap/releases/download/v0.10.7/cshargextcap_0.10.7_windows_amd64.zip>
+Download the [installer archive](https://github.com/siemens/cshargextcap/releases/download/v0.10.7/cshargextcap_0.10.7_windows_amd64.zip).
 
-Unzip the archive and launch the installer script.
+Unzip the archive and launch the installer.
 
-### MacOs
+### MacOS
 
-MacOs users have to suffer a little. But it is not that bad either.
+MacOS users have to suffer a little. But it is not that bad either.
 
 To install the URL handler paste the following in the Mac terminal app:
 
@@ -73,7 +87,7 @@ unzip packetflix-handler.zip && \
 sudo mv packetflix-handler.app /Applications
 ```
 
-To install the extpcap wireshark plugin execute in the Mac terminal:
+To install the extcap wireshark plugin execute in the Mac terminal:
 
 ```bash
 # for x86_64 MacOS use https://github.com/siemens/cshargextcap/releases/download/v0.10.7/cshargextcap_0.10.7_darwin_amd64.tar.gz
