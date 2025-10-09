@@ -1,24 +1,30 @@
 # Containerlab Basics
 
-This workshop section introduces you to containerlab basics - topology file, image management workflows and lab lifecycle. It is loosely based on the official [Containerlab quickstart](https://containerlab.dev/quickstart/).
+This workshop section introduces you to containerlab basics.
+
+- Topology YAML file
+- Image management workflow
+- The lifecycle of a lab.
 
 ## Repository
 
-The repo should be cloned already and you should be in the `ac1-workshop` directory as per the output below:
+The repo should be cloned already and you should navigate to the `sgnog12-workshop` directory if you are not there already.
 
 ```
-[*]─[rd-13]─[~/clab-workshop/10-basics]
+[*]─[clab]─[~/sgnog12-workshop/10-basics]
 └──>
 ```
 
 ## Topology
+
+In Containerlab, the lab is defined via the 'topology file'. Which is a YAML file which defines the nodes and links in your desired topology.
 
 The topology file `basic.clab.yml` defines the lab we are going to use in this basics exercise. It consists of the two nodes:
 
 * Nokia SR Linux
 * Arista cEOS
 
-The nodes are interconnected with a single link over their respective first Ethernet interfaces.
+The nodes are interconnected with a single link over their respective `e1-1` and `eth1` interfaces.
 
 ```yaml
 name: basic
@@ -26,7 +32,7 @@ topology:
   nodes:
     srl:
       kind: nokia_srlinux
-      image: ghcr.io/nokia/srlinux
+      image: ghcr.io/nokia/srlinux:latest
     ceos:
       kind: arista_ceos
       image: ceos:4.33.1F
@@ -34,6 +40,8 @@ topology:
   links:
     - endpoints: [srl:e1-1, ceos:eth1]
 ```
+
+![](topology-explain.png)
 
 ## Deployment
 
@@ -43,9 +51,21 @@ Try to deploy the lab:
 containerlab deploy -t basic.clab.yml
 ```
 
-Note, you can use a shortcut version of the same command - `sudo clab dep -t basic.clab.yml`.
+Note, you can use a shorter version of the same command - `clab dep -t basic.clab.yml`.
 
-The deployment should succeed.
+The deployment should succeed, and you should see the following tabular output.
+
+```
+╭─────────────────┬──────────────────────────────┬─────────┬───────────────────╮
+│       Name      │      Kind/Image              │  State  │   IPv4/6 Address  │
+├─────────────────┼──────────────────────────────┼─────────┼───────────────────┤
+│ clab-basic-ceos │ arista_ceos                  │ running │ 172.20.20.8       │
+│                 │ ceos:4.33.1F                 │         │ 3fff:172:20:20::8 │
+├─────────────────┼──────────────────────────────┼─────────┼───────────────────┤
+│ clab-basic-srl  │ nokia_srlinux                │ running │ 172.20.20.9       │
+│                 │ ghcr.io/nokia/srlinux:25.3.3 │         │ 3fff:172:20:20::9 │
+╰─────────────────┴──────────────────────────────┴─────────┴───────────────────╯
+```
 
 ## Connecting to the nodes
 
@@ -63,23 +83,24 @@ ssh admin@172.20.20.3
 
 ## Containerlab hosts automation
 
-Containerlab creates `/etc/hosts` entries for each deployed lab so that you can access the nodes using their names. Check the entries:
+Containerlab automatically creates `/etc/hosts` entries for each deployed lab so that you can use the host hostname rather than IP address. Check the entries:
 
 ```bash
 cat /etc/hosts
 ```
-
 ## Containerlab ssh config automation
 
-Containerlab creates ssh config entries in `/etc/ssh/ssh_config.d/clab-<lab-name>.conf` file to provide easy access to the nodes. Check the entries:
+There is also SSH configuration created at `/etc/ssh/ssh_config.d` as `clab-{lab name}.conf`. This means you don't have to enter username for the node with your `ssh` command. 
 
 ```bash
 cat /etc/ssh/ssh_config.d/clab-basic.conf
 ```
 
+The known hosts file for the node entry is also set to `/dev/null` for the lab nodes. This means on subsequent deployments you don't have to worry if the host keys change.
+
 ## Checking network connectivity
 
-SR Linux and cEOS are started with their first Ethernet interfaces connected. Check the connectivity between the nodes:
+SR Linux and cEOS are started with their first ethernet interfaces connected. Confirm the connectivity between the nodes.
 
 The nodes also come up with LLDP enabled, our goal is to verify that the basic network connectivity is working by inspecting
 
@@ -112,68 +133,70 @@ A:srl# show /system lldp neighbor interface ethernet-1/1
 
 ## Listing running labs
 
-When you are in the directory that contains the lab file, you can list the nodes of that lab simply by running:
+When you are in the directory that contains the lab file, you can list the nodes of that lab simply by using the `inspect` command.
 
-```bash
-[*]─[rd-13]─[~/clab-workshop/10-basics]
-└──> sudo containerlab inspect
-INFO[0000] Parsing & checking topology file: basic.clab.yml
-+---+-----------------+--------------+-----------------------+---------------+---------+----------------+----------------------+
-| # |      Name       | Container ID |         Image         |     Kind      |  State  |  IPv4 Address  |     IPv6 Address     |
-+---+-----------------+--------------+-----------------------+---------------+---------+----------------+----------------------+
-| 1 | clab-basic-ceos | c279d892ea22 | ceos:4.32.0F          | arista_ceos   | running | 172.20.20.2/24 | 2001:172:20:20::2/64 |
-| 2 | clab-basic-srl  | 7c46eb454f51 | ghcr.io/nokia/srlinux | nokia_srlinux | running | 172.20.20.3/24 | 2001:172:20:20::3/64 |
-+---+-----------------+--------------+-----------------------+---------------+---------+----------------+----------------------+
+```
+[*]─[clab]─[~/sgnog12-workshop/10-basics]
+└──> containerlab inspect
 ```
 
-If the topology file is located in a different directory, you can specify the path to the topology file:
+We will see that table output we noticed upon successful deployment.
+
+```
+╭─────────────────┬──────────────────────────────┬─────────┬───────────────────╮
+│       Name      │      Kind/Image              │  State  │   IPv4/6 Address  │
+├─────────────────┼──────────────────────────────┼─────────┼───────────────────┤
+│ clab-basic-ceos │ arista_ceos                  │ running │ 172.20.20.8       │
+│                 │ ceos:4.33.1F                 │         │ 3fff:172:20:20::8 │
+├─────────────────┼──────────────────────────────┼─────────┼───────────────────┤
+│ clab-basic-srl  │ nokia_srlinux                │ running │ 172.20.20.9       │
+│                 │ ghcr.io/nokia/srlinux:25.3.3 │         │ 3fff:172:20:20::9 │
+╰─────────────────┴──────────────────────────────┴─────────┴───────────────────╯
+```
+
+If the topology file is located in a different directory, you can specify the directory the topology file lives in, or if multiple topology files live in that directory, give the absolute path to the topology file:
 
 ```bash
-[*]─[rd-13]─[/tmp]
-└──> sudo containerlab inspect -t ~/clab-workshop/10-basics/
-INFO[0000] Parsing & checking topology file: basic.clab.yml
-+---+-----------------+--------------+-----------------------+---------------+---------+----------------+----------------------+
-| # |      Name       | Container ID |         Image         |     Kind      |  State  |  IPv4 Address  |     IPv6 Address     |
-+---+-----------------+--------------+-----------------------+---------------+---------+----------------+----------------------+
-| 1 | clab-basic-ceos | c279d892ea22 | ceos:4.32.0F          | arista_ceos   | running | 172.20.20.2/24 | 2001:172:20:20::2/64 |
-| 2 | clab-basic-srl  | 7c46eb454f51 | ghcr.io/nokia/srlinux | nokia_srlinux | running | 172.20.20.3/24 | 2001:172:20:20::3/64 |
-+---+-----------------+--------------+-----------------------+---------------+---------+----------------+----------------------+
+[*]─[clab]─[/tmp]
+└──> containerlab inspect -t ~/sgnog12-workshop/10-basics
 ```
 
 You can also list all running labs regardless of where their topology files are located:
 
 ```bash
-[*]─[rd-13]─[~/clab-workshop/10-basics]
-└──> sudo containerlab inspect --all
-+---+----------------+----------+-----------------+--------------+-----------------------+---------------+---------+----------------+----------------------+
-| # |   Topo Path    | Lab Name |      Name       | Container ID |         Image         |     Kind      |  State  |  IPv4 Address  |     IPv6 Address     |
-+---+----------------+----------+-----------------+--------------+-----------------------+---------------+---------+----------------+----------------------+
-| 1 | basic.clab.yml | basic    | clab-basic-ceos | c279d892ea22 | ceos:4.32.0F          | arista_ceos   | running | 172.20.20.2/24 | 2001:172:20:20::2/64 |
-| 2 |                |          | clab-basic-srl  | 7c46eb454f51 | ghcr.io/nokia/srlinux | nokia_srlinux | running | 172.20.20.3/24 | 2001:172:20:20::3/64 |
-+---+----------------+----------+-----------------+--------------+-----------------------+---------------+---------+----------------+----------------------+
+[*]─[clab]─[~/sgnog12-workshop/10-basics]
+└──> containerlab inspect --all
+╭──────────────────────────┬──────────┬─────────────────┬──────────────────────────────┬─────────┬───────────────────╮
+│         Topology         │ Lab Name │       Name      │          Kind/Image          │  State  │   IPv4/6 Address  │
+├──────────────────────────┼──────────┼─────────────────┼──────────────────────────────┼─────────┼───────────────────┤
+│ 10-basics/basic.clab.yml │ basic    │ clab-basic-ceos │ arista_ceos                  │ running │ 172.20.20.3       │
+│                          │          │                 │ ceos:4.33.1F                 │         │ 3fff:172:20:20::3 │
+│                          │          ├─────────────────┼──────────────────────────────┼─────────┼───────────────────┤
+│                          │          │ clab-basic-srl  │ nokia_srlinux                │ running │ 172.20.20.2       │
+│                          │          │                 │ ghcr.io/nokia/srlinux:25.3.3 │         │ 3fff:172:20:20::2 │
+╰──────────────────────────┴──────────┴─────────────────┴──────────────────────────────┴─────────┴───────────────────╯
 ```
 
 The output will contain all labs and their nodes.
 
 Shortcuts:
 
-* `sudo clab ins` == `sudo containerlab inspect`
-* `sudo clab ins -a` == `sudo containerlab inspect --all`
+* `clab ins` == `containerlab inspect`
+* `clab ins -a` == `containerlab inspect --all`
 
 ## Lab directory
 
 Lab directory stores the artifacts generated by containerlab that are related to the lab:
 
 * tls certificates
-* startup configurations
+* node artifacts (such as startup configs)
 * inventory files
 * topology export json file
-* bind mounted directories
 
 To list the contents of the lab directory, run:
 
 ```
-[*]─[rd-13]─[~/clab-workshop/10-basics]
+[*]─[clab]─[~/sgnog12-workshop/10-basics]
 └──> tree -L 3 clab-basic/
 ```
 
@@ -183,13 +206,13 @@ When you are done with the lab, you can destroy it. Containerlab can try and fin
 Try it:
 
 ```bash
-sudo clab des --cleanup
+clab des --cleanup
 ```
 
 Alternatively, you could specify the topology file explicitly:
 
 ```bash
-sudo clab des -t basic.clab.yml --cleanup
+clab des -t basic.clab.yml --cleanup
 ```
 
 The `--cleanup` flag ensures that the lab directory gets removed as well.
