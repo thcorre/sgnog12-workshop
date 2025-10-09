@@ -55,3 +55,4 @@ markdown_extensions:
   - pymdownx.tilde
   - attr_list
   - md_in_html
+  - glightbox
