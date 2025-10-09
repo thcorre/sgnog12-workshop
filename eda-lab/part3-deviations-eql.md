@@ -1,6 +1,6 @@
 # 🔍 Part 3: Deviations & EQL (EDA Query Language)
 
-> **Advanced Network Monitoring and Configuration Management with EDA**
+> **Advanced Network Monitoring with EDA**
 
 This guide explores EDA's powerful capabilities for **detecting configuration deviations** and **querying network state** using EQL (EDA Query Language) to gain deep insights into your infrastructure.
 
