@@ -3,7 +3,7 @@ topology:
   nodes:
     srl:
       kind: nokia_srlinux
-      image: ghcr.io/nokia/srlinux:24.7.2
+      image: ghcr.io/nokia/srlinux:25.7.1
       startup-config: srl.cfg
     ceos:
       kind: arista_ceos
