@@ -47,8 +47,8 @@ topology:
 
     srl:
       kind: nokia_srlinux
--     image: ghcr.io/nokia/srlinux:25.3.3
-+     image: registry.topologies.dev/library/nokia_srlinux:25.3.3
+-     image: ghcr.io/nokia/srlinux:25.7.1
++     image: registry.topologies.dev/library/nokia_srlinux:25.7.1
 
   links:
     - endpoints: ["sonic:eth1", "srl:e1-1"]
