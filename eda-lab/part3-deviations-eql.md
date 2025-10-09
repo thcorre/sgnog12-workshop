@@ -636,13 +636,6 @@ Congratulations! You've completed all three parts of the SGNOG12 EDA Lab.
 - 🏗️ Design custom dashboards using EQL
 - 🤝 Join the [SR Linux Community](https://learn.srlinux.dev/)
 
-### Recommended Projects
-
-1. **Build EQL Dashboards:** Create monitoring views for your fabric
-2. **Automate Deviation Handling:** Script acceptance/rejection workflows
-3. **ChatOps Integration:** Integrate EQL queries with Slack/Teams
-4. **GitOps for Intents:** Manage EDA intents as code
-
 ---
 
 ## 📚 Additional Resources
