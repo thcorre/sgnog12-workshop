@@ -36,12 +36,12 @@ In this lab, you will create a Layer 2 EVPN overlay service to connect two clien
 - All clients are untagged
 - Layer 2 connectivity via EVPN-VXLAN overlay
 
-**What you'll learn:**
-✅ Create Bridge Domains for L2 EVPN services
-✅ Configure Bridge Interfaces to attach workloads
-✅ Allocate VNI, EVI, and Tunnel Index from pools
-✅ Verify EVPN-VXLAN operation and MAC learning
-✅ Test end-to-end Layer 2 connectivity
+**What you'll learn:**  
+✅ Create Bridge Domains for L2 EVPN services  
+✅ Configure Bridge Interfaces to attach workloads  
+✅ Allocate VNI, EVI, and Tunnel Index from pools  
+✅ Verify EVPN-VXLAN operation and MAC learning  
+✅ Test end-to-end Layer 2 connectivity  
 
 **Estimated time:** 30 minutes
 
