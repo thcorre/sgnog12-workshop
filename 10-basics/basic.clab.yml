@@ -1,5 +1,10 @@
 name: basic-${GROUP_ID}
 
+mgmt:
+  network: dc-${GROUP_ID}
+  ipv4-subnet: 172.81.${GROUP_ID}0.0/24
+  ipv6-subnet: 3fff:172:81:${GROUP_ID}0::/64
+
 topology:
   nodes:
     srl:
