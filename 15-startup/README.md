@@ -1,6 +1,6 @@
 # Startup configuration
 
-This exercise demonstrates how to provide startup configuration to the lab nodes by means of the [`startup-config`](https://containerlab.dev/manual/nodes/#startup-config) node parameter in the topology file.
+This exercise demonstrates how to provide startup configuration to the lab nodes by means of the [`startup-config`](https://containerlab.dev/manual/nodes/#startup-config) field in the topology file.
 
 Startup configuration is a way to provide initial configuration to the lab nodes when they boot up. This is useful when you want to automate the configuration of the nodes and avoid manual intervention. It also brings your lab to a desired state when you need to test a specific scenario.
 
@@ -21,11 +21,141 @@ We will use the shortened syntax when deploying the lab; less typing and more fu
 ```bash
 clab dep -c
 ```
+!!! note
+    Remember from the basics, when we don't specify the `-t` flag (topology file path) containerlab will search the current directory for a `*.clab.yml` or `*.clab.yaml` file.
 
-> Note, that when calling `clab dep -c` the containerlab will try to find the `*.clab.yml` file in the current working directory. If the file is located elsewhere, you can specify the path to the file as an argument to the `clab dep` command.  
-> The `-c` flag stands for `--cleanup` and it will ensure that if the lab is already running, it will be stopped and removed before deploying a new one.
+    If there are multiple files matching that pattern then you **MUST** use the `-t` flag to specify the topology file path.
+
+Notice that we also use the `-c` flag (`--cleanup`), even though the lab is not deployed this ensures any lab artifacts are deleted and we get a fresh lab coming up.
 
 The startup configuration files - [srl.cfg](srl.cfg) and [ceos.cfg](ceos.cfg) - configure the interfaces, IP addressing, loopbacks and BGP peering between SR Linux and cEOS nodes respectively.
+
+??? info "Expand to see startup configurations"
+
+    /// tab | `srl.cfg`
+    ```
+    interface ethernet-1/1 {
+        subinterface 0 {
+            admin-state enable
+            ipv4 {
+                admin-state enable
+                address 192.168.1.1/24 {
+                }
+            }
+        }
+    }
+    interface lo0 {
+        subinterface 0 {
+            admin-state enable
+            ipv4 {
+                admin-state enable
+                address 10.10.10.1/32 {
+                }
+            }
+        }
+    }
+    network-instance default {
+        interface ethernet-1/1.0 {
+        }
+        interface lo0.0 {
+        }
+        protocols {
+            bgp {
+                admin-state enable
+                autonomous-system 65001
+                router-id 10.10.10.1
+                afi-safi ipv4-unicast {
+                    admin-state enable
+                }
+                group ibgp {
+                    export-policy [ export-lo ]
+                    afi-safi ipv4-unicast {
+                        admin-state enable
+                    }
+                }
+                neighbor 192.168.1.2 {
+                    admin-state enable
+                    peer-as 65001
+                    peer-group ibgp
+                }
+            }
+        }
+    }
+    routing-policy {
+        prefix-set loopback {
+            prefix 10.10.10.1/32 mask-length-range exact {
+            }
+        }
+        policy export-lo {
+            statement 10 {
+                match {
+                    prefix {
+                        prefix-set loopback
+                    }
+                }
+                action {
+                    policy-result accept
+                }
+            }
+        }
+    }
+    ```
+    ///
+    /// tab | `ceos.cfg`
+    ```
+    hostname {{ .ShortName }}
+    username admin privilege 15 secret admin
+    !
+    service routing protocols model multi-agent
+    !
+    {{- if .Env.CLAB_MGMT_VRF }}
+    vrf instance {{ .Env.CLAB_MGMT_VRF }}
+    !
+    {{end}}
+    {{ if .MgmtIPv4Gateway }}ip route {{ if .Env.CLAB_MGMT_VRF }}vrf {{ .Env.CLAB_MGMT_VRF }} {{end}}0.0.0.0/0 {{ .MgmtIPv4Gateway }}{{end}}
+    {{ if .MgmtIPv6Gateway }}ipv6 route {{ if .Env.CLAB_MGMT_VRF }}vrf {{ .Env.CLAB_MGMT_VRF }} {{end}}::0/0 {{ .MgmtIPv6Gateway }}{{end}}
+    !
+    interface {{ .MgmtIntf }}
+    {{ if .Env.CLAB_MGMT_VRF }} vrf {{ .Env.CLAB_MGMT_VRF }}{{end}}
+    {{ if .MgmtIPv4Address }}ip address {{ .MgmtIPv4Address }}/{{.MgmtIPv4PrefixLength}}{{end}}
+    {{ if .MgmtIPv6Address }}ipv6 address {{ .MgmtIPv6Address }}/{{.MgmtIPv6PrefixLength}}{{end}}
+    !
+    management api gnmi
+    transport grpc default
+    {{ if .Env.CLAB_MGMT_VRF }}      vrf {{ .Env.CLAB_MGMT_VRF }}{{end}}
+    !
+    management api netconf
+    transport ssh default
+    {{ if .Env.CLAB_MGMT_VRF }}      vrf {{ .Env.CLAB_MGMT_VRF }}{{end}}
+    !
+    management api http-commands
+    no shutdown
+    {{- if .Env.CLAB_MGMT_VRF }}
+    !
+    vrf {{ .Env.CLAB_MGMT_VRF }}
+        no shutdown
+    {{end}}
+    !
+
+
+    interface Ethernet1
+    no switchport
+    ip address 192.168.1.2/24
+    !
+    interface Loopback0
+    ip address 10.10.10.2/32
+    !
+    ip routing
+    !
+    router bgp 65001
+    router-id 10.10.10.2
+    neighbor 192.168.1.1 remote-as 65001
+    network 10.10.10.2/32
+    !
+
+    end
+    ```
+    ///
 
 In particular, the `srl` node is configured to announce its loopback address `10.10.10.1/32` towards the `ceos` node and the `ceos` node is configured to announce its loopback address `10.10.10.2/32` towards the `srl` node.
 
