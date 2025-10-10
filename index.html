@@ -1,0 +1,1335 @@
+<!DOCTYPE html><html lang="en" class="no-js"><head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+      
+        <link rel="next" href="05-install/">
+      
+      
+      <link rel="icon" href="assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.21">
+    
+    
+      
+        <title>🇸🇬 SGNOG12 x NOKIA Workshop</title>
+      
+    
+    
+      <link rel="stylesheet" href="assets/stylesheets/main.2a3383ac.min.css">
+      
+        
+        <link rel="stylesheet" href="assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&amp;display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  <link href="assets/stylesheets/glightbox.min.css" rel="stylesheet"><script src="assets/javascripts/glightbox.min.js"></script><style id="glightbox-style">
+            html.glightbox-open { overflow: initial; height: 100%; }
+            .gslide-title { margin-top: 0px; user-select: text; }
+            .gslide-desc { color: #666; user-select: text; }
+            .gslide-image img { background: white; }
+            .gscrollbar-fixer { padding-right: 15px; }
+            .gdesc-inner { font-size: 0.75rem; }
+            body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color); }
+            body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color); }
+            body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color); }
+        </style></head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="blue" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#welcome-to-the-nokia-workshop-x-sgnog12" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="." title="🇸🇬 SGNOG12 x NOKIA Workshop" class="md-header__button md-logo" aria-label="🇸🇬 SGNOG12 x NOKIA Workshop" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"></path></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            🇸🇬 SGNOG12 x NOKIA Workshop
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Home
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="blue" data-md-color-accent="indigo" aria-label="Dark mode" type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"></path></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="indigo" aria-label="Light mode" type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"></path></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/thcorre/sgnog12-workshop" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"></path></svg>
+  </div>
+  <div class="md-source__repository">
+    sgnog12-workshop
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="." title="🇸🇬 SGNOG12 x NOKIA Workshop" class="md-nav__button md-logo" aria-label="🇸🇬 SGNOG12 x NOKIA Workshop" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"></path></svg>
+
+    </a>
+    🇸🇬 SGNOG12 x NOKIA Workshop
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/thcorre/sgnog12-workshop" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"></path></svg>
+  </div>
+  <div class="md-source__repository">
+    sgnog12-workshop
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="." class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#pre-requisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pre-requisites
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lab-environment" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lab Environment
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Lab Environment">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#group-id" class="md-nav__link">
+    <span class="md-ellipsis">
+      Group ID
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vs-code-recommended" class="md-nav__link">
+    <span class="md-ellipsis">
+      VS Code (Recommended)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ssh" class="md-nav__link">
+    <span class="md-ellipsis">
+      SSH
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#wifi" class="md-nav__link">
+    <span class="md-ellipsis">
+      WiFi
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="WiFi">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pre-provided-activities" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pre-provided activities
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#topology" class="md-nav__link">
+    <span class="md-ellipsis">
+      Topology
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#help-ive-bricked-my-lab-how-do-i-redeploy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Help! I've bricked my lab, how do I redeploy?
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cloning-this-repository" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cloning this repository
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Cloning this repository">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#https-recommended" class="md-nav__link">
+    <span class="md-ellipsis">
+      HTTPS (Recommended)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ssh_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      SSH
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#github-cli" class="md-nav__link">
+    <span class="md-ellipsis">
+      GitHub CLI
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#useful-links" class="md-nav__link">
+    <span class="md-ellipsis">
+      Useful links
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Useful links">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#misc-toolssoftware" class="md-nav__link">
+    <span class="md-ellipsis">
+      Misc Tools/Software
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Misc Tools/Software">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#windows" class="md-nav__link">
+    <span class="md-ellipsis">
+      Windows
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#macos" class="md-nav__link">
+    <span class="md-ellipsis">
+      MacOS
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#linux" class="md-nav__link">
+    <span class="md-ellipsis">
+      Linux
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#development-tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      Development tools
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2">
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    Getting Started
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Getting Started
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="05-install/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Install Containerlab
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="10-basics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Containerlab basics
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="15-startup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Startup Configuration
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="20-vm/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    VM-Based Nodes
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="30-registry/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Container registries
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="40-packet-capture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Packet capture
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7">
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    DC Fabric Lab
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            DC Fabric Lab
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="dc-lab/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Start
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8">
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    EDA Lab
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            EDA Lab
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="eda-lab/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Start
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="eda-lab/part1-fabric-intent/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Part 1
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="eda-lab/part2-service-overlays/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Part 2
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="eda-lab/part3-deviations-eql/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Part 3
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#pre-requisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pre-requisites
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lab-environment" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lab Environment
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Lab Environment">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#group-id" class="md-nav__link">
+    <span class="md-ellipsis">
+      Group ID
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vs-code-recommended" class="md-nav__link">
+    <span class="md-ellipsis">
+      VS Code (Recommended)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ssh" class="md-nav__link">
+    <span class="md-ellipsis">
+      SSH
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#wifi" class="md-nav__link">
+    <span class="md-ellipsis">
+      WiFi
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="WiFi">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pre-provided-activities" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pre-provided activities
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#topology" class="md-nav__link">
+    <span class="md-ellipsis">
+      Topology
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#help-ive-bricked-my-lab-how-do-i-redeploy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Help! I've bricked my lab, how do I redeploy?
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cloning-this-repository" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cloning this repository
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Cloning this repository">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#https-recommended" class="md-nav__link">
+    <span class="md-ellipsis">
+      HTTPS (Recommended)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ssh_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      SSH
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#github-cli" class="md-nav__link">
+    <span class="md-ellipsis">
+      GitHub CLI
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#useful-links" class="md-nav__link">
+    <span class="md-ellipsis">
+      Useful links
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Useful links">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#misc-toolssoftware" class="md-nav__link">
+    <span class="md-ellipsis">
+      Misc Tools/Software
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Misc Tools/Software">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#windows" class="md-nav__link">
+    <span class="md-ellipsis">
+      Windows
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#macos" class="md-nav__link">
+    <span class="md-ellipsis">
+      MacOS
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#linux" class="md-nav__link">
+    <span class="md-ellipsis">
+      Linux
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#development-tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      Development tools
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="welcome-to-the-nokia-workshop-x-sgnog12">Welcome to the Nokia workshop x SGNOG12!</h1>
+<p>This page is your starting point into the workshop, it should get you familiar with the lab environment provided by Nokia and provide an overview of the suggested sample activities.</p>
+<p>During these 2 days you will work in groups on the pre-provided lab activities.</p>
+<p>As long as you have a laptop with a web browser, you should be good to go. </p>
+<p>Need help, not a problem, pop your hand in the air and we will be there to guide you. </p>
+<h2 id="pre-requisites">Pre-requisites</h2>
+<p>A list of workshop modules. Each module is a self-contained guide that can be followed independently, but it is recommended to go through them in order if you are new to Containerlab.</p>
+<ol>
+<li><a href="05-install/">Installing Containerlab</a></li>
+<li><a href="10-basics/">Containerlab basics</a></li>
+<li><a href="15-startup/">Startup configuration</a></li>
+<li><a href="20-vm/">VM-based nodes</a></li>
+<li><a href="30-registry/">Container registries</a></li>
+<li><a href="40-packet-capture/">Packet capture</a></li>
+</ol>
+<p>Loved this workshop? Let us know in the comments of this <a href="https://www.linkedin.com/posts/thomascorre_datacenter-netdevops-containerlab-activity-7376250483642052608-W_qm">LinkedIn post</a>.</p>
+<h2 id="lab-environment">Lab Environment</h2>
+<p>For this workshop each group of participants will receive their own dedicated directory running an instance of the lab topology.</p>
+<p>If everything went according to plan, you should have received a physical piece of paper which contains:
+- A group ID allocated to your group
+- SSH credentials to a public cloud instance dedicated to your group. 
+- HTTPS URL's towards this repo and access to a web based IDE in case you don't have one installed on your operating system.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Make sure to backup any code, config, ... <ins>offline (e.g your laptop)</ins>.</p>
+<p>The public cloud instance will be destroyed once the workshop is concluded.</p>
+</div>
+<h3 id="group-id">Group ID</h3>
+<p>Please refer to the paper provided by the workshop session leaders. If nothing has been provided, not a problem, pop your hand in the air and an eager expert will be there to allocate one for you.</p>
+<h3 id="vs-code-recommended">VS Code (Recommended)</h3>
+<p>Each group has a web VS Code environment available, multiple users are available to connect to the web vscode session at the same time.</p>
+<p>Navigate to <code>group&lt;GROUP ID&gt;.topologies.dev</code> and log in with your group password.</p>
+<p><a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="code-server.png" data-desc-position="bottom"><img alt="" src="code-server.png"></a></p>
+<h3 id="ssh">SSH</h3>
+<ul>
+<li>Hostname: <strong>refer to the paper provided</strong></li>
+<li>Username: <strong>refer to the paper provided or the slide presented</strong></li>
+<li>Password: <strong>refer to the paper provided or the slide presented</strong></li>
+</ul>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>To enable password-less access to an instance, use <code>ssh-keygen -h</code> to generate a public/private key pair and then <code>ssh-copy-id</code> to copy it to the server.</p>
+</div>
+<h3 id="wifi">WiFi</h3>
+<p>Details provided in the session.</p>
+<h4 id="pre-provided-activities">Pre-provided activities</h4>
+<p>Below you can find a table with links towards those pre-provided project which you can use as a baseline for the problem/project you might want to tackle or perform the tasks we've set up for you.</p>
+<p>The lab comes with a README of its own, please click the link below for more information.</p>
+<table>
+<thead>
+<tr>
+<th>Link to pre-provided labs</th>
+<th>NOS</th>
+<th>Difficulty</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="./dc-lab">DC lab</a></td>
+<td>SR Linux</td>
+<td>Intermediate</td>
+</tr>
+<tr>
+<td><a href="./eda-lab">EDA lab</a></td>
+<td>EDA</td>
+<td>Intermediate</td>
+</tr>
+</tbody>
+</table>
+<h4 id="topology">Topology</h4>
+<p>When accessing your group instance you'll see this repository has already been cloned for you and a fully configured network is up and running (powered by <a href="https://www.containerlab.dev">containerlab</a>).</p>
+<div class="admonition question">
+<p class="admonition-title">Will I interfere with other groups?</p>
+<p>Don't worry: This is your personal group network, you cannot impact any other groups.</p>
+</div>
+<p><a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="sgnog12-workshop-topology.png" data-desc-position="bottom"><img alt="topology" src="sgnog12-workshop-topology.png"></a></p>
+<p>The above topology contains a number of functional blocks to help you in area's you might want to focus on, it contains:</p>
+<p><strong>IXP DC lab:</strong></p>
+<ul>
+<li>a CLOS model:<ul>
+<li>2x spines (spine1|spine2) and 3 leaf switches (leaf1|leaf2|leaf3)</li>
+</ul>
+</li>
+<li>IPv6 BGP unnumbered configured in the underlay</li>
+<li>Linux clients are attached to L2 EVPN service allowinga full mesh of traffic</li>
+<li>A streaming telemetry stack (gNMIc/prometheus/grafana)</li>
+</ul>
+<h3 id="help-ive-bricked-my-lab-how-do-i-redeploy">Help! I've bricked my lab, how do I redeploy?</h3>
+<p>When accessing your workshop host, you'll see in your home directory: the SGNOG12 directory is a clone of this repository.</p>
+<p>The labs covered in this workshops (powered by <a href="https://www.containerlab.dev">containerlab</a>), are available for you to use.</p>
+<p>If you have broken something and would like to restore the state without extensively troubleshooting, you can destroy and redeploy the command via following <code>clab</code> commands:</p>
+<div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span><span class="nv">$HOME</span>/
+clab<span class="w"> </span>destroy<span class="w"> </span>-t<span class="w"> </span>sgnog12-workshop/dc-lab/dc.sgnog12.clab.yml<span class="w"> </span>--cleanup<span class="w"> </span>
+clab<span class="w"> </span>deploy<span class="w"> </span>-t<span class="w"> </span>sgnog12-workshop/dc-lab/dc.sgnog12.clab.yml<span class="w"> </span>--reconfigure
+</code></pre></div>
+<h2 id="cloning-this-repository">Cloning this repository</h2>
+<p>If you would like to work locally on your personal device you should clone this repository. </p>
+<p>This can be done using one of the following commands below.</p>
+<h3 id="https-recommended">HTTPS (Recommended)</h3>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/thcorre/sgnog12-workshop.git
+</code></pre></div>
+<h3 id="ssh_1">SSH</h3>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>clone<span class="w"> </span>git@github.com:thcorre/sgnog12-workshop.git
+</code></pre></div>
+<h3 id="github-cli">GitHub CLI</h3>
+<div class="highlight"><pre><span></span><code>gh<span class="w"> </span>repo<span class="w"> </span>clone<span class="w"> </span>thcorre/sgnog12-workshop
+</code></pre></div>
+<h2 id="useful-links">Useful links</h2>
+<ul>
+<li><a href="https://network.developer.nokia.com/">Nokia network developer portal</a></li>
+<li><a href="https://containerlab.dev/">containerlab</a></li>
+<li><a href="https://gnmic.openconfig.net/">gNMIc</a></li>
+<li><a href="https://learn.srlinux.dev/">Learn Nokia SR Linux</a></li>
+<li><a href="https://yang.srlinux.dev/">SR Linux YANG Browser</a></li>
+<li><a href="https://gnxi.srlinux.dev/">gNxI Browser</a></li>
+<li><a href="https://eda.dev/">Nokia EDA</a></li>
+</ul>
+<h3 id="misc-toolssoftware">Misc Tools/Software</h3>
+<h4 id="windows">Windows</h4>
+<ul>
+<li><a href="https://github.com/srl-labs/WSL-Containerlab?tab=readme-ov-file#quick-start">Containerlab WSL</a></li>
+<li><a href="https://apps.microsoft.com/store/detail/windows-terminal/9N0DX20HK701">Windows Terminal</a></li>
+<li><a href="https://mobaxterm.mobatek.net/download.html">MobaXterm</a></li>
+<li><a href="https://the.earth.li/~sgtatham/putty/latest/w64/putty-64bit-0.78-installer.msi">PuTTY Installer</a></li>
+<li><a href="https://the.earth.li/~sgtatham/putty/latest/w64/putty.exe">PuTTY Binary</a></li>
+</ul>
+<h4 id="macos">MacOS</h4>
+<ul>
+<li><a href="https://iterm2.com/downloads/stable/iTerm2-3_4_19.zip">iTerm2</a></li>
+<li><a href="https://app.warp.dev/get_warp">Warp</a></li>
+<li><a href="https://hyper.is/">Hyper</a></li>
+<li><a href="https://support.apple.com/en-gb/guide/terminal/apd5265185d-f365-44cb-8b09-71a064a42125/mac">Terminal</a></li>
+</ul>
+<h4 id="linux">Linux</h4>
+<ul>
+<li><a href="https://apps.gnome.org/en/app/org.gnome.Console/">Gnome Console</a></li>
+<li><a href="https://help.gnome.org/users/gnome-terminal/stable/">Gnome Terminal</a></li>
+</ul>
+<h4 id="development-tools">Development tools</h4>
+<ul>
+<li><a href="https://code.visualstudio.com/Download">VS Code</a><ul>
+<li><a href="https://marketplace.visualstudio.com/items?itemName=srl-labs.vscode-containerlab">Containerlab extension</a></li>
+<li><a href="https://marketplace.visualstudio.com/items?itemName=eda-labs.vscode-eda">Nokia EDA extension</a></li>
+</ul>
+</li>
+<li><a href="https://vscode.dev/">VS Code Web</a></li>
+<li><a href="https://www.sublimetext.com/download">Sublime Text</a></li>
+<li><a href="https://www.jetbrains.com/idea/download/">IntelliJ IDEA</a></li>
+<li><a href="https://www.eclipse.org/downloads/">Eclipse</a></li>
+<li><a href="https://www.jetbrains.com/pycharm/download">PyCharm</a></li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-progress" data-md-component="progress" role="progressbar"></div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": ".", "features": ["content.code.copy", "content.code.annotate", "navigation.instant", "navigation.instant.progress", "navigation.sections"], "search": "assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="assets/javascripts/bundle.f55a23d4.min.js"></script>
+      
+    
+  
+<script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
+document$.subscribe(()=>{ lightbox.reload(); });
+</script></body></html>

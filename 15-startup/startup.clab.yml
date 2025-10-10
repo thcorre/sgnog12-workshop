@@ -1,0 +1,20 @@
+name: startup-${GROUP_ID}
+
+mgmt:
+  network: 15-startup-${GROUP_ID}
+  ipv4-subnet: 172.82.${GROUP_ID}.0/24
+  ipv6-subnet: 3fff:172:82:${GROUP_ID}::/64
+  
+topology:
+  nodes:
+    srl:
+      kind: nokia_srlinux
+      image: ghcr.io/nokia/srlinux:25.7.1
+      startup-config: srl.cfg
+    ceos:
+      kind: arista_ceos
+      image: ceos:4.33.1F
+      startup-config: ceos.cfg
+
+  links:
+    - endpoints: [srl:e1-1, ceos:eth1]

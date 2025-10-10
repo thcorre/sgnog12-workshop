@@ -1,0 +1,1329 @@
+<!DOCTYPE html><html lang="en" class="no-js"><head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.21">
+    
+    
+      
+        <title>🏗️ Part 1: Fabric Intent Creation &amp; Verification - 🇸🇬 SGNOG12 x NOKIA Workshop</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.2a3383ac.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&amp;display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  <link href="../../assets/stylesheets/glightbox.min.css" rel="stylesheet"><script src="../../assets/javascripts/glightbox.min.js"></script><style id="glightbox-style">
+            html.glightbox-open { overflow: initial; height: 100%; }
+            .gslide-title { margin-top: 0px; user-select: text; }
+            .gslide-desc { color: #666; user-select: text; }
+            .gslide-image img { background: white; }
+            .gscrollbar-fixer { padding-right: 15px; }
+            .gdesc-inner { font-size: 0.75rem; }
+            body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color); }
+            body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color); }
+            body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color); }
+        </style></head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="blue" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#part-1-fabric-intent-creation-verification" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="🇸🇬 SGNOG12 x NOKIA Workshop" class="md-header__button md-logo" aria-label="🇸🇬 SGNOG12 x NOKIA Workshop" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"></path></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            🇸🇬 SGNOG12 x NOKIA Workshop
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              🏗️ Part 1: Fabric Intent Creation &amp; Verification
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="blue" data-md-color-accent="indigo" aria-label="Dark mode" type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"></path></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="indigo" aria-label="Light mode" type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"></path></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/thcorre/sgnog12-workshop" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"></path></svg>
+  </div>
+  <div class="md-source__repository">
+    sgnog12-workshop
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="🇸🇬 SGNOG12 x NOKIA Workshop" class="md-nav__button md-logo" aria-label="🇸🇬 SGNOG12 x NOKIA Workshop" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"></path></svg>
+
+    </a>
+    🇸🇬 SGNOG12 x NOKIA Workshop
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/thcorre/sgnog12-workshop" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"></path></svg>
+  </div>
+  <div class="md-source__repository">
+    sgnog12-workshop
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2">
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    Getting Started
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Getting Started
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../05-install/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Install Containerlab
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../10-basics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Containerlab basics
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../15-startup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Startup Configuration
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../20-vm/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    VM-Based Nodes
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../30-registry/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Container registries
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../40-packet-capture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Packet capture
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7">
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    DC Fabric Lab
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            DC Fabric Lab
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dc-lab/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Start
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8">
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    EDA Lab
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            EDA Lab
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Start
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="./" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Part 1
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../part2-service-overlays/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Part 2
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../part3-deviations-eql/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Part 3
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#table-of-contents" class="md-nav__link">
+    <span class="md-ellipsis">
+      📋 Table of Contents
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      👨🏻‍💻 Overview
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      ☑️ Prerequisites
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quick-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      🚀 Quick Summary
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exercise-1-build-the-fabric" class="md-nav__link">
+    <span class="md-ellipsis">
+      📖 Exercise 1: Build the fabric
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="📖 Exercise 1: Build the fabric">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-create-the-fabric-intent" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 1: Create the Fabric Intent
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-transaction-dry-run-review" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 2: Transaction Dry-Run &amp; Review
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Step 2: Transaction Dry-Run &amp; Review">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-dry-run" class="md-nav__link">
+    <span class="md-ellipsis">
+      What is Dry-Run?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#explore-the-details" class="md-nav__link">
+    <span class="md-ellipsis">
+      Explore the Details
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#view-configuration-diffs" class="md-nav__link">
+    <span class="md-ellipsis">
+      View Configuration Diffs
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-commit-the-intent" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 3: Commit the Intent
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-4-check-fabric-health-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 4: Check Fabric Health &amp; Summary
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Step 4: Check Fabric Health &amp; Summary">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#health-score" class="md-nav__link">
+    <span class="md-ellipsis">
+      Health Score
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#summary-view" class="md-nav__link">
+    <span class="md-ellipsis">
+      Summary View
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-5-drill-down-leafs-spines-routers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 5: Drill Down - Leafs, Spines, Routers
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-6-verify-on-devices-sr-linux" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 6: Verify on Devices (SR Linux)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Step 6: Verify on Devices (SR Linux)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#interfaces" class="md-nav__link">
+    <span class="md-ellipsis">
+      🔌 Interfaces
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#network-instance" class="md-nav__link">
+    <span class="md-ellipsis">
+      🌐 Network Instance
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#route-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      🗺️ Route Table
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bgp-neighbors" class="md-nav__link">
+    <span class="md-ellipsis">
+      🤝 BGP Neighbors
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting-tips" class="md-nav__link">
+    <span class="md-ellipsis">
+      🛠️ Troubleshooting &amp; Tips
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#whats-next" class="md-nav__link">
+    <span class="md-ellipsis">
+      🎓 What's Next?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#additional-resources" class="md-nav__link">
+    <span class="md-ellipsis">
+      📚 Additional Resources
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="part-1-fabric-intent-creation-verification">🏗️ Part 1: Fabric Intent Creation &amp; Verification</h1>
+<blockquote>
+<p><strong>EDA Fabric: Intent Creation &amp; Status Verification</strong></p>
+</blockquote>
+<p>This guide provides a <strong>step-by-step workflow</strong> to create a fabric intent for an CLOS leaf–spine IP underlay in <strong>Nokia EDA</strong> and verify the resulting fabric status and node configuration.</p>
+<hr>
+<h2 id="table-of-contents">📋 Table of Contents</h2>
+<ol>
+<li><a href="#-overview">Overview</a></li>
+<li><a href="#-prerequisites">Prerequisites</a></li>
+<li><a href="#-quick-summary">Quick Summary</a></li>
+<li><a href="#-Exercise-1-build-the-Fabric">Exercise 1: Build the Fabric</a></li>
+<li><a href="#step-1-create-the-fabric-intent">Step 1: Create the Fabric Intent</a></li>
+<li><a href="#step-2-transaction-dry-run--review">Step 2: Transaction Dry-Run &amp; Review</a></li>
+<li><a href="#step-3-commit-the-intent">Step 3: Commit the Intent</a></li>
+<li><a href="#step-4-check-fabric-health--summary">Step 4: Check Fabric Health &amp; Summary</a></li>
+<li><a href="#step-5-drill-down---leafs-spines-routers">Step 5: Drill Down - Leafs, Spines, Routers</a></li>
+<li><a href="#step-6-verify-on-devices-sr-linux">Step 6: Verify on Devices (SR Linux)</a></li>
+<li><a href="#%EF%B8%8F-troubleshooting--tips">Troubleshooting &amp; Tips</a></li>
+<li><a href="#-whats-next">What's Next?</a></li>
+</ol>
+<hr>
+<h2 id="overview">👨🏻‍💻 Overview</h2>
+<p>In this lab, you will:</p>
+<ul>
+<li>Create a fabric intent to automate underlay configuration</li>
+<li>Use EDA's dry-run feature to preview changes safely</li>
+<li>Deploy the fabric intent across your leaf-spine topology</li>
+<li>Verify fabric health through EDA's GUI</li>
+<li>Validate configurations directly on SR Linux devices</li>
+</ul>
+<p><strong>Estimated time:</strong> 45 minutes</p>
+<hr>
+<h2 id="prerequisites">☑️ Prerequisites</h2>
+<p>Before starting, ensure you have:</p>
+<ul>
+<li>An operational <strong>EDA environment</strong> with GUI access</li>
+<li>A discovered/imported topology (leafs/spines)</li>
+<li>Pre-created <strong>allocation pools</strong>:</li>
+<li>System IPs</li>
+<li>Inter-switch /31 pools</li>
+<li>ASN pool</li>
+<li><strong>Labels</strong> on nodes and links to distinguish:</li>
+<li>Leaf nodes (<code>eda.nokia.com/role=leaf</code>)</li>
+<li>Spine nodes (<code>eda.nokia.com/role=spine</code>)</li>
+<li>Inter-switch links (<code>eda.nokia.com/role=interSwitch</code>)</li>
+</ul>
+<blockquote>
+<p><strong>Note:</strong> This guide assumes pools and selectors already exist and references them by name in examples.</p>
+</blockquote>
+<hr>
+<h2 id="quick-summary">🚀 Quick Summary</h2>
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>1</strong></td>
+<td>Create a fabric intent in EDA with required parameters</td>
+</tr>
+<tr>
+<td><strong>2</strong></td>
+<td>Add to transaction and run <strong>dry-run</strong> to preview changes</td>
+</tr>
+<tr>
+<td><strong>3</strong></td>
+<td>Review summary: input CRs, changed CRs, intents run, nodes impacted</td>
+</tr>
+<tr>
+<td><strong>4</strong></td>
+<td><strong>Commit</strong> the transaction to push configuration to nodes</td>
+</tr>
+<tr>
+<td><strong>5</strong></td>
+<td>Check fabric health &amp; summary in GUI; drill down to entities</td>
+</tr>
+<tr>
+<td><strong>6</strong></td>
+<td>Verify on devices: interfaces, network-instance, routes, BGP neighbors</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="exercise-1-build-the-fabric">📖 Exercise 1: Build the fabric</h2>
+<h3 id="step-1-create-the-fabric-intent">Step 1: Create the Fabric Intent</h3>
+<p>Navigate to <strong>Fabrics → Create</strong> in the EDA GUI and configure the following parameters:</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Name</strong></td>
+<td><code>myfabric</code></td>
+</tr>
+<tr>
+<td><strong>Namespace</strong></td>
+<td><code>clab-dc-${GROUP_ID}-eda</code></td>
+</tr>
+<tr>
+<td><strong>IPv4 Pool – System IP</strong></td>
+<td><code>systemipv4-pool</code></td>
+</tr>
+<tr>
+<td><strong>Leaf Node Selector</strong></td>
+<td><code>eda.nokia.com/role=leaf</code></td>
+</tr>
+<tr>
+<td><strong>Spine Node Selector</strong></td>
+<td><code>eda.nokia.com/role=spine</code></td>
+</tr>
+<tr>
+<td><strong>InterSwitchLinks Unnumbered</strong></td>
+<td><code>IPV6</code></td>
+</tr>
+<tr>
+<td><strong>Link Selector</strong></td>
+<td><code>eda.nokia.com/role=interSwitch</code></td>
+</tr>
+<tr>
+<td><strong>Underlay Protocol</strong></td>
+<td><code>EBGP</code></td>
+</tr>
+<tr>
+<td><strong>Underlay Protocol – Autonomous System Pool</strong></td>
+<td><code>asn-pool</code></td>
+</tr>
+<tr>
+<td><strong>Overlay Protocol</strong></td>
+<td><code>EBGP</code></td>
+</tr>
+</tbody>
+</table>
+<p>See the below screenshot for reference:
+<a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="../docs/fabric-intent_creation.png" data-desc-position="bottom"><img alt="Fabric Intent creation" src="../docs/fabric-intent_creation.png"></a></p>
+<blockquote>
+<p><strong>What happens next?</strong> When committed, EDA evaluates each topology node against the selectors (leaf/spine), allocates IPs and ASNs from the configured pools, and generates node configurations automatically.</p>
+</blockquote>
+<hr>
+<h3 id="step-2-transaction-dry-run-review">Step 2: Transaction Dry-Run &amp; Review</h3>
+<p>After creating the fabric intent:</p>
+<ol>
+<li>➕ Add it to a <strong>transaction</strong></li>
+<li>✍️ Add a <strong>commit message</strong></li>
+<li>🔍 Click <strong>Dry-run</strong></li>
+</ol>
+<p>Expected output:<br>
+<a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="../docs/fabric-intent_dry-run_success.png" data-desc-position="bottom"><img alt="Fabric Intent Dry-run success" src="../docs/fabric-intent_dry-run_success.png"></a></p>
+<h4 id="what-is-dry-run">What is Dry-Run?</h4>
+<p>EDA executes the intent <strong>without changing any node</strong>, allowing you to validate everything safely. The summary displays:</p>
+<ul>
+<li>📊 Intent runs</li>
+<li>🔄 Changed CRs</li>
+<li>🖥️ Nodes with changes</li>
+</ul>
+<h4 id="explore-the-details">Explore the Details</h4>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>What to Inspect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Input CRs</strong></td>
+<td>Configuration resources being provided</td>
+</tr>
+<tr>
+<td><strong>Changed CRs</strong></td>
+<td>EDA building blocks: interfaces, routers, BGP groups/peers, policies</td>
+</tr>
+<tr>
+<td><strong>Intents Run</strong></td>
+<td>Which intents were executed</td>
+</tr>
+<tr>
+<td><strong>Nodes with changes</strong></td>
+<td>Affected devices</td>
+</tr>
+</tbody>
+</table>
+<p><a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="../docs/fabric-intent_transaction_crs.png" data-desc-position="bottom"><img alt="Fabric Intent Transaction CRs" src="../docs/fabric-intent_transaction_crs.png"></a></p>
+<h4 id="view-configuration-diffs">View Configuration Diffs</h4>
+<p>Use the <strong>Diff view</strong> to compare per-node configuration before/after:</p>
+<ul>
+<li>Example: A leaf may gain <code>subinterface 0</code> with a <code>/31</code> address on an inter-switch link, allocated from your subnet pool</li>
+</ul>
+<blockquote>
+<p>⚠️ <strong>Important:</strong> Dry-run makes <strong>no changes</strong>. A device (e.g., <code>leaf3</code>) will still show only its pre-existing config until you commit.</p>
+</blockquote>
+<hr>
+<h3 id="step-3-commit-the-intent">Step 3: Commit the Intent</h3>
+<ol>
+<li>Return to the <strong>transaction basket</strong></li>
+<li>Click <strong>Commit</strong></li>
+</ol>
+<p>EDA will push all resulting configuration changes to the nodes.</p>
+<p>✅ The transaction will show <strong>"Commit Successful"</strong> when complete.</p>
+<hr>
+<h3 id="step-4-check-fabric-health-summary">Step 4: Check Fabric Health &amp; Summary</h3>
+<p>Navigate to <strong>Fabrics</strong> and view the fabric status.</p>
+<h4 id="health-score">Health Score</h4>
+<p>EDA reports a <strong>health score</strong> (e.g., <code>100%</code>) computed from:</p>
+<ul>
+<li>🔀 Routers (network-instances)</li>
+<li>🔗 Links</li>
+<li>🤝 BGP peers</li>
+</ul>
+<h4 id="summary-view">Summary View</h4>
+<p>Switch to the <strong>Summary view</strong> to see:</p>
+<ul>
+<li>📈 Graphical breakdown of fabric building blocks:</li>
+<li>Default interfaces/routers</li>
+<li>Inter-switch links</li>
+<li>Default BGP peers</li>
+<li>📊 Trend of learned routes across the fabric</li>
+</ul>
+<p><a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="../docs/fabric-intent_state_summary.png" data-desc-position="bottom"><img alt="Fabric State summary" src="../docs/fabric-intent_state_summary.png"></a></p>
+<hr>
+<h3 id="step-5-drill-down-leafs-spines-routers">Step 5: Drill Down - Leafs, Spines, Routers</h3>
+<p>From the <strong>Summary view</strong>, explore the fabric components:</p>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Action</th>
+<th>What to Verify</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Leafs</strong></td>
+<td>Click <strong>view</strong> on Leafs</td>
+<td>Node details including assigned underlay ASNs</td>
+</tr>
+<tr>
+<td><strong>Spines</strong></td>
+<td>Click <strong>view</strong> on Spines</td>
+<td>Both spines share the ASN from <code>asn-pool</code> (e.g., <code>65000</code>)</td>
+</tr>
+<tr>
+<td><strong>Default Routers</strong></td>
+<td>Click <strong>view</strong> on Default Routers</td>
+<td>Router health and parameters (e.g., <code>router-id</code> from system IP pool)</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="step-6-verify-on-devices-sr-linux">Step 6: Verify on Devices (SR Linux)</h3>
+<p>SSH to a spine (e.g., <code>spine1</code>) and verify the configuration.</p>
+<h4 id="interfaces">🔌 Interfaces</h4>
+<p>Check interfaces and addresses on routed subinterfaces:</p>
+<div class="highlight"><pre><span></span><code>show<span class="w"> </span>interface
+</code></pre></div>
+<p><strong>Expected output:</strong>
+- Routed subinterfaces:
+  - On leaf: <code>ethernet-1/49.0</code>, <code>ethernet-1/50.0</code>
+  - On spine: <code>ethernet-1/1.0</code>, <code>ethernet-1/2.0</code>
+- <code>/64</code> link-layer IPv6 addresses
+- <code>system0.0</code> loopback with the system IP</p>
+<hr>
+<h4 id="network-instance">🌐 Network Instance</h4>
+<p>Inspect the default network-instance and BGP config:</p>
+<div class="highlight"><pre><span></span><code>info<span class="w"> </span>network-instance<span class="w"> </span>default
+</code></pre></div>
+<p><strong>Expected configuration:</strong>
+- Default network-instance with <code>router-id</code> (system IP)
+- Routed interfaces added by the fabric intent
+- BGP enabled with configured <code>autonomous-system</code> and eBGP defaults</p>
+<hr>
+<h4 id="route-table">🗺️ Route Table</h4>
+<p>View routes in the default network-instance:</p>
+<div class="highlight"><pre><span></span><code>show<span class="w"> </span>network-instance<span class="w"> </span>default<span class="w"> </span>route-table
+</code></pre></div>
+<p><strong>Expected routes:</strong>
+- <code>/32</code> system routes for leaf/spine nodes
+- Next-hops over the IPv6 link-layer IPv6 addresses</p>
+<hr>
+<h4 id="bgp-neighbors">🤝 BGP Neighbors</h4>
+<p>Confirm BGP sessions to leafs (IPv4-unicast + EVPN):</p>
+<div class="highlight"><pre><span></span><code>show<span class="w"> </span>network-instance<span class="w"> </span>default<span class="w"> </span>protocols<span class="w"> </span>bgp<span class="w"> </span>neighbor
+</code></pre></div>
+<p><strong>Expected neighbors:</strong>
+- eBGP neighbors to leafs from spines and eBGP neighbors to spines from leafs
+- AFI/SAFI: <code>ipv4-unicast</code>, <code>ipv6-unicast</code> (underlay) and <code>evpn</code> (overlay) 
+- Status: <strong>Established</strong>
+- Matches the fabric intent (EBGP for both underlay and overlay)</p>
+<hr>
+<h2 id="troubleshooting-tips">🛠️ Troubleshooting &amp; Tips</h2>
+<details>
+<summary><b>❓ Dry-run shows changes, but devices didn't update</b></summary>
+
+**Answer:** This is **expected behavior**. Dry-run does not touch devices—it only previews changes.
+
+**Solution:** Commit the transaction to push changes to devices.
+
+</details>
+
+<details>
+<summary><b>❓ Unexpected node count in Summary</b></summary>
+
+**Issue:** The fabric shows fewer nodes than your topology (e.g., 3 leafs visible when topology has 4).
+
+**Solution:** Use the Summary drill-downs to investigate:
+- Label/selector coverage
+- Intent scope
+- Node discovery status
+
+</details>
+
+<details>
+<summary><b>❓ How to validate diffs per node?</b></summary>
+
+**Solution:** Use the **Diff view** to confirm exactly what EDA intends to configure:
+- Interfaces
+- BGP groups/peers
+- Policies
+
+</details>
+
+<details>
+<summary><b>❓ BGP sessions not establishing</b></summary>
+
+**Possible causes:**
+- IP address allocation errors
+- ASN mismatches
+- Interface not operationally up
+
+**Solution:**
+1. Verify interface status: `show interface brief`
+2. Check BGP configuration: `info network-instance default protocols bgp`
+3. Review EDA transaction logs for errors
+
+</details>
+
+<hr>
+<h2 id="whats-next">🎓 What's Next?</h2>
+<p>Congratulations! You've successfully created and verified your fabric underlay using EDA intents.</p>
+<p><strong>Next steps:</strong></p>
+<ul>
+<li>🔄 <strong><a href="../part2-service-overlays/">Part 2: Service Overlays</a></strong> - Build EVPN-VXLAN services on top of your fabric</li>
+<li>🔍 <strong><a href="../part3-deviations-eql/">Part 3: Deviations &amp; EQL</a></strong> - Monitor and query your network state</li>
+</ul>
+<hr>
+<h2 id="additional-resources">📚 Additional Resources</h2>
+<ul>
+<li><a href="https://docs.eda.dev/">Nokia EDA Documentation</a></li>
+<li><a href="https://documentation.nokia.com/srlinux/">SR Linux Documentation</a></li>
+<li><a href="../">Back to Main Lab Guide</a></li>
+</ul>
+<hr>
+<p><strong>Ready for Part 2?</strong> 🎯 Continue to <a href="../part2-service-overlays/">Service Overlays</a></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-progress" data-md-component="progress" role="progressbar"></div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": ["content.code.copy", "content.code.annotate", "navigation.instant", "navigation.instant.progress", "navigation.sections"], "search": "../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.f55a23d4.min.js"></script>
+      
+    
+  
+<script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
+document$.subscribe(()=>{ lightbox.reload(); });
+</script></body></html>
