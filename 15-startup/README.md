@@ -32,6 +32,8 @@ The startup configuration files - [srl.cfg](srl.cfg) and [ceos.cfg](ceos.cfg) - 
 
 ??? info "Expand to see startup configurations"
 
+    You will notice in the below startup configurations, that template variables are used. Containerlab will render these templates and fill the variable upon deploying.
+
     === "SR Linux"
         ```
         interface ethernet-1/1 {
