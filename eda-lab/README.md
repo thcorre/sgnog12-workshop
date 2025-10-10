@@ -1,4 +1,4 @@
-# 🌐 SGNOG12 EDA Lab
+# 🌐 EDA Lab
 
 > **Hands-on Nokia EDA Workshop**
 
@@ -55,18 +55,18 @@ Master advanced EDA capabilities for monitoring and querying your network state.
 
 Before starting this lab, ensure you have:
 
-- ✔️ An operational **Nokia EDA environment** with GUI access
-- ✔️ A discovered/imported topology (leaf-spine architecture)
-- ✔️ Pre-created **allocation pools**:
+- An operational **Nokia EDA environment** with GUI access
+- A discovered/imported topology (leaf-spine architecture)
+- Pre-created **allocation pools**:
   - System IPs (IPv4)
   - Inter-switch link IPs (/31 pools)
   - ASN pool for BGP
-- ✔️ **Labels** configured on:
+- **Labels** configured on:
   - Leaf nodes (`eda.nokia.com/role=leaf`)
   - Spine nodes (`eda.nokia.com/role=spine`)
   - Inter-switch links (`eda.nokia.com/role=interSwitch`)
-- ✔️ SSH access to SR Linux devices for verification
-- ✔️ Basic understanding of:
+- SSH access to SR Linux devices for verification
+- Basic understanding of:
   - IP networking and BGP
   - EVPN-VXLAN concepts (for Part 2)
   - Network automation principles
