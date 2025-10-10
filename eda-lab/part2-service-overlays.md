@@ -57,11 +57,11 @@ Before starting Part 2, ensure you have:
 ✔️ Pre-created **allocation pools** for:  
   - VNI (VXLAN Network Identifiers) - e.g., `vni-pool`
   - EVI (EVPN Instance) - e.g., `evi-pool`
-  - Tunnel Index - e.g., `tunnel-index-pool`
+  - Tunnel Index - e.g., `tunnel-index-pool`  
 ✔️ **Client connections**:  
   - client1 connected to leaf1 ethernet-1/1 with VLAN 'null' (untagged) (IP: 172.17.0.1/24)
   - client2 connected to leaf2 ethernet-1/1 with VLAN 'null' (untagged) (IP: 172.17.0.2/24)
-  - client3 connected to leaf3 ethernet-1/1 with VLAN 'null' (untagged) (IP: 172.17.0.3/24)
+  - client3 connected to leaf3 ethernet-1/1 with VLAN 'null' (untagged) (IP: 172.17.0.3/24)  
 ✔️ Access to EDA GUI
 
 ---
