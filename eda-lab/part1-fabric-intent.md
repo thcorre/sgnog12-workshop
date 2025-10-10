@@ -37,7 +37,7 @@ In this lab, you will:
 
 ---
 
-## ✅ Prerequisites
+## ☑️ Prerequisites
 
 Before starting, ensure you have:
 
