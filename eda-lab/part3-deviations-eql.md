@@ -30,28 +30,27 @@ This guide explores EDA's powerful capabilities for **detecting configuration de
 ## 🎯 Overview
 
 In this lab, you will:
-
-- ✅ Understand what configuration deviations are and why they matter
-- ✅ Detect and analyze deviations in your EDA-managed fabric
-- ✅ Learn to accept or reject deviations
-- ✅ Master EQL syntax for querying network state
-- ✅ Build practical queries for day-to-day operations
-- ✅ Extract operational insights from your network
+- Understand what configuration deviations are and why they matter
+- Detect and analyze deviations in your EDA-managed fabric
+- Learn to accept or reject deviations
+- Master EQL syntax for querying network state
+- Build practical queries for day-to-day operations
+- Extract operational insights from your network
 
 **Estimated time:** 45 minutes
 
 ---
 
-## ✅ Prerequisites
+## ☑️ Prerequisites
 
 Before starting Part 3, ensure you have:
 
-- ✔️ **Completed** [Part 1: Fabric Intent Creation](part1-fabric-intent.md)
-- ✔️ **Completed** [Part 2: Service Overlays](part2-service-overlays.md)
-- ✔️ Active fabric with committed intents
-- ✔️ L2 EVPN service deployed
-- ✔️ Access to EDA GUI
-- ✔️ SSH access to leaf switches
+- **Completed** [Part 1: Fabric Intent Creation](part1-fabric-intent.md)
+- **Completed** [Part 2: Service Overlays](part2-service-overlays.md)
+- Active fabric with committed intents
+- L2 EVPN service deployed
+- Access to EDA GUI
+- SSH access to leaf switches
 
 ---
 
@@ -650,12 +649,12 @@ Congratulations! You've completed all three parts of the SGNOG12 EDA Lab.
 
 **This concludes Exercises 5 and 6 of the SGNOG12 EDA Lab!**
 
-You have successfully:
-- Detected and managed configuration deviations
-- Understood accept/reject/clear workflows
-- Learned EQL path-based query syntax
-- Built operational queries for monitoring
-- Completed the entire EDA lab series
+You have successfully:  
+✅ Detected and managed configuration deviations  
+✅ Understood accept/reject/clear workflows  
+✅ Learned EQL path-based query syntax  
+✅ Built operational queries for monitoring  
+✅ Completed the entire EDA lab series
 
 **Total Time:** ~45 minutes
 
