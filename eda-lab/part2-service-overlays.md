@@ -51,18 +51,18 @@ In this lab, you will create a Layer 2 EVPN overlay service to connect two clien
 
 Before starting Part 2, ensure you have:
 
-✔️ **Completed** [Part 1: Fabric Intent Creation](part1-fabric-intent.md)  
-✔️ Working underlay fabric with eBGP EVPN overlay  
-✔️ All BGP sessions in **Established** state  
-✔️ Pre-created **allocation pools** for:  
+- **Completed** [Part 1: Fabric Intent Creation](part1-fabric-intent.md)  
+- Working underlay fabric with eBGP EVPN overlay  
+- All BGP sessions in **Established** state  
+- Pre-created **allocation pools** for:  
   - VNI (VXLAN Network Identifiers) - e.g., `vni-pool`
   - EVI (EVPN Instance) - e.g., `evi-pool`
   - Tunnel Index - e.g., `tunnel-index-pool`  
-✔️ **Client connections**:  
+- **Client connections**:  
   - client1 connected to leaf1 ethernet-1/1 with VLAN 'null' (untagged) (IP: 172.17.0.1/24)
   - client2 connected to leaf2 ethernet-1/1 with VLAN 'null' (untagged) (IP: 172.17.0.2/24)
   - client3 connected to leaf3 ethernet-1/1 with VLAN 'null' (untagged) (IP: 172.17.0.3/24)  
-✔️ Access to EDA GUI
+- Access to EDA GUI
 
 ---
 
