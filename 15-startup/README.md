@@ -100,7 +100,6 @@ The startup configuration files - [srl.cfg](srl.cfg) and [ceos.cfg](ceos.cfg) - 
         }
     }
     ```
-
     === "cEOS"
     ```
     hostname {{ .ShortName }}
