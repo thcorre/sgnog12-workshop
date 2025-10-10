@@ -56,15 +56,15 @@ Note, you can use a shorter version of the same command - `clab dep -t basic.cla
 The deployment should succeed, and you should see the following tabular output.
 
 ```
-╭─────────────────┬──────────────────────────────┬─────────┬───────────────────╮
-│       Name      │      Kind/Image              │  State  │   IPv4/6 Address  │
-├─────────────────┼──────────────────────────────┼─────────┼───────────────────┤
-│ clab-basic-ceos │ arista_ceos                  │ running │ 172.20.20.8       │
-│                 │ ceos:4.33.1F                 │         │ 3fff:172:20:20::8 │
-├─────────────────┼──────────────────────────────┼─────────┼───────────────────┤
-│ clab-basic-srl  │ nokia_srlinux                │ running │ 172.20.20.9       │
-│                 │ ghcr.io/nokia/srlinux:25.3.3 │         │ 3fff:172:20:20::9 │
-╰─────────────────┴──────────────────────────────┴─────────┴───────────────────╯
+╭───────────────────┬──────────────────────────────┬─────────┬────────────────╮
+│        Name       │          Kind/Image          │  State  │ IPv4/6 Address │
+├───────────────────┼──────────────────────────────┼─────────┼────────────────┤
+│ clab-basic-0-ceos │ arista_ceos                  │ running │ 172.81.0.3     │
+│                   │ ceos:4.33.1F                 │         │ 3fff:172:81::3 │
+├───────────────────┼──────────────────────────────┼─────────┼────────────────┤
+│ clab-basic-0-srl  │ nokia_srlinux                │ running │ 172.81.0.2     │
+│                   │ ghcr.io/nokia/srlinux:25.7.1 │         │ 3fff:172:81::2 │
+╰───────────────────┴──────────────────────────────┴─────────┴────────────────╯
 ```
 
 ## Connecting to the nodes
@@ -143,15 +143,15 @@ When you are in the directory that contains the lab file, you can list the nodes
 We will see that table output we noticed upon successful deployment.
 
 ```
-╭─────────────────┬──────────────────────────────┬─────────┬───────────────────╮
-│       Name      │      Kind/Image              │  State  │   IPv4/6 Address  │
-├─────────────────┼──────────────────────────────┼─────────┼───────────────────┤
-│ clab-basic-ceos │ arista_ceos                  │ running │ 172.20.20.8       │
-│                 │ ceos:4.33.1F                 │         │ 3fff:172:20:20::8 │
-├─────────────────┼──────────────────────────────┼─────────┼───────────────────┤
-│ clab-basic-srl  │ nokia_srlinux                │ running │ 172.20.20.9       │
-│                 │ ghcr.io/nokia/srlinux:25.3.3 │         │ 3fff:172:20:20::9 │
-╰─────────────────┴──────────────────────────────┴─────────┴───────────────────╯
+╭───────────────────┬──────────────────────────────┬─────────┬────────────────╮
+│        Name       │          Kind/Image          │  State  │ IPv4/6 Address │
+├───────────────────┼──────────────────────────────┼─────────┼────────────────┤
+│ clab-basic-0-ceos │ arista_ceos                  │ running │ 172.81.0.3     │
+│                   │ ceos:4.33.1F                 │         │ 3fff:172:81::3 │
+├───────────────────┼──────────────────────────────┼─────────┼────────────────┤
+│ clab-basic-0-srl  │ nokia_srlinux                │ running │ 172.81.0.2     │
+│                   │ ghcr.io/nokia/srlinux:25.7.1 │         │ 3fff:172:81::2 │
+╰───────────────────┴──────────────────────────────┴─────────┴────────────────╯
 ```
 
 If the topology file is located in a different directory, you can specify the directory the topology file lives in, or if multiple topology files live in that directory, give the absolute path to the topology file:
@@ -166,15 +166,15 @@ You can also list all running labs regardless of where their topology files are 
 ```bash
 [*]─[clab]─[~/sgnog12-workshop/10-basics]
 └──> containerlab inspect --all
-╭──────────────────────────┬──────────┬─────────────────┬──────────────────────────────┬─────────┬───────────────────╮
-│         Topology         │ Lab Name │       Name      │          Kind/Image          │  State  │   IPv4/6 Address  │
-├──────────────────────────┼──────────┼─────────────────┼──────────────────────────────┼─────────┼───────────────────┤
-│ 10-basics/basic.clab.yml │ basic    │ clab-basic-ceos │ arista_ceos                  │ running │ 172.20.20.3       │
-│                          │          │                 │ ceos:4.33.1F                 │         │ 3fff:172:20:20::3 │
-│                          │          ├─────────────────┼──────────────────────────────┼─────────┼───────────────────┤
-│                          │          │ clab-basic-srl  │ nokia_srlinux                │ running │ 172.20.20.2       │
-│                          │          │                 │ ghcr.io/nokia/srlinux:25.3.3 │         │ 3fff:172:20:20::2 │
-╰──────────────────────────┴──────────┴─────────────────┴──────────────────────────────┴─────────┴───────────────────╯
+╭────────────────┬──────────┬───────────────────┬──────────────────────────────┬─────────┬────────────────╮
+│    Topology    │ Lab Name │        Name       │          Kind/Image          │  State  │ IPv4/6 Address │
+├────────────────┼──────────┼───────────────────┼──────────────────────────────┼─────────┼────────────────┤
+│ basic.clab.yml │ basic-0  │ clab-basic-0-ceos │ arista_ceos                  │ running │ 172.81.0.3     │
+│                │          │                   │ ceos:4.33.1F                 │         │ 3fff:172:81::3 │
+│                │          ├───────────────────┼──────────────────────────────┼─────────┼────────────────┤
+│                │          │ clab-basic-0-srl  │ nokia_srlinux                │ running │ 172.81.0.2     │
+│                │          │                   │ ghcr.io/nokia/srlinux:25.7.1 │         │ 3fff:172:81::2 │
+╰────────────────┴──────────┴───────────────────┴──────────────────────────────┴─────────┴────────────────╯
 ```
 
 The output will contain all labs and their nodes.
