@@ -74,61 +74,63 @@ Connect to the cEOS node using its IP address (note, the IP might be different i
 ssh admin@172.20.20.3
 ```
 
-## Containerlab host automation
+## Hostname QoL additions
 
-Containerlab automatically creates `/etc/hosts` entries for each deployed lab so that you can use the host hostname rather than IP address. Check the entries:
+Containerlab adds some quality-of-life improvements, such as automatically creating `/etc/hosts` entries for each deployed lab node. This means you can use the node hostname rather than IP address to connect.
 
 ```bash
 cat /etc/hosts
 ```
-## Containerlab ssh config automation
 
-There is also SSH configuration created at `/etc/ssh/ssh_config.d` as `clab-{lab name}.conf`. This means you don't have to enter username for the node with your `ssh` command. 
+Notice the entries added for the lab
+
+To add to that there is also SSH host configuration created at the `/etc/ssh/ssh_config.d` dir, as `clab-{lab name}.conf`.
+
+This means you don't have to enter username for the node with your `ssh` command. 
 
 ```bash
 cat /etc/ssh/ssh_config.d/clab-basic-${GROUP_ID}.conf
 ```
 
-The known hosts file for the node entry is also set to `/dev/null` for the lab nodes. This means on subsequent deployments you don't have to worry if the host keys change.
+The known hosts file for the node entry is also set to `/dev/null` for the lab nodes. This is because every time a node is booted, the host key gets regenerated. With this `/dev/null` binding, you don't need to keep clearing the `known_hosts` file on subsequent deployments of your lab.
 
 ![](./ssh_config.png)
 
 ## Checking network connectivity
 
-SR Linux and cEOS are started with their first ethernet interfaces connected. Confirm the connectivity between the nodes.
+In this topology SR Linux and cEOS are connected to eachother on their first ethernet interface(s). Let's confirm the connectivity between the nodes.
 
-The nodes also come up with LLDP enabled, our goal is to verify that the basic network connectivity is working by inspecting
+The nodes come with LLDP already enabled, our goal is to verify that the basic network connectivity is working between the nodes.
+
+SSH to the SR Linux node:
 
 ```bash
 ssh clab-basic-${GROUP_ID}-srl
 ```
 
-and checking the LLDP neighbors on ethernet-1/1 interface
+and check the LLDP neighbors on ethernet-1/1 interface with the below command:
 
 ```
 show /system lldp neighbor interface ethernet-1/1
 ```
 
-The expected output should be:
+We should see the ceos node detected as our LLDP neighbor as per the sample output below:
 
 ```
 --{ running }--[  ]--
-A:srl# show /system lldp neighbor interface ethernet-1/1
-  +----------+----------+---------+---------+---------+---------+---------+
-  |   Name   | Neighbor | Neighbo | Neighbo | Neighbo | Neighbo | Neighbo |
-  |          |          |    r    |    r    | r First | r Last  | r Port  |
-  |          |          | System  | Chassis | Message | Update  |         |
-  |          |          |  Name   |   ID    |         |         |         |
-  +==========+==========+=========+=========+=========+=========+=========+
-  | ethernet | 00:1C:73 | ceos    | 00:1C:7 | 20      | 16      | Etherne |
-  | -1/1     | :46:95:5 |         | 3:46:95 | hours   | seconds | t1      |
-  |          | C        |         | :5C     | ago     | ago     |         |
-  +----------+----------+---------+---------+---------+---------+---------+
+A:admin@srl# show /system lldp neighbor interface ethernet-1/1
+  +--------------+----------------+----------------+----------------+----------------+----------------+---------------+
+  |     Name     |    Neighbor    |    Neighbor    |    Neighbor    | Neighbor First | Neighbor Last  | Neighbor Port |
+  |              |                |  System Name   |   Chassis ID   |    Message     |     Update     |               |
+  +==============+================+================+================+================+================+===============+
+  | ethernet-1/1 | 00:1C:73:2B:8E | ceos           | 00:1C:73:2B:8E | 8 minutes ago  | 3 seconds ago  | Ethernet1     |
+  |              | :E7            |                | :E7            |                |                |               |
+  +--------------+----------------+----------------+----------------+----------------+----------------+---------------+
 ```
 
 ## Listing running labs
 
-When you are in the directory that contains the lab file, you can list the nodes of that lab simply by using the `inspect` command.
+When you are in the directory that contains the lab file, you can list the nodes of that lab simply by using the `containerlab inspect` command.
 
 ![](./inspect.png)
 
@@ -145,37 +147,47 @@ You can also list all running labs regardless of where their topology files are 
 
 The output will contain all labs and their nodes.
 
-Shortcuts:
+!!! tip
+  You can use shorthand commands to speed up your workflow. See the below examples for inspect:
 
-* `clab ins` == `containerlab inspect`
-* `clab ins -a` == `containerlab inspect --all`
+  * `containerlab inspect` -> `clab ins`
+  * `clab ins -a` -> `containerlab inspect --all`
 
 ## Lab directory
 
-Lab directory stores the artifacts generated by containerlab that are related to the lab:
+The lab directory is automatically created upon deployment of a lab. It stores the related artifacts to a lab that are generated by containerlab or the lab nodes themselves.
+
+For example, you may find:
 
 * tls certificates
-* node artifacts (such as startup configs)
 * inventory files
+* node artifacts (such as startup configs)
 * topology export json file
+
+The lab directory is named after the lab, and sits in the same directory as the topology file. In this case it will be `clab-basic-${GROUP_ID}`
 
 To list the contents of the lab directory, run:
 
 ```
 [*]─[clab]─[~/sgnog12-workshop/10-basics]
-└──> tree -L 3 clab-basic/
+└──> tree -L 2 clab-basic-${GROUP_ID}/
 ```
+
+![](./lab_dir_tree.png)
 
 ## Destroying the lab
 
-When you are done with the lab, you can destroy it. Containerlab can try and find the `*.clab.yml` file in the current directory and use it so that you don't have to type it out.  
+When you are done with the lab, we need to bring it down. This is called 'destroying' the lab. You use the `containerlab destroy` command.
+
+As with deployment, containerlab will try and search in your current directory for the `*.clab.yml` or `*.clab.yaml` files in the current directory.
+
 Try it:
 
 ```bash
 clab des --cleanup
 ```
 
-Alternatively, you could specify the topology file explicitly:
+Alternatively, you can specify the topology file explicitly (required if multiple topology files exist in the directory):
 
 ```bash
 clab des -t basic.clab.yml --cleanup
@@ -183,4 +195,4 @@ clab des -t basic.clab.yml --cleanup
 
 The `--cleanup` flag ensures that the lab directory gets removed as well.
 
-You finished the basics lab exercise!
+🎉 Congratulations! You finished the basics lab exercise.
