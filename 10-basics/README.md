@@ -51,6 +51,9 @@ Try to deploy the lab:
 containerlab deploy -t basic.clab.yml
 ```
 
+!!! tip
+  If your topology file ends with the `.clab.yaml` or `.clab.yml` file extension **AND** is the only topology in your current directory, you don't need to specify the `-t` flag. Containerlab will search for local topologies when deploying.
+
 Note, you can use a shorter version of the same command - `clab dep -t basic.clab.yml`.
 
 The deployment should succeed, and you should see the following tabular output.
@@ -62,7 +65,7 @@ The deployment should succeed, and you should see the following tabular output.
 Connect to the Nokia SR Linux node using the container name:
 
 ```bash
-ssh clab-basic-{GROUP_ID}-srl
+ssh clab-basic-${GROUP_ID}-srl
 ```
 
 Connect to the cEOS node using its IP address (note, the IP might be different in your lab):
@@ -71,7 +74,7 @@ Connect to the cEOS node using its IP address (note, the IP might be different i
 ssh admin@172.20.20.3
 ```
 
-## Containerlab hosts automation
+## Containerlab host automation
 
 Containerlab automatically creates `/etc/hosts` entries for each deployed lab so that you can use the host hostname rather than IP address. Check the entries:
 
@@ -83,10 +86,12 @@ cat /etc/hosts
 There is also SSH configuration created at `/etc/ssh/ssh_config.d` as `clab-{lab name}.conf`. This means you don't have to enter username for the node with your `ssh` command. 
 
 ```bash
-cat /etc/ssh/ssh_config.d/clab-basic.conf
+cat /etc/ssh/ssh_config.d/clab-basic-${GROUP_ID}.conf
 ```
 
 The known hosts file for the node entry is also set to `/dev/null` for the lab nodes. This means on subsequent deployments you don't have to worry if the host keys change.
+
+![](./ssh_config.png)
 
 ## Checking network connectivity
 
@@ -95,7 +100,7 @@ SR Linux and cEOS are started with their first ethernet interfaces connected. Co
 The nodes also come up with LLDP enabled, our goal is to verify that the basic network connectivity is working by inspecting
 
 ```bash
-ssh clab-basic-srl
+ssh clab-basic-${GROUP_ID}-srl
 ```
 
 and checking the LLDP neighbors on ethernet-1/1 interface
