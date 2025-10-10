@@ -102,6 +102,6 @@ The command above will open two Finder windows, one with the `cshargextcap` bina
 
 To access the Edgeshark UI, open a browser and navigate to the following URL:
 
-<https://es.topologies.dev:5001>
+[es.topologies.dev](https://es.topologies.dev)
 
 Note, the http schema is important, since https is not enabled.
