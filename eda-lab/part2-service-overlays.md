@@ -25,7 +25,7 @@ Now that your underlay fabric is operational, this guide walks you through creat
 
 ---
 
-## 🎯 Overview
+## 👨🏻‍💻 Overview
 
 In this lab, you will create a Layer 2 EVPN overlay service to connect two clients (c1 and c2) across different leaf switches using Bridge Domains and Bridge Interfaces.
 
@@ -37,17 +37,17 @@ In this lab, you will create a Layer 2 EVPN overlay service to connect two clien
 - Layer 2 connectivity via EVPN-VXLAN overlay
 
 **What you'll learn:**  
-✅ Create Bridge Domains for L2 EVPN services  
-✅ Configure Bridge Interfaces to attach workloads  
-✅ Allocate VNI, EVI, and Tunnel Index from pools  
-✅ Verify EVPN-VXLAN operation and MAC learning  
-✅ Test end-to-end Layer 2 connectivity  
+- Create Bridge Domains for L2 EVPN services  
+- Configure Bridge Interfaces to attach workloads  
+- Allocate VNI, EVI, and Tunnel Index from pools  
+- Verify EVPN-VXLAN operation and MAC learning  
+- Test end-to-end Layer 2 connectivity  
 
 **Estimated time:** 30 minutes
 
 ---
 
-## ✅ Prerequisites
+## ☑️ Prerequisites
 
 Before starting Part 2, ensure you have:
 
@@ -311,7 +311,7 @@ We need to create two Bridge Interfaces to connect client1, client2 and client3 
 
 ---
 
-## ✅ Exercise 3: Verify L2 EVPN Service
+## 🔎 Exercise 3: Verify L2 EVPN Service
 
 Now let's verify that the L2 EVPN service is operational.
 
@@ -448,12 +448,12 @@ network-instance l2vnet {
 ```
 
 **Key Elements:**
-- ✅ Network instance type: `mac-vrf`
-- ✅ Local bridge interface: `ethernet-1/1.4097` connected to client1
-- ✅ VXLAN interface: `vxlan0.500` for overlay connectivity
-- ✅ EVI: `100` (allocated from pool)
-- ✅ Route targets: `target:1:100` for import/export
-- ✅ MAC learning enabled with 300s aging
+- Network instance type: `mac-vrf`
+- Local bridge interface: `ethernet-1/1.4097` connected to client1
+- VXLAN interface: `vxlan0.500` for overlay connectivity
+- EVI: `100` (allocated from pool)
+- Route targets: `target:1:100` for import/export
+- MAC learning enabled with 300s aging
 
 #### Check VXLAN Tunnel Configuration
 
@@ -474,9 +474,9 @@ A:admin@leaf1# info tunnel-interface vxlan0 vxlan-interface 500
 ```
 
 **Key Elements:**
-- ✅ VNI: `200` (allocated from vni-pool)
-- ✅ Type: `bridged` (Layer 2 service)
-- ✅ Source IP: Uses system IPv4 address (loopback) as VTEP
+- VNI: `200` (allocated from vni-pool)
+- Type: `bridged` (Layer 2 service)
+- Source IP: Uses system IPv4 address (loopback) as VTEP
 
 ---
 
@@ -685,8 +685,7 @@ The Virtual Networks resource allows you to:
 
 ## 📝 Key Takeaways
 
-### What You've Accomplished
-
+### What You've Accomplished  
 ✅ **Created a Bridge Domain** (`l2vnet`) with EVPN-VXLAN type  
 ✅ **Configured Bridge Interfaces** for two clients on different leaf switches  
 ✅ **Utilized allocation pools** for automatic VNI, EVI, and Tunnel Index assignment  
@@ -816,12 +815,12 @@ show interface ethernet-1/1.4097
 
 **This concludes Exercises 2 and 3 of the SGNOG12 EDA Lab!**
 
-You have successfully:
-- Created individual Bridge Domain and Bridge Interface components
-- Deployed an L2 EVPN service across a multi-leaf fabric
-- Verified EVPN-VXLAN operation and connectivity
-- Understood EDA's automatic configuration generation
-- Learned verification techniques for overlay services
+You have successfully:  
+✅ Created individual Bridge Domain and Bridge Interface components  
+✅ Deployed an L2 EVPN service across a multi-leaf fabric  
+✅ Verified EVPN-VXLAN operation and connectivity  
+✅ Understood EDA's automatic configuration generation  
+✅ Learned verification techniques for overlay services
 
 **Total Time:** ~45 minutes
 
