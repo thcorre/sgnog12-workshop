@@ -101,6 +101,7 @@ The startup configuration files - [srl.cfg](srl.cfg) and [ceos.cfg](ceos.cfg) - 
     }
     ```
     ///
+
     /// tab | `ceos.cfg`
     ```
     hostname {{ .ShortName }}
@@ -156,6 +157,7 @@ The startup configuration files - [srl.cfg](srl.cfg) and [ceos.cfg](ceos.cfg) - 
     end
     ```
     ///
+
 
 In particular, the `srl` node is configured to announce its loopback address `10.10.10.1/32` towards the `ceos` node and the `ceos` node is configured to announce its loopback address `10.10.10.2/32` towards the `srl` node.
 
