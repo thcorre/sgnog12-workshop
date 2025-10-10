@@ -33,127 +33,128 @@ The startup configuration files - [srl.cfg](srl.cfg) and [ceos.cfg](ceos.cfg) - 
 ??? info "Expand to see startup configurations"
 
     === "SR Linux"
-    ```
-    interface ethernet-1/1 {
-        subinterface 0 {
-            admin-state enable
-            ipv4 {
+        ```
+        interface ethernet-1/1 {
+            subinterface 0 {
                 admin-state enable
-                address 192.168.1.1/24 {
-                }
-            }
-        }
-    }
-    interface lo0 {
-        subinterface 0 {
-            admin-state enable
-            ipv4 {
-                admin-state enable
-                address 10.10.10.1/32 {
-                }
-            }
-        }
-    }
-    network-instance default {
-        interface ethernet-1/1.0 {
-        }
-        interface lo0.0 {
-        }
-        protocols {
-            bgp {
-                admin-state enable
-                autonomous-system 65001
-                router-id 10.10.10.1
-                afi-safi ipv4-unicast {
+                ipv4 {
                     admin-state enable
+                    address 192.168.1.1/24 {
+                    }
                 }
-                group ibgp {
-                    export-policy [ export-lo ]
+            }
+        }
+        interface lo0 {
+            subinterface 0 {
+                admin-state enable
+                ipv4 {
+                    admin-state enable
+                    address 10.10.10.1/32 {
+                    }
+                }
+            }
+        }
+        network-instance default {
+            interface ethernet-1/1.0 {
+            }
+            interface lo0.0 {
+            }
+            protocols {
+                bgp {
+                    admin-state enable
+                    autonomous-system 65001
+                    router-id 10.10.10.1
                     afi-safi ipv4-unicast {
                         admin-state enable
                     }
-                }
-                neighbor 192.168.1.2 {
-                    admin-state enable
-                    peer-as 65001
-                    peer-group ibgp
-                }
-            }
-        }
-    }
-    routing-policy {
-        prefix-set loopback {
-            prefix 10.10.10.1/32 mask-length-range exact {
-            }
-        }
-        policy export-lo {
-            statement 10 {
-                match {
-                    prefix {
-                        prefix-set loopback
+                    group ibgp {
+                        export-policy [ export-lo ]
+                        afi-safi ipv4-unicast {
+                            admin-state enable
+                        }
+                    }
+                    neighbor 192.168.1.2 {
+                        admin-state enable
+                        peer-as 65001
+                        peer-group ibgp
                     }
                 }
-                action {
-                    policy-result accept
+            }
+        }
+        routing-policy {
+            prefix-set loopback {
+                prefix 10.10.10.1/32 mask-length-range exact {
+                }
+            }
+            policy export-lo {
+                statement 10 {
+                    match {
+                        prefix {
+                            prefix-set loopback
+                        }
+                    }
+                    action {
+                        policy-result accept
+                    }
                 }
             }
         }
-    }
-    ```
+        ```
+
     === "cEOS"
-    ```
-    hostname {{ .ShortName }}
-    username admin privilege 15 secret admin
-    !
-    service routing protocols model multi-agent
-    !
-    {{- if .Env.CLAB_MGMT_VRF }}
-    vrf instance {{ .Env.CLAB_MGMT_VRF }}
-    !
-    {{end}}
-    {{ if .MgmtIPv4Gateway }}ip route {{ if .Env.CLAB_MGMT_VRF }}vrf {{ .Env.CLAB_MGMT_VRF }} {{end}}0.0.0.0/0 {{ .MgmtIPv4Gateway }}{{end}}
-    {{ if .MgmtIPv6Gateway }}ipv6 route {{ if .Env.CLAB_MGMT_VRF }}vrf {{ .Env.CLAB_MGMT_VRF }} {{end}}::0/0 {{ .MgmtIPv6Gateway }}{{end}}
-    !
-    interface {{ .MgmtIntf }}
-    {{ if .Env.CLAB_MGMT_VRF }} vrf {{ .Env.CLAB_MGMT_VRF }}{{end}}
-    {{ if .MgmtIPv4Address }}ip address {{ .MgmtIPv4Address }}/{{.MgmtIPv4PrefixLength}}{{end}}
-    {{ if .MgmtIPv6Address }}ipv6 address {{ .MgmtIPv6Address }}/{{.MgmtIPv6PrefixLength}}{{end}}
-    !
-    management api gnmi
-    transport grpc default
-    {{ if .Env.CLAB_MGMT_VRF }}      vrf {{ .Env.CLAB_MGMT_VRF }}{{end}}
-    !
-    management api netconf
-    transport ssh default
-    {{ if .Env.CLAB_MGMT_VRF }}      vrf {{ .Env.CLAB_MGMT_VRF }}{{end}}
-    !
-    management api http-commands
-    no shutdown
-    {{- if .Env.CLAB_MGMT_VRF }}
-    !
-    vrf {{ .Env.CLAB_MGMT_VRF }}
+        ```
+        hostname {{ .ShortName }}
+        username admin privilege 15 secret admin
+        !
+        service routing protocols model multi-agent
+        !
+        {{- if .Env.CLAB_MGMT_VRF }}
+        vrf instance {{ .Env.CLAB_MGMT_VRF }}
+        !
+        {{end}}
+        {{ if .MgmtIPv4Gateway }}ip route {{ if .Env.CLAB_MGMT_VRF }}vrf {{ .Env.CLAB_MGMT_VRF }} {{end}}0.0.0.0/0 {{ .MgmtIPv4Gateway }}{{end}}
+        {{ if .MgmtIPv6Gateway }}ipv6 route {{ if .Env.CLAB_MGMT_VRF }}vrf {{ .Env.CLAB_MGMT_VRF }} {{end}}::0/0 {{ .MgmtIPv6Gateway }}{{end}}
+        !
+        interface {{ .MgmtIntf }}
+        {{ if .Env.CLAB_MGMT_VRF }} vrf {{ .Env.CLAB_MGMT_VRF }}{{end}}
+        {{ if .MgmtIPv4Address }}ip address {{ .MgmtIPv4Address }}/{{.MgmtIPv4PrefixLength}}{{end}}
+        {{ if .MgmtIPv6Address }}ipv6 address {{ .MgmtIPv6Address }}/{{.MgmtIPv6PrefixLength}}{{end}}
+        !
+        management api gnmi
+        transport grpc default
+        {{ if .Env.CLAB_MGMT_VRF }}      vrf {{ .Env.CLAB_MGMT_VRF }}{{end}}
+        !
+        management api netconf
+        transport ssh default
+        {{ if .Env.CLAB_MGMT_VRF }}      vrf {{ .Env.CLAB_MGMT_VRF }}{{end}}
+        !
+        management api http-commands
         no shutdown
-    {{end}}
-    !
+        {{- if .Env.CLAB_MGMT_VRF }}
+        !
+        vrf {{ .Env.CLAB_MGMT_VRF }}
+            no shutdown
+        {{end}}
+        !
 
 
-    interface Ethernet1
-    no switchport
-    ip address 192.168.1.2/24
-    !
-    interface Loopback0
-    ip address 10.10.10.2/32
-    !
-    ip routing
-    !
-    router bgp 65001
-    router-id 10.10.10.2
-    neighbor 192.168.1.1 remote-as 65001
-    network 10.10.10.2/32
-    !
+        interface Ethernet1
+        no switchport
+        ip address 192.168.1.2/24
+        !
+        interface Loopback0
+        ip address 10.10.10.2/32
+        !
+        ip routing
+        !
+        router bgp 65001
+        router-id 10.10.10.2
+        neighbor 192.168.1.1 remote-as 65001
+        network 10.10.10.2/32
+        !
 
-    end
-    ```
+        end
+        ```
 
 
 In particular, the `srl` node is configured to announce its loopback address `10.10.10.1/32` towards the `ceos` node and the `ceos` node is configured to announce its loopback address `10.10.10.2/32` towards the `srl` node.
