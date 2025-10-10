@@ -159,10 +159,10 @@ The lab directory is automatically created upon deployment of a lab. It stores t
 
 For example, you may find:
 
-* tls certificates
-* inventory files
-* node artifacts (such as startup configs)
-* topology export json file
+* TLS certificates
+* Inventory files
+* Node artifacts (such as startup configs)
+* Topology export JSON file
 
 The lab directory is named after the lab, and sits in the same directory as the topology file. In this case it will be `clab-basic-${GROUP_ID}`
 
