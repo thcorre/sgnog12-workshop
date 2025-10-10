@@ -43,7 +43,7 @@ In this lab, you will create a Layer 2 EVPN overlay service to connect two clien
 - Verify EVPN-VXLAN operation and MAC learning  
 - Test end-to-end Layer 2 connectivity  
 
-**Estimated time:** 45 minutes
+**Estimated time:** 60 minutes
 
 ---
 
