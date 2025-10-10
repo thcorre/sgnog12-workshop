@@ -190,4 +190,6 @@ ping 10.10.10.1
 
 You should see a successful ping response.
 
-You have successfully deployed the lab with the nodes equipped with the startup configuration. This is a powerful feature that can be used to provision the nodes with the desired configuration when they boot up.
+You have successfully deployed the lab with the nodes equipped with the startup configuration. 
+
+This is a powerful feature that can be used to provision the nodes with the desired configuration when they boot up.
