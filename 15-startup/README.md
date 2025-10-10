@@ -32,7 +32,7 @@ The startup configuration files - [srl.cfg](srl.cfg) and [ceos.cfg](ceos.cfg) - 
 
 ??? info "Expand to see startup configurations"
 
-    /// tab | `srl.cfg`
+    === "SR Linux"
     ```
     interface ethernet-1/1 {
         subinterface 0 {
@@ -100,9 +100,8 @@ The startup configuration files - [srl.cfg](srl.cfg) and [ceos.cfg](ceos.cfg) - 
         }
     }
     ```
-    ///
 
-    /// tab | `ceos.cfg`
+    === "cEOS"
     ```
     hostname {{ .ShortName }}
     username admin privilege 15 secret admin
@@ -156,7 +155,6 @@ The startup configuration files - [srl.cfg](srl.cfg) and [ceos.cfg](ceos.cfg) - 
 
     end
     ```
-    ///
 
 
 In particular, the `srl` node is configured to announce its loopback address `10.10.10.1/32` towards the `ceos` node and the `ceos` node is configured to announce its loopback address `10.10.10.2/32` towards the `srl` node.
