@@ -98,6 +98,10 @@ open /tmp/pflix-handler && open /Applications/Wireshark.app/Contents/MacOS/extca
 
 The command above will open two Finder windows, one with the `cshargextcap` binary and the other with the Wireshark's existing plugins. Move the `cshargextcap` file over to the window with Wireshark plugins.
 
-### VS Code
+### Web UI
 
-To access the Edgeshark UI, you can open it from Containerlab VS code extension.
+To access the Edgeshark UI, open a browser and navigate to the following URL:
+
+<https://es.topologies.dev:5001>
+
+Note, the http schema is important, since https is not enabled.
