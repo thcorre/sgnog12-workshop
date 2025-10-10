@@ -1,4 +1,10 @@
 name: startup-${GROUP_ID}
+
+mgmt:
+  network: 15-startup-${GROUP_ID}
+  ipv4-subnet: 172.82.${GROUP_ID}.0/24
+  ipv6-subnet: 3fff:172:82:${GROUP_ID}::/64
+  
 topology:
   nodes:
     srl:
