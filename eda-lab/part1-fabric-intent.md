@@ -23,15 +23,15 @@ This guide provides a **step-by-step workflow** to create a fabric intent for an
 
 ---
 
-## 🎯 Overview
+## 👨🏻‍💻 Overview
 
 In this lab, you will:
 
-- ✅ Create a fabric intent to automate underlay configuration
-- ✅ Use EDA's dry-run feature to preview changes safely
-- ✅ Deploy the fabric intent across your leaf-spine topology
-- ✅ Verify fabric health through EDA's GUI
-- ✅ Validate configurations directly on SR Linux devices
+- Create a fabric intent to automate underlay configuration
+- Use EDA's dry-run feature to preview changes safely
+- Deploy the fabric intent across your leaf-spine topology
+- Verify fabric health through EDA's GUI
+- Validate configurations directly on SR Linux devices
 
 **Estimated time:** 45 minutes
 
@@ -41,13 +41,13 @@ In this lab, you will:
 
 Before starting, ensure you have:
 
-- ✔️ An operational **EDA environment** with GUI access
-- ✔️ A discovered/imported topology (leafs/spines)
-- ✔️ Pre-created **allocation pools**:
+- An operational **EDA environment** with GUI access
+- A discovered/imported topology (leafs/spines)
+- Pre-created **allocation pools**:
   - System IPs
   - Inter-switch /31 pools
   - ASN pool
-- ✔️ **Labels** on nodes and links to distinguish:
+- **Labels** on nodes and links to distinguish:
   - Leaf nodes (`eda.nokia.com/role=leaf`)
   - Spine nodes (`eda.nokia.com/role=spine`)
   - Inter-switch links (`eda.nokia.com/role=interSwitch`)
