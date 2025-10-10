@@ -27,7 +27,7 @@ This guide explores EDA's powerful capabilities for **detecting configuration de
 
 ---
 
-## 🎯 Overview
+## 👨🏻‍💻 Overview
 
 In this lab, you will:
 - Understand what configuration deviations are and why they matter
