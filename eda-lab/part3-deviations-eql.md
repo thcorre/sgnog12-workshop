@@ -656,8 +656,6 @@ You have successfully:
 ✅ Built operational queries for monitoring  
 ✅ Completed the entire EDA lab series
 
-**Total Time:** ~45 minutes
-
 ---
 
 **Navigation:**
