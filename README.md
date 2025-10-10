@@ -20,7 +20,7 @@ A list of workshop modules. Each module is a self-contained guide that can be fo
 5. [Container registries](30-registry/README.md)
 6. [Packet capture](40-packet-capture/README.md)
 
-Loved this workshop? Let us know in the comments of this [LinkedIn post](https://www.linkedin.com/posts/thomascorre_datacenter-netdevops-networkautomation-activity-7342728809596538880-dCNJ).
+Loved this workshop? Let us know in the comments of this [LinkedIn post](https://www.linkedin.com/posts/thomascorre_datacenter-netdevops-containerlab-activity-7376250483642052608-W_qm).
 
 ## Lab Environment
 
