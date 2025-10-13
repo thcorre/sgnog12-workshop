@@ -1,0 +1,62 @@
+site_name: 🇸🇬 SGNOG12 x NOKIA Workshop
+repo_name: sgnog12-workshop
+repo_url: https://github.com/thcorre/sgnog12-workshop
+nav:
+  - Home: README.md
+  - Getting Started:
+    - Install Containerlab: 05-install/README.md
+    - Containerlab basics: 10-basics/README.md
+  - Startup Configuration: 15-startup/README.md
+  - VM-Based Nodes: 20-vm/README.md
+  - Container registries: 30-registry/README.md
+  - Packet capture: 40-packet-capture/README.md
+  - DC Fabric Lab:
+    - Start: dc-lab/README.md
+  - EDA Lab:
+    - Start: eda-lab/README.md
+    - Part 1: eda-lab/part1-fabric-intent/
+    - Part 2: eda-lab/part2-service-overlays/
+    - Part 3: eda-lab/part3-deviations-eql/
+
+
+
+
+theme:
+  name: material
+  features:
+    - content.code.copy
+    - content.code.annotate 
+    - navigation.instant
+    - navigation.instant.progress
+    - navigation.sections
+  palette: 
+    # Palette toggle for light mode
+    - scheme: slate
+      primary: blue
+      toggle:
+        icon: material/brightness-7 
+        name: Dark mode
+
+    # Switch to light
+    - scheme: default
+      primary: blue
+      toggle:
+        icon: material/brightness-4
+        name: Light mode
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.critic
+  - pymdownx.caret
+  - pymdownx.keys
+  - pymdownx.mark
+  - pymdownx.tilde
+  - attr_list
+  - md_in_html
+  - pymdownx.tabbed:
+      alternate_style: true
+
+plugins:
+  - glightbox

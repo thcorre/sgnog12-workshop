@@ -1,0 +1,17 @@
+apiVersion: services.eda.nokia.com/v1
+kind: BridgeDomain
+metadata:
+  name: l2vnet
+  namespace: clab-dc-${GROUP_ID}-eda
+spec:
+  eviPool: evi-pool
+  l2proxyARPND:
+    proxyARP: false
+    proxyND: false
+  macAging: 300
+  macDuplicationDetection:
+    enabled: false
+  macLearning: true
+  tunnelIndexPool: tunnel-index-pool
+  type: EVPNVXLAN
+  vniPool: vni-pool

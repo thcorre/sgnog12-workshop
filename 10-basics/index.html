@@ -1,0 +1,1075 @@
+<!DOCTYPE html><html lang="en" class="no-js"><head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../05-install/">
+      
+      
+        <link rel="next" href="../15-startup/">
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.21">
+    
+    
+      
+        <title>Containerlab basics - 🇸🇬 SGNOG12 x NOKIA Workshop</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.2a3383ac.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&amp;display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  <link href="../assets/stylesheets/glightbox.min.css" rel="stylesheet"><script src="../assets/javascripts/glightbox.min.js"></script><style id="glightbox-style">
+            html.glightbox-open { overflow: initial; height: 100%; }
+            .gslide-title { margin-top: 0px; user-select: text; }
+            .gslide-desc { color: #666; user-select: text; }
+            .gslide-image img { background: white; }
+            .gscrollbar-fixer { padding-right: 15px; }
+            .gdesc-inner { font-size: 0.75rem; }
+            body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color); }
+            body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color); }
+            body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color); }
+        </style></head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="blue" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#containerlab-basics" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="🇸🇬 SGNOG12 x NOKIA Workshop" class="md-header__button md-logo" aria-label="🇸🇬 SGNOG12 x NOKIA Workshop" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"></path></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            🇸🇬 SGNOG12 x NOKIA Workshop
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Containerlab basics
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="blue" data-md-color-accent="indigo" aria-label="Dark mode" type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"></path></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="indigo" aria-label="Light mode" type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"></path></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/thcorre/sgnog12-workshop" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"></path></svg>
+  </div>
+  <div class="md-source__repository">
+    sgnog12-workshop
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="🇸🇬 SGNOG12 x NOKIA Workshop" class="md-nav__button md-logo" aria-label="🇸🇬 SGNOG12 x NOKIA Workshop" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"></path></svg>
+
+    </a>
+    🇸🇬 SGNOG12 x NOKIA Workshop
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/thcorre/sgnog12-workshop" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"></path></svg>
+  </div>
+  <div class="md-source__repository">
+    sgnog12-workshop
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    Getting Started
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Getting Started
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05-install/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Install Containerlab
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Containerlab basics
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Containerlab basics
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#repository" class="md-nav__link">
+    <span class="md-ellipsis">
+      Repository
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#topology" class="md-nav__link">
+    <span class="md-ellipsis">
+      Topology
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#deployment" class="md-nav__link">
+    <span class="md-ellipsis">
+      Deployment
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#connecting-to-the-nodes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Connecting to the nodes
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hostname-qol-additions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Hostname QoL additions
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#checking-network-connectivity" class="md-nav__link">
+    <span class="md-ellipsis">
+      Checking network connectivity
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#listing-running-labs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Listing running labs
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lab-directory" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lab directory
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#destroying-the-lab" class="md-nav__link">
+    <span class="md-ellipsis">
+      Destroying the lab
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../15-startup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Startup Configuration
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../20-vm/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    VM-Based Nodes
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../30-registry/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Container registries
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../40-packet-capture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Packet capture
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7">
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    DC Fabric Lab
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            DC Fabric Lab
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dc-lab/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Start
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8">
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    EDA Lab
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            EDA Lab
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../eda-lab/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Start
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../eda-lab/part1-fabric-intent/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Part 1
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../eda-lab/part2-service-overlays/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Part 2
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../eda-lab/part3-deviations-eql/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Part 3
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#repository" class="md-nav__link">
+    <span class="md-ellipsis">
+      Repository
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#topology" class="md-nav__link">
+    <span class="md-ellipsis">
+      Topology
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#deployment" class="md-nav__link">
+    <span class="md-ellipsis">
+      Deployment
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#connecting-to-the-nodes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Connecting to the nodes
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hostname-qol-additions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Hostname QoL additions
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#checking-network-connectivity" class="md-nav__link">
+    <span class="md-ellipsis">
+      Checking network connectivity
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#listing-running-labs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Listing running labs
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lab-directory" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lab directory
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#destroying-the-lab" class="md-nav__link">
+    <span class="md-ellipsis">
+      Destroying the lab
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="containerlab-basics">Containerlab Basics</h1>
+<p>This workshop section introduces you to containerlab basics.</p>
+<ul>
+<li>Topology YAML file</li>
+<li>Image management workflow</li>
+<li>The lifecycle of a lab.</li>
+</ul>
+<h2 id="repository">Repository</h2>
+<p>The repo should be cloned already and you should navigate to the <code>sgnog12-workshop</code> directory if you are not there already.</p>
+<div class="highlight"><pre><span></span><code>[*]─[clab]─[~/sgnog12-workshop/10-basics]
+└──&gt;
+</code></pre></div>
+<h2 id="topology">Topology</h2>
+<p>In Containerlab, the lab is defined via the 'topology file'. Which is a YAML file which defines the nodes and links in your desired topology.</p>
+<p>The topology file <code>basic.clab.yml</code> defines the lab we are going to use in this basics exercise. It consists of the two nodes:</p>
+<ul>
+<li>Nokia SR Linux</li>
+<li>Arista cEOS</li>
+</ul>
+<p>The nodes are interconnected with a single link over their respective <code>e1-1</code> and <code>eth1</code> interfaces.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">basic</span>
+<span class="nt">topology</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">nodes</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">srl</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nokia_srlinux</span>
+<span class="w">      </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ghcr.io/nokia/srlinux:latest</span>
+<span class="w">    </span><span class="nt">ceos</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">arista_ceos</span>
+<span class="w">      </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ceos:4.33.1F</span>
+
+<span class="w">  </span><span class="nt">links</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">endpoints</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">srl</span><span class="p p-Indicator">:</span><span class="nv">e1-1</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">ceos</span><span class="p p-Indicator">:</span><span class="nv">eth1</span><span class="p p-Indicator">]</span>
+</code></pre></div>
+<p><a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="topology-explain.png" data-desc-position="bottom"><img alt="" src="topology-explain.png"></a></p>
+<h2 id="deployment">Deployment</h2>
+<p>Try to deploy the lab:</p>
+<div class="highlight"><pre><span></span><code>containerlab<span class="w"> </span>deploy<span class="w"> </span>-t<span class="w"> </span>basic.clab.yml
+</code></pre></div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+</div>
+<p>If your topology file ends with the <code>.clab.yaml</code> or <code>.clab.yml</code> file extension <strong>AND</strong> is the only topology in your current directory, you don't need to specify the <code>-t</code> flag. Containerlab will search for local topologies when deploying.</p>
+<p>Note, you can use a shorter version of the same command - <code>clab dep -t basic.clab.yml</code>.</p>
+<p>The deployment should succeed, and you should see the following tabular output.</p>
+<p><a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="deploy.png" data-desc-position="bottom"><img alt="" src="deploy.png"></a></p>
+<h2 id="connecting-to-the-nodes">Connecting to the nodes</h2>
+<p>Connect to the Nokia SR Linux node using the container name:</p>
+<div class="highlight"><pre><span></span><code>ssh<span class="w"> </span>clab-basic-<span class="si">${</span><span class="nv">GROUP_ID</span><span class="si">}</span>-srl
+</code></pre></div>
+<p>Connect to the cEOS node using its IP address (note, the IP might be different in your lab):</p>
+<div class="highlight"><pre><span></span><code>ssh<span class="w"> </span>admin@172.20.20.3
+</code></pre></div>
+<h2 id="hostname-qol-additions">Hostname QoL additions</h2>
+<p>Containerlab adds some quality-of-life improvements, such as automatically creating <code>/etc/hosts</code> entries for each deployed lab node. This means you can use the node hostname rather than IP address to connect.</p>
+<div class="highlight"><pre><span></span><code>cat<span class="w"> </span>/etc/hosts
+</code></pre></div>
+<p>Notice the entries added for the lab</p>
+<p>To add to that there is also SSH host configuration created at the <code>/etc/ssh/ssh_config.d</code> dir, as <code>clab-{lab name}.conf</code>.</p>
+<p>This means you don't have to enter username for the node with your <code>ssh</code> command. </p>
+<div class="highlight"><pre><span></span><code>cat<span class="w"> </span>/etc/ssh/ssh_config.d/clab-basic-<span class="si">${</span><span class="nv">GROUP_ID</span><span class="si">}</span>.conf
+</code></pre></div>
+<p>The known hosts file for the node entry is also set to <code>/dev/null</code> for the lab nodes. This is because every time a node is booted, the host key gets regenerated. With this <code>/dev/null</code> binding, you don't need to keep clearing the <code>known_hosts</code> file on subsequent deployments of your lab.</p>
+<p><a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="ssh_config.png" data-desc-position="bottom"><img alt="" src="ssh_config.png"></a></p>
+<h2 id="checking-network-connectivity">Checking network connectivity</h2>
+<p>In this topology SR Linux and cEOS are connected to eachother on their first ethernet interface(s). Let's confirm the connectivity between the nodes.</p>
+<p>The nodes come with LLDP already enabled, our goal is to verify that the basic network connectivity is working between the nodes.</p>
+<p>SSH to the SR Linux node:</p>
+<div class="highlight"><pre><span></span><code>ssh<span class="w"> </span>clab-basic-<span class="si">${</span><span class="nv">GROUP_ID</span><span class="si">}</span>-srl
+</code></pre></div>
+<p>and check the LLDP neighbors on ethernet-1/1 interface with the below command:</p>
+<div class="highlight"><pre><span></span><code>show /system lldp neighbor interface ethernet-1/1
+</code></pre></div>
+<p>We should see the ceos node detected as our LLDP neighbor as per the sample output below:</p>
+<div class="highlight"><pre><span></span><code>--{ running }--[  ]--
+A:admin@srl# show /system lldp neighbor interface ethernet-1/1
+  +--------------+----------------+----------------+----------------+----------------+----------------+---------------+
+  |     Name     |    Neighbor    |    Neighbor    |    Neighbor    | Neighbor First | Neighbor Last  | Neighbor Port |
+  |              |                |  System Name   |   Chassis ID   |    Message     |     Update     |               |
+  +==============+================+================+================+================+================+===============+
+  | ethernet-1/1 | 00:1C:73:2B:8E | ceos           | 00:1C:73:2B:8E | 8 minutes ago  | 3 seconds ago  | Ethernet1     |
+  |              | :E7            |                | :E7            |                |                |               |
+  +--------------+----------------+----------------+----------------+----------------+----------------+---------------+
+</code></pre></div>
+<h2 id="listing-running-labs">Listing running labs</h2>
+<p>When you are in the directory that contains the lab file, you can list the nodes of that lab simply by using the <code>containerlab inspect</code> command.</p>
+<p><a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="inspect.png" data-desc-position="bottom"><img alt="" src="inspect.png"></a></p>
+<p>If the topology file is located in a different directory, you can specify the directory the topology file lives in, or if multiple topology files live in that directory, give the absolute path to the topology file:</p>
+<div class="highlight"><pre><span></span><code><span class="o">[</span>*<span class="o">]</span>─<span class="o">[</span>clab<span class="o">]</span>─<span class="o">[</span>/tmp<span class="o">]</span>
+└──&gt;<span class="w"> </span>containerlab<span class="w"> </span>inspect<span class="w"> </span>-t<span class="w"> </span>~/sgnog12-workshop/10-basics
+</code></pre></div>
+<p>You can also list all running labs regardless of where their topology files are located:</p>
+<p><a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="inspect_all.png" data-desc-position="bottom"><img alt="" src="inspect_all.png"></a></p>
+<p>The output will contain all labs and their nodes.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+</div>
+<p>You can use shorthand commands to speed up your workflow. See the below examples for inspect:</p>
+<ul>
+<li><code>containerlab inspect</code> -&gt; <code>clab ins</code></li>
+<li><code>clab ins -a</code> -&gt; <code>containerlab inspect --all</code></li>
+</ul>
+<h2 id="lab-directory">Lab directory</h2>
+<p>The lab directory is automatically created upon deployment of a lab. It stores the related artifacts to a lab that are generated by containerlab or the lab nodes themselves.</p>
+<p>For example, you may find:</p>
+<ul>
+<li>TLS certificates</li>
+<li>Inventory files</li>
+<li>Node artifacts (such as startup configs)</li>
+<li>Topology export JSON file</li>
+</ul>
+<p>The lab directory is named after the lab, and sits in the same directory as the topology file. In this case it will be <code>clab-basic-${GROUP_ID}</code></p>
+<p>To list the contents of the lab directory, run:</p>
+<div class="highlight"><pre><span></span><code>[*]─[clab]─[~/sgnog12-workshop/10-basics]
+└──&gt; tree -L 2 clab-basic-${GROUP_ID}/
+</code></pre></div>
+<p><a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="lab_dir_tree.png" data-desc-position="bottom"><img alt="" src="lab_dir_tree.png"></a></p>
+<h2 id="destroying-the-lab">Destroying the lab</h2>
+<p>When you are done with the lab, we need to bring it down. This is called 'destroying' the lab. You use the <code>containerlab destroy</code> command.</p>
+<p>As with deployment, containerlab will try and search in your current directory for the <code>*.clab.yml</code> or <code>*.clab.yaml</code> files in the current directory.</p>
+<p>Try it:</p>
+<div class="highlight"><pre><span></span><code>clab<span class="w"> </span>des<span class="w"> </span>--cleanup
+</code></pre></div>
+<p>Alternatively, you can specify the topology file explicitly (required if multiple topology files exist in the directory):</p>
+<div class="highlight"><pre><span></span><code>clab<span class="w"> </span>des<span class="w"> </span>-t<span class="w"> </span>basic.clab.yml<span class="w"> </span>--cleanup
+</code></pre></div>
+<p>The <code>--cleanup</code> flag ensures that the lab directory gets removed as well.</p>
+<p>🎉 Congratulations! You finished the basics lab exercise.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-progress" data-md-component="progress" role="progressbar"></div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "..", "features": ["content.code.copy", "content.code.annotate", "navigation.instant", "navigation.instant.progress", "navigation.sections"], "search": "../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.f55a23d4.min.js"></script>
+      
+    
+  
+<script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
+document$.subscribe(()=>{ lightbox.reload(); });
+</script></body></html>

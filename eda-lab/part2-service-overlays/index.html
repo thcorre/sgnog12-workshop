@@ -1,0 +1,2165 @@
+<!DOCTYPE html><html lang="en" class="no-js"><head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.21">
+    
+    
+      
+        <title>🔄 Part 2: Service Overlays - L2 EVPN Service - 🇸🇬 SGNOG12 x NOKIA Workshop</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.2a3383ac.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&amp;display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  <link href="../../assets/stylesheets/glightbox.min.css" rel="stylesheet"><script src="../../assets/javascripts/glightbox.min.js"></script><style id="glightbox-style">
+            html.glightbox-open { overflow: initial; height: 100%; }
+            .gslide-title { margin-top: 0px; user-select: text; }
+            .gslide-desc { color: #666; user-select: text; }
+            .gslide-image img { background: white; }
+            .gscrollbar-fixer { padding-right: 15px; }
+            .gdesc-inner { font-size: 0.75rem; }
+            body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color); }
+            body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color); }
+            body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color); }
+        </style></head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="blue" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#part-2-service-overlays-l2-evpn-service" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="🇸🇬 SGNOG12 x NOKIA Workshop" class="md-header__button md-logo" aria-label="🇸🇬 SGNOG12 x NOKIA Workshop" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"></path></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            🇸🇬 SGNOG12 x NOKIA Workshop
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              🔄 Part 2: Service Overlays - L2 EVPN Service
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="blue" data-md-color-accent="indigo" aria-label="Dark mode" type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"></path></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="indigo" aria-label="Light mode" type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"></path></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/thcorre/sgnog12-workshop" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"></path></svg>
+  </div>
+  <div class="md-source__repository">
+    sgnog12-workshop
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="🇸🇬 SGNOG12 x NOKIA Workshop" class="md-nav__button md-logo" aria-label="🇸🇬 SGNOG12 x NOKIA Workshop" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"></path></svg>
+
+    </a>
+    🇸🇬 SGNOG12 x NOKIA Workshop
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/thcorre/sgnog12-workshop" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"></path></svg>
+  </div>
+  <div class="md-source__repository">
+    sgnog12-workshop
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2">
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    Getting Started
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Getting Started
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../05-install/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Install Containerlab
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../10-basics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Containerlab basics
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../15-startup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Startup Configuration
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../20-vm/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    VM-Based Nodes
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../30-registry/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Container registries
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../40-packet-capture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Packet capture
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7">
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    DC Fabric Lab
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            DC Fabric Lab
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dc-lab/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Start
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8">
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    EDA Lab
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            EDA Lab
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Start
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../part1-fabric-intent/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Part 1
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="./" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Part 2
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../part3-deviations-eql/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Part 3
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#table-of-contents" class="md-nav__link">
+    <span class="md-ellipsis">
+      📋 Table of Contents
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      👨🏻‍💻 Overview
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      ☑️ Prerequisites
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#l2-evpn-concepts" class="md-nav__link">
+    <span class="md-ellipsis">
+      📚 L2 EVPN Concepts
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="📚 L2 EVPN Concepts">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-l2-evpn" class="md-nav__link">
+    <span class="md-ellipsis">
+      What is L2 EVPN?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#key-components" class="md-nav__link">
+    <span class="md-ellipsis">
+      Key Components
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#service-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      Service Architecture
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#two-methods-for-l2-evpn-service-creation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Two Methods for L2 EVPN Service Creation
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Two Methods for L2 EVPN Service Creation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#method-1-individual-components-this-lab" class="md-nav__link">
+    <span class="md-ellipsis">
+      Method 1: Individual Components (This Lab)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#method-2-virtual-networks-alternative" class="md-nav__link">
+    <span class="md-ellipsis">
+      Method 2: Virtual Networks (Alternative)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exercise-2-create-l2-evpn-instance" class="md-nav__link">
+    <span class="md-ellipsis">
+      🔧 Exercise 2: Create L2 EVPN Instance
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🔧 Exercise 2: Create L2 EVPN Instance">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#lab-topology" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lab Topology
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-1-create-bridge-domain" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 1: Create Bridge Domain
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-create-bridge-interfaces" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 2: Create Bridge Interfaces
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Step 2: Create Bridge Interfaces">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bridge-interface-for-client1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Bridge Interface for Client1
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bridge-interface-for-client2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Bridge Interface for Client2
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bridge-interface-for-client3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Bridge Interface for Client3
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-review-and-commit" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 3: Review and Commit
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exercise-3-verify-l2-evpn-service" class="md-nav__link">
+    <span class="md-ellipsis">
+      🔎 Exercise 3: Verify L2 EVPN Service
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🔎 Exercise 3: Verify L2 EVPN Service">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-view-bridge-domain-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 1: View Bridge Domain Summary
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-test-end-to-end-connectivity" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 2: Test End-to-End Connectivity
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-verify-device-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 3: Verify Device Configuration
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Step 3: Verify Device Configuration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#check-network-instance-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Check Network Instance Configuration
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#check-vxlan-tunnel-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Check VXLAN Tunnel Configuration
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-4-check-mac-learning" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 4: Check MAC Learning
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#alternative-method-virtual-networks" class="md-nav__link">
+    <span class="md-ellipsis">
+      🎯 Alternative Method: Virtual Networks
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🎯 Alternative Method: Virtual Networks">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#virtual-networks-approach" class="md-nav__link">
+    <span class="md-ellipsis">
+      Virtual Networks Approach
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#when-to-use-each-method" class="md-nav__link">
+    <span class="md-ellipsis">
+      When to Use Each Method
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting-tips" class="md-nav__link">
+    <span class="md-ellipsis">
+      🛠️ Troubleshooting &amp; Tips
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🛠️ Troubleshooting &amp; Tips">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#best-practices" class="md-nav__link">
+    <span class="md-ellipsis">
+      💡 Best Practices
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-takeaways" class="md-nav__link">
+    <span class="md-ellipsis">
+      📝 Key Takeaways
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="📝 Key Takeaways">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-youve-accomplished" class="md-nav__link">
+    <span class="md-ellipsis">
+      What You've Accomplished
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#understanding-the-eda-generated-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Understanding the EDA-Generated Configuration
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#service-flow-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Service Flow Summary
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#whats-next" class="md-nav__link">
+    <span class="md-ellipsis">
+      🎯 What's Next?
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🎯 What's Next?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#next-steps-in-your-learning-journey" class="md-nav__link">
+    <span class="md-ellipsis">
+      Next Steps in Your Learning Journey
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#additional-resources" class="md-nav__link">
+    <span class="md-ellipsis">
+      📚 Additional Resources
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="📚 Additional Resources">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Documentation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#related-exercises" class="md-nav__link">
+    <span class="md-ellipsis">
+      Related Exercises
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#command-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      Command Reference
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lab-completion-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      🏁 Lab Completion Summary
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="part-2-service-overlays-l2-evpn-service">🔄 Part 2: Service Overlays - L2 EVPN Service</h1>
+<blockquote>
+<p><strong>Building Layer 2 EVPN-VXLAN Services on Your EDA Fabric</strong></p>
+</blockquote>
+<p>Now that your underlay fabric is operational, this guide walks you through creating <strong>Layer 2 EVPN overlay services</strong> using Bridge Domains and Bridge Interfaces to provide Layer 2 connectivity between workloads regardless of their physical location.</p>
+<hr>
+<h2 id="table-of-contents">📋 Table of Contents</h2>
+<ol>
+<li><a href="#-overview">Overview</a></li>
+<li><a href="#-prerequisites">Prerequisites</a></li>
+<li><a href="#-l2-evpn-concepts">L2 EVPN Concepts</a></li>
+<li><a href="#-exercise-2-create-l2-evpn-instance">Exercise 2: Create L2 EVPN Instance</a></li>
+<li><a href="#step-1-create-bridge-domain">Step 1: Create Bridge Domain</a></li>
+<li><a href="#step-2-create-bridge-interfaces">Step 2: Create Bridge Interfaces</a></li>
+<li><a href="#-exercise-3-verify-l2-evpn-service">Exercise 3: Verify L2 EVPN Service</a></li>
+<li><a href="#step-1-view-bridge-domain-summary">Step 1: View Bridge Domain Summary</a></li>
+<li><a href="#step-2-test-end-to-end-connectivity">Step 2: Test End-to-End Connectivity</a></li>
+<li><a href="#step-3-verify-device-configuration">Step 3: Verify Device Configuration</a></li>
+<li><a href="#step-4-check-mac-learning">Step 4: Check MAC Learning</a></li>
+<li><a href="#-alternative-method-virtual-networks">Alternative Method: Virtual Networks</a></li>
+<li><a href="#%EF%B8%8F-troubleshooting--tips">Troubleshooting &amp; Tips</a></li>
+<li><a href="#-whats-next">What's Next?</a></li>
+</ol>
+<hr>
+<h2 id="overview">👨🏻‍💻 Overview</h2>
+<p>In this lab, you will create a Layer 2 EVPN overlay service to connect two clients (c1 and c2) across different leaf switches using Bridge Domains and Bridge Interfaces.</p>
+<p><strong>Lab Scenario:</strong>
+- Client1 connected to leaf1 on interface ethernet-1/1
+- Client2 connected to leaf2 on interface ethernet-1/1
+- Client3 connected to leaf3 on interface ethernet-1/1
+- All clients are untagged
+- Layer 2 connectivity via EVPN-VXLAN overlay</p>
+<p><strong>What you'll learn:</strong><br>
+- Create Bridge Domains for L2 EVPN services<br>
+- Configure Bridge Interfaces to attach workloads<br>
+- Allocate VNI, EVI, and Tunnel Index from pools<br>
+- Verify EVPN-VXLAN operation and MAC learning<br>
+- Test end-to-end Layer 2 connectivity  </p>
+<p><strong>Estimated time:</strong> 60 minutes</p>
+<hr>
+<h2 id="prerequisites">☑️ Prerequisites</h2>
+<p>Before starting Part 2, ensure you have:</p>
+<ul>
+<li><strong>Completed</strong> <a href="../part1-fabric-intent/">Part 1: Fabric Intent Creation</a>  </li>
+<li>Working underlay fabric with eBGP EVPN overlay  </li>
+<li>All BGP sessions in <strong>Established</strong> state  </li>
+<li>Pre-created <strong>allocation pools</strong> for:  </li>
+<li>VNI (VXLAN Network Identifiers) - e.g., <code>vni-pool</code></li>
+<li>EVI (EVPN Instance) - e.g., <code>evi-pool</code></li>
+<li>Tunnel Index - e.g., <code>tunnel-index-pool</code>  </li>
+<li><strong>Client connections</strong>:  </li>
+<li>client1 connected to leaf1 ethernet-1/1 with VLAN 'null' (untagged) (IP: 172.17.0.1/24)</li>
+<li>client2 connected to leaf2 ethernet-1/1 with VLAN 'null' (untagged) (IP: 172.17.0.2/24)</li>
+<li>client3 connected to leaf3 ethernet-1/1 with VLAN 'null' (untagged) (IP: 172.17.0.3/24)  </li>
+<li>Access to EDA GUI</li>
+</ul>
+<hr>
+<h2 id="l2-evpn-concepts">📚 L2 EVPN Concepts</h2>
+<h3 id="what-is-l2-evpn">What is L2 EVPN?</h3>
+<p><strong>Layer 2 EVPN</strong> creates a virtual bridge domain that spans multiple physical switches, allowing workloads on different leafs to communicate as if they were on the same physical Layer 2 network.</p>
+<h3 id="key-components">Key Components</h3>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Bridge Domain</strong></td>
+<td>A Layer 2 broadcast domain within a MAC-VRF network instance</td>
+</tr>
+<tr>
+<td><strong>Bridge Interface</strong></td>
+<td>Attachment point for workloads (subinterfaces with/without VLAN tagging)</td>
+</tr>
+<tr>
+<td><strong>MAC-VRF</strong></td>
+<td>Type of network instance for Layer 2 virtual routing and forwarding</td>
+</tr>
+<tr>
+<td><strong>VNI</strong></td>
+<td>VXLAN Network Identifier - identifies the Layer 2 segment in the overlay</td>
+</tr>
+<tr>
+<td><strong>EVI</strong></td>
+<td>EVPN Instance - identifies the EVPN service instance</td>
+</tr>
+<tr>
+<td><strong>Tunnel Index</strong></td>
+<td>Internal index for VXLAN tunnel interfaces</td>
+</tr>
+<tr>
+<td><strong>VXLAN Interface</strong></td>
+<td>Virtual tunnel endpoint for encapsulating Layer 2 frames</td>
+</tr>
+</tbody>
+</table>
+<h3 id="service-architecture">Service Architecture</h3>
+<div class="highlight"><pre><span></span><code>┌─────────────────────────────────────────┐
+│              Spine Layer                │
+│       ┌─────────┐    ┌─────────┐        │
+│       │ spine1  │────│ spine2  │        │
+│       └────┬────┘    └────┬────┘        │
+└────────────┼──────────────┼─────────────┘
+             │              │
+       ┌─────┴──────┬───────┴──────┐
+       │            │              │    
+  ┌────┴────┐  ┌────┴─────┐  ┌─────┴────┐ 
+  │  leaf1  │  │  leaf2   │  │  leaf3   │ 
+  └────┬────┘  └────┬─────┘  └─────┬────┘ 
+       │            │              │
+    ┌──┴──┐      ┌──┴──┐        ┌──┴──┐
+    │ c1  │      │ c2  │        │ c3  │       ← Bridge Domain "l2vnet"
+    │     │      │     │        │     │       ← VNI 200 (from vni-pool), EVI 100 (from evi-pool)
+    │null │      │null │        │null │       ← VXLAN tunnel between leafs
+    └─────┘      └─────┘        └─────┘
+</code></pre></div>
+<h3 id="two-methods-for-l2-evpn-service-creation">Two Methods for L2 EVPN Service Creation</h3>
+<p>EDA provides two approaches:</p>
+<h4 id="method-1-individual-components-this-lab"><strong>Method 1: Individual Components</strong> (This Lab)</h4>
+<ul>
+<li>Create Bridge Domain separately</li>
+<li>Create Bridge Interfaces separately</li>
+<li>More granular control</li>
+<li>Covered in this exercise</li>
+</ul>
+<h4 id="method-2-virtual-networks-alternative"><strong>Method 2: Virtual Networks</strong> (Alternative)</h4>
+<ul>
+<li>Create both Bridge Domains and Bridge Interfaces in one resource</li>
+<li>Simpler, conglomerate method</li>
+<li>Will be demonstrated in L3 EVPN service setup</li>
+</ul>
+<hr>
+<h2 id="exercise-2-create-l2-evpn-instance">🔧 Exercise 2: Create L2 EVPN Instance</h2>
+<p>In this exercise, we'll create a Layer 2 EVPN overlay service for client1, client2 and client3 using individual Bridge Domain and Bridge Interface components.</p>
+<h3 id="lab-topology">Lab Topology</h3>
+<div class="highlight"><pre><span></span><code>              ┌─────────┐  ┌─────────┐
+              │ spine1  │  │ spine2  |  
+              └────┬────┘  └────┬────┘
+                   │            │
+            ┌──────┴───────┐────┴───────┐
+            │              │            │  
+       ┌────┴────┐    ┌────┴────┐  ┌───-┴────┐ 
+       │  leaf1  │    │  leaf2  │  │  leaf3  │ 
+       └────┬────┘    └────┬────┘  └────┬────┘ 
+            │              │            │
+     ethernet-1/1.0 ethernet-1/1.0 ethernet-1/1.0
+        untagged       untagged      untagged
+            │              │            │
+        ┌───┴───┐      ┌───┴───┐    ┌───┴───┐
+        │client1│      │client2│    │client3│
+        │ .0.1  │      │  0.2  │    │  0.3  │
+        └───────┘      └───────┘    └───────┘
+
+    Bridge Domain: l2vnet
+    VNI: 200 (from vni-pool)
+    EVI: 100 (from evi-pool)
+    Tunnel Index: 500 (from tunnel-index-pool)
+</code></pre></div>
+<hr>
+<h3 id="step-1-create-bridge-domain">Step 1: Create Bridge Domain</h3>
+<ol>
+<li><strong>Navigate to Bridge Domains</strong></li>
+<li>In the EDA GUI, scroll down to <strong>Virtual Networks</strong> section in the left sidebar</li>
+<li>Select <strong>Bridge Domains</strong></li>
+<li>
+<p>Click the blue <strong>Create</strong> button</p>
+</li>
+<li>
+<p><strong>Configure Bridge Domain Metadata</strong></p>
+</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Name</strong></td>
+<td><code>l2vnet</code></td>
+</tr>
+<tr>
+<td><strong>Namespace</strong></td>
+<td><code>clab-dc-{GROUP_ID}-eda</code> (your datacenter namespace)</td>
+</tr>
+</tbody>
+</table>
+<ol>
+<li><strong>Configure Bridge Domain Specification</strong></li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>EVPNVXLAN</code></td>
+<td>Enables EVPN-VXLAN for this bridge domain</td>
+</tr>
+<tr>
+<td><strong>VNI Allocation Pool</strong></td>
+<td><code>vni-pool</code></td>
+<td>Reference to VNI pool for allocations</td>
+</tr>
+<tr>
+<td><strong>EVI Allocation Pool</strong></td>
+<td><code>evi-pool</code></td>
+<td>Reference to EVI pool for allocations</td>
+</tr>
+<tr>
+<td><strong>Tunnel Index Allocation Pool</strong></td>
+<td><code>tunnel-index-pool</code></td>
+<td>Reference to tunnel index pool</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Note on Allocation Pools:</strong> EDA supports both automatic pool-based allocation (preferred for automation) and manual index specification. Using pools ensures no conflicts and simplifies management.</p>
+</blockquote>
+<ol>
+<li><strong>Review Additional Settings</strong></li>
+</ol>
+<p>The Bridge Domain specification includes advanced settings:
+   - <strong>Export Target / Import Target:</strong> Auto-generated as <code>target:1:&lt;evi&gt;</code>
+   - <strong>MAC Limit:</strong> Maximum number of MAC entries (optional)
+   - <strong>MAC Aging:</strong> Configurable aging time (default: 300 seconds)
+   - <strong>MAC Duplication Detection:</strong> Can be enabled with configurable actions</p>
+<ol>
+<li><strong>Add to Transaction</strong></li>
+<li>Click <strong>Create</strong> or <strong>Add to Transaction</strong></li>
+<li>Do NOT commit yet - we'll add Bridge Interfaces first</li>
+</ol>
+<hr>
+<h3 id="step-2-create-bridge-interfaces">Step 2: Create Bridge Interfaces</h3>
+<p>We need to create two Bridge Interfaces to connect client1, client2 and client3 to the Bridge Domain.</p>
+<h4 id="bridge-interface-for-client1">Bridge Interface for Client1</h4>
+<ol>
+<li><strong>Navigate to Bridge Interfaces</strong></li>
+<li>Under <strong>Virtual Networks</strong> resources, select <strong>Bridge Interfaces</strong></li>
+<li>
+<p>Click <strong>Create</strong></p>
+</li>
+<li>
+<p><strong>Configure client1 Bridge Interface Metadata</strong></p>
+</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Name</strong></td>
+<td><code>client1</code></td>
+</tr>
+<tr>
+<td><strong>Namespace</strong></td>
+<td><code>clab-dc-{GROUP_ID}-eda</code></td>
+</tr>
+</tbody>
+</table>
+<ol>
+<li><strong>Configure client1 Bridge Interface Specification</strong></li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Bridge Domain</strong></td>
+<td><code>l2vnet</code></td>
+<td>Reference to the Bridge Domain created above</td>
+</tr>
+<tr>
+<td><strong>VLAN ID</strong></td>
+<td><code>null</code></td>
+<td>VLAN tag for this subinterface</td>
+</tr>
+<tr>
+<td><strong>Interface</strong></td>
+<td><code>leaf1-ethernet-1-1</code></td>
+<td>Physical interface reference</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Interface Naming:</strong> Use the exact interface resource name from your topology. Format is typically <code>&lt;node&gt;-&lt;interface&gt;</code>.</p>
+</blockquote>
+<ol>
+<li><strong>Optional Settings</strong></li>
+<li><strong>Description:</strong> <code>interface to c1</code></li>
+<li><strong>L2 MTU:</strong> Leave default or specify if needed</li>
+<li>
+<p><strong>MAC Duplication Detection Action:</strong> Override BD settings if needed</p>
+</li>
+<li>
+<p><strong>Add to Transaction</strong></p>
+</li>
+<li>Click <strong>Create</strong> or <strong>Add to Transaction</strong></li>
+</ol>
+<h4 id="bridge-interface-for-client2">Bridge Interface for Client2</h4>
+<ol>
+<li><strong>Create Second Bridge Interface</strong></li>
+<li>
+<p>Click <strong>Create</strong> again in Bridge Interfaces view</p>
+</li>
+<li>
+<p><strong>Configure client2 Bridge Interface Metadata</strong></p>
+</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Name</strong></td>
+<td><code>client2</code></td>
+</tr>
+<tr>
+<td><strong>Namespace</strong></td>
+<td><code>clab-dc-{GROUP_ID}-eda</code></td>
+</tr>
+</tbody>
+</table>
+<ol>
+<li><strong>Configure client2 Bridge Interface Specification</strong></li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Bridge Domain</strong></td>
+<td><code>l2vnet</code></td>
+</tr>
+<tr>
+<td><strong>VLAN ID</strong></td>
+<td><code>null</code></td>
+</tr>
+<tr>
+<td><strong>Interface</strong></td>
+<td><code>leaf2-ethernet-1-1</code></td>
+</tr>
+</tbody>
+</table>
+<ol>
+<li><strong>Add to Transaction</strong></li>
+<li>Click <strong>Create</strong> or <strong>Add to Transaction</strong></li>
+</ol>
+<h4 id="bridge-interface-for-client3">Bridge Interface for Client3</h4>
+<ol>
+<li><strong>Create Second Bridge Interface</strong></li>
+<li>
+<p>Click <strong>Create</strong> again in Bridge Interfaces view</p>
+</li>
+<li>
+<p><strong>Configure client3 Bridge Interface Metadata</strong></p>
+</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Name</strong></td>
+<td><code>client3</code></td>
+</tr>
+<tr>
+<td><strong>Namespace</strong></td>
+<td><code>clab-dc-{GROUP_ID}-eda</code></td>
+</tr>
+</tbody>
+</table>
+<ol>
+<li><strong>Configure client3 Bridge Interface Specification</strong></li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Bridge Domain</strong></td>
+<td><code>l2vnet</code></td>
+</tr>
+<tr>
+<td><strong>VLAN ID</strong></td>
+<td><code>null</code></td>
+</tr>
+<tr>
+<td><strong>Interface</strong></td>
+<td><code>leaf3-ethernet-1-1</code></td>
+</tr>
+</tbody>
+</table>
+<ol>
+<li><strong>Add to Transaction</strong></li>
+<li>Click <strong>Create</strong> or <strong>Add to Transaction</strong></li>
+</ol>
+<hr>
+<h3 id="step-3-review-and-commit">Step 3: Review and Commit</h3>
+<ol>
+<li><strong>Open Transaction Basket</strong></li>
+<li>Navigate to your active transaction</li>
+<li>
+<p>You should see 3 resources ready to commit:</p>
+<ul>
+<li>1 Bridge Domain (<code>l2vnet</code>)</li>
+<li>2 Bridge Interfaces (<code>client1</code>, <code>client2</code>, <code>client3</code>)</li>
+</ul>
+</li>
+<li>
+<p><strong>Add Commit Message</strong>
+   </p><div class="highlight"><pre><span></span><code>Create L2 EVPN service for client1, client2 and client3
+</code></pre></div><p></p>
+</li>
+<li>
+<p><strong>Run Dry-Run (Optional but Recommended)</strong></p>
+</li>
+<li>Click <strong>Dry-run</strong> to preview changes</li>
+<li>Review the configuration that will be generated on leaf1, leaf2 and leaf3</li>
+<li>
+<p>Expected changes:</p>
+<ul>
+<li>Network-instance <code>l2vnet</code> of type <code>mac-vrf</code></li>
+<li>Subinterface <code>ethernet-1/1.0</code> with VLAN untagged</li>
+<li>VXLAN interface with allocated VNI</li>
+<li>BGP EVPN configuration with allocated EVI</li>
+</ul>
+</li>
+<li>
+<p><strong>Commit the Transaction</strong></p>
+</li>
+<li>Click <strong>Commit</strong></li>
+<li>Wait for successful completion</li>
+<li>EDA will automatically:<ul>
+<li>Validate the design</li>
+<li>Generate configuration for leaf1, leaf2 and leaf3</li>
+<li>Push config to the network devices</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2 id="exercise-3-verify-l2-evpn-service">🔎 Exercise 3: Verify L2 EVPN Service</h2>
+<p>Now let's verify that the L2 EVPN service is operational.</p>
+<hr>
+<h3 id="step-1-view-bridge-domain-summary">Step 1: View Bridge Domain Summary</h3>
+<ol>
+<li><strong>Navigate to Bridge Domains Summary</strong></li>
+<li>In EDA GUI, go to <strong>Virtual Networks → Bridge Domains</strong></li>
+<li>
+<p>Click on the <strong>Summary</strong> tab</p>
+</li>
+<li>
+<p><strong>Check Bridge Domain Status</strong></p>
+</li>
+</ol>
+<p>You should see:
+   - <strong>Bridge Domain Deployment Distribution:</strong>
+     - Number of Bridge Domains deployed
+     - Status: <code>L2vnet is 'up'</code>
+   - <strong>Bridge Table Entries:</strong> Initially empty until traffic flows
+   - <strong>Operational State:</strong> up</p>
+<ol>
+<li><strong>Drill Down to l2vnet Details</strong></li>
+<li>Click on <code>l2vnet</code> then information or view to view details</li>
+<li>Verify:<ul>
+<li>Deployed nodes: leaf1, leaf2, leaf3</li>
+<li>VNI allocation from pool</li>
+<li>EVI allocation from pool</li>
+<li>Tunnel Index from pool</li>
+<li>Associated bridge interfaces</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 id="step-2-test-end-to-end-connectivity">Step 2: Test End-to-End Connectivity</h3>
+<ol>
+<li>
+<p><strong>Access client2</strong>
+   </p><div class="highlight"><pre><span></span><code><span class="c1"># SSH or console to client2</span>
+sudo<span class="w"> </span>docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>clab-dc-<span class="o">{</span>GROUP_ID<span class="o">}</span>-eda-client2<span class="w"> </span>sh
+</code></pre></div><p></p>
+</li>
+<li>
+<p><strong>Verify Interface Configuration</strong>
+   </p><div class="highlight"><pre><span></span><code>client2:~#<span class="w"> </span>ifconfig<span class="w"> </span>eth1
+</code></pre></div><p></p>
+</li>
+</ol>
+<p><strong>Expected Output:</strong>
+   </p><div class="highlight"><pre><span></span><code>eth1      Link encap:Ethernet  HWaddr AA:C1:AB:6F:41:45
+          inet addr:172.17.0.2  Bcast:0.0.0.0  Mask:255.255.255.0
+          inet6 addr: fe80::a8c1:abff:fe6f:4145/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:9500  Metric:1
+          RX packets:1 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:111 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000
+          RX bytes:56 (56.0 B)  TX bytes:8026 (7.8 KiB)
+</code></pre></div><p></p>
+<p>✅ Client2 has IP 172.17.0.2/24</p>
+<ol>
+<li><strong>Ping Client1</strong>
+   <div class="highlight"><pre><span></span><code>client2:~#<span class="w"> </span>ping<span class="w"> </span><span class="m">172</span>.17.0.1
+</code></pre></div></li>
+</ol>
+<p><strong>Expected Output:</strong>
+   </p><div class="highlight"><pre><span></span><code>PING 172.17.0.1 (172.17.0.1): 56(84) bytes of data.
+64 bytes from 172.17.0.1: icmp_seq=1 ttl=64 time=9.72 ms
+64 bytes from 172.17.0.1: icmp_seq=2 ttl=64 time=1.39 ms
+64 bytes from 172.17.0.1: icmp_seq=3 ttl=64 time=0.740 ms
+64 bytes from 172.17.0.1: icmp_seq=4 ttl=64 time=0.784 ms
+64 bytes from 172.17.0.1: icmp_seq=5 ttl=64 time=0.631 ms
+^C
+--- 172.17.0.1 ping statistics ---
+5 packets transmitted, 5 packets received, 0% packet loss
+round-trip min/avg/max = 0.824/1.164/2.102 ms
+</code></pre></div><p></p>
+<p>✅ <strong>Success!</strong> Layer 2 connectivity is working across the EVPN-VXLAN overlay.</p>
+<hr>
+<h3 id="step-3-verify-device-configuration">Step 3: Verify Device Configuration</h3>
+<p>SSH to leaf1 to examine the EDA-generated configuration.</p>
+<h4 id="check-network-instance-configuration">Check Network Instance Configuration</h4>
+<div class="highlight"><pre><span></span><code>ssh<span class="w"> </span>admin@leaf1
+
+--<span class="o">{</span><span class="w"> </span>running<span class="w"> </span><span class="o">}</span>--<span class="o">[</span><span class="w"> </span><span class="o">]</span>--
+A:admin@leaf1#<span class="w"> </span>info<span class="w"> </span>network-instance<span class="w"> </span>l2vnet
+</code></pre></div>
+<p><strong>Expected Configuration:</strong>
+</p><div class="highlight"><pre><span></span><code>network-instance l2vnet {
+    !!! EDA Source CRs: services.eda.nokia.com/v1/BridgeInterface/client1
+    type mac-vrf
+    admin-state enable
+    description l2vnet
+    interface ethernet-1/1.4097 {
+        !!! EDA Source CRs: services.eda.nokia.com/v1/BridgeInterface/client1
+    }
+    vxlan-interface vxlan0.500 {
+    }
+    protocols {
+        bgp-evpn {
+            bgp-instance 1 {
+                vxlan-interface vxlan0.500
+                evi 100
+                ecmp 8
+            }
+        }
+        bgp-vpn {
+            bgp-instance 1 {
+                route-target {
+                    export-rt target:1:100
+                    import-rt target:1:100
+                }
+            }
+        }
+    }
+    bridge-table {
+        mac-learning {
+            admin-state enable
+            aging {
+                admin-state enable
+                age-time 300
+            }
+        }
+    }
+}
+</code></pre></div><p></p>
+<p><strong>Key Elements:</strong>
+- Network instance type: <code>mac-vrf</code>
+- Local bridge interface: <code>ethernet-1/1.4097</code> connected to client1
+- VXLAN interface: <code>vxlan0.500</code> for overlay connectivity
+- EVI: <code>100</code> (allocated from pool)
+- Route targets: <code>target:1:100</code> for import/export
+- MAC learning enabled with 300s aging</p>
+<h4 id="check-vxlan-tunnel-configuration">Check VXLAN Tunnel Configuration</h4>
+<div class="highlight"><pre><span></span><code>--<span class="o">{</span><span class="w"> </span>running<span class="w"> </span><span class="o">}</span>--<span class="o">[</span><span class="w"> </span><span class="o">]</span>--
+A:admin@leaf1#<span class="w"> </span>info<span class="w"> </span>tunnel-interface<span class="w"> </span>vxlan0<span class="w"> </span>vxlan-interface<span class="w"> </span><span class="m">500</span>
+</code></pre></div>
+<p><strong>Expected Configuration:</strong>
+</p><div class="highlight"><pre><span></span><code>        type bridged
+        ingress {
+            vni 200
+        }
+        egress {
+            source-ip use-system-ipv4-address
+        }
+</code></pre></div><p></p>
+<p><strong>Key Elements:</strong>
+- VNI: <code>200</code> (allocated from vni-pool)
+- Type: <code>bridged</code> (Layer 2 service)
+- Source IP: Uses system IPv4 address (loopback) as VTEP</p>
+<hr>
+<h3 id="step-4-check-mac-learning">Step 4: Check MAC Learning</h3>
+<p>Verify that MAC addresses are being learned across the EVPN overlay.</p>
+<div class="highlight"><pre><span></span><code>--<span class="o">{</span><span class="w"> </span>running<span class="w"> </span><span class="o">}</span>--<span class="o">[</span><span class="w"> </span><span class="o">]</span>--
+A:admin@leaf1#<span class="w"> </span>show<span class="w"> </span>network-instance<span class="w"> </span>l2vnet<span class="w"> </span>bridge-table<span class="w"> </span>mac-table<span class="w"> </span>all
+</code></pre></div>
+<p><strong>Expected Output:</strong>
+</p><div class="highlight"><pre><span></span><code>--------------------------------------------------------------------------------------------------------------------------------------
+Mac-table of network instance l2vnet
+--------------------------------------------------------------------------------------------------------------------------------------
++-------------------+---------------------------------+-----------+----------+--------+-------+---------------------------------+
+|      Address      |           Destination           |   Dest    |   Type   | Active | Aging |           Last Update           |
+|                   |                                 |   Index   |          |        |       |                                 |
++===================+=================================+===========+==========+========+=======+=================================+
+| AA:C1:AB:64:CD:5B | ethernet-1/1.4097               | 9         | learnt   | true   | 300   | 2025-10-07T14:33:11.000Z        |
+| AA:C1:AB:DA:1E:53 | vxlan-interface:vxlan0.500      | 834435197 | evpn     | true   | N/A   | 2025-10-07T14:33:10.000Z        |
+|                   | vtep:11.0.0.2 vni:200           | 0         |          |        |       |                                 |
++-------------------+---------------------------------+-----------+----------+--------+-------+---------------------------------+
+Total Irb Macs                 :    0 Total    0 Active
+Total Static Macs              :    0 Total    0 Active
+Total Duplicate Macs           :    0 Total    0 Active
+Total Learnt Macs              :    1 Total    1 Active
+Total Evpn Macs                :    1 Total    1 Active
+Total Evpn static Macs         :    0 Total    0 Active
+Total Irb anycast Macs         :    0 Total    0 Active
+Total Proxy Antispoof Macs     :    0 Total    0 Active
+Total Reserved Macs            :    0 Total    0 Active
+Total Eth-cfm Macs             :    0 Total    0 Active
+Total Irb Vrrps                :    0 Total    0 Active
+</code></pre></div><p></p>
+<p><strong>MAC Table Analysis:</strong></p>
+<table>
+<thead>
+<tr>
+<th>MAC Address</th>
+<th>Destination</th>
+<th>Type</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>AA:C1:AB:DA:1E:53</code></td>
+<td><code>vxlan-interface:vxlan0.500 vtep:11.0.0.2 vni:200</code></td>
+<td><code>evpn</code></td>
+<td>Remote MAC (client2) learned via EVPN from leaf2 (11.0.0.2)</td>
+</tr>
+<tr>
+<td><code>AA:C1:AB:64:CD:5B</code></td>
+<td><code>ethernet-1/1.4097</code></td>
+<td><code>learnt</code></td>
+<td>Local MAC (client1) learned on local interface</td>
+</tr>
+</tbody>
+</table>
+<p>✅ <strong>VXLAN Tunnel Established:</strong> Notice the VXLAN tunnel with VNI 200 to leaf2 (VTEP 11.0.0.2) to reach client2.</p>
+<hr>
+<h2 id="alternative-method-virtual-networks">🎯 Alternative Method: Virtual Networks</h2>
+<p>While this lab used the <strong>individual components method</strong> (separate Bridge Domain and Bridge Interface creation), EDA also offers a <strong>conglomerate method</strong> using the <strong>Virtual Networks</strong> resource.</p>
+<h3 id="virtual-networks-approach">Virtual Networks Approach</h3>
+<p>The Virtual Networks resource allows you to:
+- Define both Bridge Domains and Bridge Interfaces in a single configuration
+- Simplify service deployment with less granular control
+- Useful for standardized service templates</p>
+<h3 id="when-to-use-each-method">When to Use Each Method</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Use Case</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Individual Components</strong></td>
+<td>Fine-grained control, complex multi-tenant scenarios, custom configurations</td>
+</tr>
+<tr>
+<td><strong>Virtual Networks</strong></td>
+<td>Rapid deployment, standardized services, simpler topologies</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Note:</strong> The Virtual Networks method will be introduced in the L3 EVPN service setup (future lab extension).</p>
+</blockquote>
+<hr>
+<h2 id="troubleshooting-tips">🛠️ Troubleshooting &amp; Tips</h2>
+<details>
+<summary><b>Bridge Domain not appearing in EDA GUI</b></summary>
+
+**Possible causes:**
+- Transaction not committed
+- Namespace mismatch
+- Validation errors during commit
+
+**Solution:**
+1. Check transaction status - ensure commit was successful
+2. Verify namespace matches across Bridge Domain and Bridge Interfaces
+3. Review transaction logs for any validation failures
+4. Refresh the GUI view
+
+</details>
+
+<details>
+<summary><b>Bridge Interface creation fails</b></summary>
+
+**Possible causes:**
+- Bridge Domain doesn't exist yet
+- Invalid interface reference
+- VLAN ID already in use
+
+**Solution:**
+1. Ensure Bridge Domain is committed before creating Bridge Interfaces
+2. Verify interface name matches topology exactly (e.g., `leaf1-ethernet-1-1`)
+3. Check for VLAN ID conflicts with existing services
+4. Review interface availability on the target node
+
+</details>
+
+<details>
+<summary><b>Clients cannot ping each other</b></summary>
+
+**Possible causes:**
+- VLAN mismatch on clients
+- Bridge Interface not attached to correct physical interface
+- VXLAN tunnel not established
+- Underlay BGP sessions down
+
+**Solution:**
+1. Verify both clients are untagged: `ifconfig eth1`
+2. Check Bridge Interface configuration on both leafs
+3. Verify VXLAN tunnel: `show tunnel-interface vxlan0 vxlan-interface * detail`
+4. Confirm underlay BGP: `show network-instance default protocols bgp neighbor`
+5. Check EVPN routes: `show network-instance default protocols bgp routes evpn route-type 3`
+
+</details>
+
+<details>
+<summary><b>MAC addresses not learning</b></summary>
+
+**Possible causes:**
+- MAC learning disabled
+- Bridge table full (MAC limit reached)
+- EVPN Type-2 routes not being advertised
+- Client not sending traffic
+
+**Solution:**
+1. Verify MAC learning is enabled in bridge-table config
+2. Check MAC table: `show network-instance l2vnet bridge-table mac-table all`
+3. Generate traffic from clients (ping or arp)
+4. Verify EVPN Type-2 routes: `show network-instance default protocols bgp routes evpn route-type 2`
+5. Check for MAC duplication detection blocking learning
+
+</details>
+
+<details>
+<summary><b>VNI/EVI allocation failures</b></summary>
+
+**Possible causes:**
+- Allocation pool exhausted
+- Pool not accessible from namespace
+- Pool allocation range conflicts
+
+**Solution:**
+1. Check pool utilization: Navigate to allocation pools in EDA GUI
+2. Verify pool has available resources
+3. Ensure pool is in correct namespace or globally accessible
+4. Review pool range definitions for overlaps
+5. Consider expanding pool range if exhausted
+
+</details>
+
+<details>
+<summary><b>Configuration not pushed to devices</b></summary>
+
+**Possible causes:**
+- Transaction dry-run only (not committed)
+- Node connectivity issues
+- Device authentication failure
+- Commit transaction timed out
+
+**Solution:**
+1. Verify transaction was **committed**, not just dry-run
+2. Check device reachability from EDA
+3. Verify device credentials in EDA
+4. Review transaction logs for push failures
+5. Check device connectivity: `ping <leaf-mgmt-ip>`
+
+</leaf-mgmt-ip></details>
+
+<details>
+<summary><b>EVPN routes not being exchanged</b></summary>
+
+**Possible causes:**
+- BGP EVPN address-family not configured
+- Route target mismatch
+- BGP session not established
+- EVPN not enabled in overlay protocol
+
+**Solution:**
+1. Verify overlay protocol is EBGP in fabric intent
+2. Check BGP EVPN sessions: `show network-instance default protocols bgp neighbor | grep evpn`
+3. Verify route targets match: should be `target:1:<evi>`
+4. Check EVPN configuration in network-instance: `info network-instance l2vnet protocols bgp-evpn`
+
+</evi></details>
+
+<h3 id="best-practices">💡 Best Practices</h3>
+<ol>
+<li><strong>Always use allocation pools</strong> for VNI, EVI, and Tunnel Index to avoid manual conflicts</li>
+<li><strong>Use descriptive names</strong> for Bridge Domains and Interfaces (e.g., <code>customer-a-untagged</code>)</li>
+<li><strong>Document VLAN assignments</strong> to track which VLANs are used for which services</li>
+<li><strong>Test with dry-run first</strong> before committing changes to production</li>
+<li><strong>Verify end-to-end connectivity</strong> after each service deployment</li>
+<li><strong>Monitor MAC table growth</strong> to detect potential MAC address exhaustion</li>
+<li><strong>Use consistent namespaces</strong> across related resources (Bridge Domain, Bridge Interfaces)</li>
+<li><strong>Label your resources</strong> for easier filtering and management in large deployments</li>
+</ol>
+<hr>
+<h2 id="key-takeaways">📝 Key Takeaways</h2>
+<h3 id="what-youve-accomplished">What You've Accomplished</h3>
+<p>✅ <strong>Created a Bridge Domain</strong> (<code>l2vnet</code>) with EVPN-VXLAN type<br>
+✅ <strong>Configured Bridge Interfaces</strong> for two clients on different leaf switches<br>
+✅ <strong>Utilized allocation pools</strong> for automatic VNI, EVI, and Tunnel Index assignment<br>
+✅ <strong>Verified EVPN operation</strong> through MAC learning and VXLAN tunnel establishment<br>
+✅ <strong>Tested end-to-end connectivity</strong> between clients across the overlay  </p>
+<h3 id="understanding-the-eda-generated-configuration">Understanding the EDA-Generated Configuration</h3>
+<p>EDA automatically created:</p>
+<ol>
+<li><strong>Network Instance (MAC-VRF)</strong></li>
+<li>Type: <code>mac-vrf</code> for Layer 2 bridging</li>
+<li>Bridge interfaces for local client attachment</li>
+<li>
+<p>VXLAN interfaces for overlay connectivity</p>
+</li>
+<li>
+<p><strong>EVPN Configuration</strong></p>
+</li>
+<li>BGP EVPN instance with allocated EVI</li>
+<li>Route targets for route distribution control</li>
+<li>
+<p>Type-2 (MAC/IP) and Type-3 (IMET) route advertisements</p>
+</li>
+<li>
+<p><strong>VXLAN Tunnels</strong></p>
+</li>
+<li>Ingress VNI mapping for traffic identification</li>
+<li>Source IP from system loopback (VTEP address)</li>
+<li>
+<p>Automatic tunnel establishment to remote VTEPs</p>
+</li>
+<li>
+<p><strong>Bridge Table</strong></p>
+</li>
+<li>MAC learning configuration</li>
+<li>Aging timers</li>
+<li>MAC duplication detection (optional)</li>
+</ol>
+<h3 id="service-flow-summary">Service Flow Summary</h3>
+<div class="highlight"><pre><span></span><code>Client1 (VLAN null / untagged)
+    ↓
+ethernet-1/1.4097 on leaf1
+    ↓
+Bridge Domain "l2vnet"
+    ↓
+VXLAN tunnel (VNI 200)
+    ↓
+EVPN control plane (EVI 100, RT target:1:100)
+    ↓
+Spine layer (Route Reflector)
+    ↓
+VXLAN tunnel (VNI 200)
+    ↓
+Bridge Domain "l2vnet" on leaf2
+    ↓
+ethernet-1/1.4097 on leaf2
+    ↓
+Client2 (VLAN null / untagged)
+</code></pre></div>
+<hr>
+<h2 id="whats-next">🎯 What's Next?</h2>
+<p>Congratulations! You've successfully deployed a Layer 2 EVPN overlay service using EDA.</p>
+<h3 id="next-steps-in-your-learning-journey">Next Steps in Your Learning Journey</h3>
+<ol>
+<li><strong>Expand the Service</strong></li>
+<li>Add more clients to the same Bridge Domain</li>
+<li>Create additional Bridge Domains for different VLANs</li>
+<li>
+<p>Implement multi-tenancy with separate Bridge Domains</p>
+</li>
+<li>
+<p><strong>Layer 3 Services</strong> (Future Lab)</p>
+</li>
+<li>Create IP-VRF instances for inter-subnet routing</li>
+<li>Configure IRB (Integrated Routing and Bridging) interfaces</li>
+<li>Implement EVPN Type-5 routes for IP prefix advertisement</li>
+<li>
+<p>Use the Virtual Networks conglomerate method</p>
+</li>
+<li>
+<p><strong>Advanced Features</strong> (Future Lab)</p>
+</li>
+<li>EVPN Multi-homing (LAG across multiple leafs)</li>
+<li>EVPN Route Filtering and Policy</li>
+<li>MAC Mobility and Mass Withdrawal</li>
+<li>
+<p>Silent Host Detection</p>
+</li>
+<li>
+<p><strong>Continue to Part 3</strong></p>
+</li>
+<li>🔍 <strong><a href="../part3-deviations-eql/">Part 3: Deviations &amp; EQL</a></strong> - Monitor configuration drift and query network state</li>
+</ol>
+<hr>
+<h2 id="additional-resources">📚 Additional Resources</h2>
+<h3 id="documentation">Documentation</h3>
+<ul>
+<li><a href="https://docs.eda.dev/">Nokia EDA Documentation</a></li>
+<li><a href="https://documentation.nokia.com/srlinux/">SR Linux Documentation</a></li>
+</ul>
+<h3 id="related-exercises">Related Exercises</h3>
+<ul>
+<li><strong>Exercise 1:</strong> Fabric Intent Creation (Part 1)</li>
+<li><strong>Exercise 2:</strong> Create L2 EVPN Instance (This Lab)</li>
+<li><strong>Exercise 3:</strong> Verify L2 EVPN Service (This Lab)</li>
+<li><strong>Exercise 4:</strong> Create L3 EVPN Instance (Future)</li>
+</ul>
+<h3 id="command-reference">Command Reference</h3>
+<p><strong>EDA GUI Navigation:</strong>
+</p><div class="highlight"><pre><span></span><code>Virtual Networks → Bridge Domains → Create
+Virtual Networks → Bridge Interfaces → Create
+</code></pre></div><p></p>
+<p><strong>SR Linux Verification Commands:</strong>
+</p><div class="highlight"><pre><span></span><code><span class="c1"># Network instance configuration</span>
+info<span class="w"> </span>network-instance<span class="w"> </span>&lt;name&gt;
+
+<span class="c1"># Bridge table</span>
+show<span class="w"> </span>network-instance<span class="w"> </span>&lt;name&gt;<span class="w"> </span>bridge-table<span class="w"> </span>mac-table<span class="w"> </span>all
+
+<span class="c1"># VXLAN tunnels</span>
+show<span class="w"> </span>tunnel-interface<span class="w"> </span>vxlan0<span class="w"> </span>vxlan-interface<span class="w"> </span>*<span class="w"> </span>detail
+
+<span class="c1"># EVPN routes</span>
+show<span class="w"> </span>network-instance<span class="w"> </span>default<span class="w"> </span>protocols<span class="w"> </span>bgp<span class="w"> </span>routes<span class="w"> </span>evpn<span class="w"> </span>route-type<span class="w"> </span><span class="m">2</span>
+show<span class="w"> </span>network-instance<span class="w"> </span>default<span class="w"> </span>protocols<span class="w"> </span>bgp<span class="w"> </span>routes<span class="w"> </span>evpn<span class="w"> </span>route-type<span class="w"> </span><span class="m">3</span>
+
+<span class="c1"># Interface status</span>
+show<span class="w"> </span>interface<span class="w"> </span>ethernet-1/1.4097
+</code></pre></div><p></p>
+<hr>
+<h2 id="lab-completion-summary">🏁 Lab Completion Summary</h2>
+<p><strong>This concludes Exercises 2 and 3 of the SGNOG12 EDA Lab!</strong></p>
+<p>You have successfully:<br>
+✅ Created individual Bridge Domain and Bridge Interface components<br>
+✅ Deployed an L2 EVPN service across a multi-leaf fabric<br>
+✅ Verified EVPN-VXLAN operation and connectivity<br>
+✅ Understood EDA's automatic configuration generation<br>
+✅ Learned verification techniques for overlay services</p>
+<hr>
+<p><strong>Navigation:</strong></p>
+<ul>
+<li><a href="../part1-fabric-intent/">Back to Part 1: Fabric Intent Creation</a></li>
+<li><a href="../part3-deviations-eql/">Continue to Part 3: Deviations &amp; EQL</a></li>
+<li><a href="../">Return to Main Lab Guide</a></li>
+</ul>
+<hr>
+<p><strong>Ready for advanced monitoring and querying?</strong> Continue to <a href="../part3-deviations-eql/">Part 3: Deviations &amp; EQL</a></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-progress" data-md-component="progress" role="progressbar"></div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": ["content.code.copy", "content.code.annotate", "navigation.instant", "navigation.instant.progress", "navigation.sections"], "search": "../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.f55a23d4.min.js"></script>
+      
+    
+  
+<script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
+document$.subscribe(()=>{ lightbox.reload(); });
+</script></body></html>
