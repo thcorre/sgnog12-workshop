@@ -1,5 +1,10 @@
 name: vm-${GROUP_ID}
- 
+
+mgmt:
+  network: 20-vm-${GROUP_ID}
+  ipv4-subnet: 172.83.${GROUP_ID}.0/24
+  ipv6-subnet: 3fff:172:83:${GROUP_ID}::/64
+
 topology:
   nodes:
     sonic:
