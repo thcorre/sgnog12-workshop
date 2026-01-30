@@ -1,0 +1,9 @@
+apiVersion: services.eda.nokia.com/v1
+kind: BridgeInterface
+metadata:
+  name: client1
+  namespace: clab-dc-${GROUP_ID}-eda
+spec:
+  bridgeDomain: l2vnet
+  interface: leaf1-ethernet-1-1
+  vlanID: 'null'

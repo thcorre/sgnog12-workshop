@@ -1,0 +1,18 @@
+name: vm-${GROUP_ID}
+
+mgmt:
+  network: 20-vm-${GROUP_ID}
+  ipv4-subnet: 172.83.${GROUP_ID}.0/24
+  ipv6-subnet: 3fff:172:83:${GROUP_ID}::/64
+
+topology:
+  nodes:
+    sonic:
+      kind: sonic-vm
+      image: vrnetlab/sonic-vm:202411
+    srl:
+      kind: nokia_srlinux
+      image: ghcr.io/nokia/srlinux:25.7.1
+
+  links:
+    - endpoints: [sonic:eth1, srl:e1-1]
